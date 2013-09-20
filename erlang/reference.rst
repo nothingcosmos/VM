@@ -10,9 +10,11 @@ http://ll2.ai.mit.edu/talks/armstrong.pdf
 * Process creation times
 
 jvm csharpは、1000p で終了
+
 100-200ms / process
 
 erlang
+
 2000 - 30,000 process
 
 3-5 microseconds
@@ -29,18 +31,22 @@ erlang
 * scalable process
 
 重要な点として、
-プロセス生成のレイテンシが低い
-メッセージ送受信のレイテンシが低い
+
+# プロセス生成のレイテンシが低い
+# メッセージ送受信のレイテンシが低い
 
 上記がプロセス数に対してうまくscaleする。プロセス数は30,000くらいまでいける。
+
 JVMやCsharpは1000~2000 processまで
 
 プロセスのscaleに必要なこと
 
 Shared Nothing
+
 lock mutexを無くす
 
 remote process
+
 monitor
 
 * その他の重要項目
@@ -64,6 +70,7 @@ soft real-time/raytency重視
 6th joe armstrong
 
 プログラムはブラックボックスだ。
+
 入力と出力があって、関係的な関係があり、 君の問題はどこにあるのか。
 
 
@@ -95,6 +102,9 @@ OSのプロセスに1VMを立てる。
 
 SMP対応では、複数のschedulerを起動して、run queue を複数のschedulerで処理する。
 
+runqueueもschedulerごとに分割したいらしいが、今はどうなっているのか。
+
+runqueueまわりはマクロ多数使っていて、追いきれていない。
 
 https://www.erlang-solutions.com/sites/default/files/trimedia/ErlangUserGroup-HiPE-DanielLuna.pdf
 ===============================================================================

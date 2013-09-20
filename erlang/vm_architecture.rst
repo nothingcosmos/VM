@@ -11,6 +11,7 @@ Dart VMとBEAM VMは自明。
 *******************************************************************************
 
 対応OS ::
+
   JVM     : Windows, Linux, FreeBSD(MacOS), Solaris
             AIXは非公式サポート
   Dart VM : Windows, Linux, MacOS, Android
@@ -18,6 +19,7 @@ Dart VMとBEAM VMは自明。
   BEAM VM : Windows, Pthread系のUNIX
 
 対応マシンアーキテクチャ ::
+
   JVM     : x86, x64, Sparc, Zero
             Powerは非公式サポート、ARM対応は非公開
   Dart VM : ia32, x64, ARM, MIPS
@@ -25,6 +27,7 @@ Dart VMとBEAM VMは自明。
             HiPE(x86, amd64, arm, sparc, ppc系)
 
 対応プラットフォーム ::
+
   JVM     : 名目上マルチプラットフォームへの対応を目指していたが、
             今は専らサーバ専用。クライアント何それ。
             組込み機器でも使用可能。JavaMEとして、SDKとVM本体を別途リリースしている。
@@ -136,9 +139,9 @@ C/C++の外部プログラムとの連携方法 ::
 
   JVM     : かなり速い
   Dart VM : 速い
-  BEAM VM : 速いかも
+  BEAM VM : 速さ優先じゃない
 
-computer language benchmark games を参照してみるか。 JVMベースで
+computer language benchmark games を参照してみるか。 JVMベースで評価するのがよいかな。
 
 
 起動速度 ::
@@ -219,12 +222,15 @@ supervisorをVM内部に持つ。別threadを立ち上げておき、reqがあ�
 supervisorは主にCodeIndexを使って、VM内のProcessの復帰処理を行うことができる。
 
 
-
-三つに共通の要素
-===============================================================================
-
 VM KernelとUserSpace 間
 ===============================================================================
 
-特にJITコンパイラ
+JVMとDart VMは、あまり頻繁にVM KernelとUserSpace間を行き来しないようにしている。
+行き来はオーバーヘッドなので。。
+
+具体的には、JVMは intrinsics を定義し、JITコンパイル時にはbypassして、MacroAssemblerに置換し、
+JITコンパイルしたコードに、MacroAssemblerをそのまま埋め込むことが多い。
+
+Dart VMもIntrinsicsのようなものを用意するが、こちらはRecognizerと読んでいる。
+JITコンパイル時にRecognizerをIRに変換し、IRレベルで最適化、最終的にIRをemitしてアセンブラを生成。
 

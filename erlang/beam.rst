@@ -180,7 +180,7 @@ gc系の起点 ::
   hibernateとliteralsの違いがよくわからん。。
 
 
-gcを呼び出す起点
+gcを呼び出す処理
 
 erts_garbage_collectを呼び出すマクロ一覧 ::
 
@@ -253,13 +253,11 @@ Erlang GC メモ ::
 
 上記を読むと、erlang GCは世代別GCで、
 
-new_heap はmark&sweep, old_heapはmark&sweep
+incremental GCらしいのだが、、てっきりcopy gc + mark&sweepかと思っていた。。
 
 new_heapはgrowthしていく。
 
-いあ、incremental compaction
-
-
+incremental compaction なのか？
 
 message passing
 *******************************************************************************
@@ -385,7 +383,7 @@ supervisorは別threadで起動している。
     }
 
 
-code_index って
+code_index IXを使って、codeを参照したり、復元してwake_scheduler()するらしい。
 
 ===============================================================================
 ===============================================================================
