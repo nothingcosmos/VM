@@ -129,7 +129,7 @@ C/C++の外部プログラムとの連携方法 ::
 
   JVM     : bytecodeのverifierあり。静的。top-bottom, lattice
   Dart VM : 動的, 実行時の型をTypeFeedback
-  BEAM VM : 動的, DataType ???
+  BEAM VM : 動的, DataType ???, Eterm
 
 
 性能
@@ -233,4 +233,5 @@ JITコンパイルしたコードに、MacroAssemblerをそのまま埋め込む
 
 Dart VMもIntrinsicsのようなものを用意するが、こちらはRecognizerと読んでいる。
 JITコンパイル時にRecognizerをIRに変換し、IRレベルで最適化、最終的にIRをemitしてアセンブラを生成。
+
 

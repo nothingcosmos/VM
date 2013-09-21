@@ -268,15 +268,21 @@ messageは、おそらく struct erl_mesg -> ErlMessage
 
 process構造体が、ErlMessageQueue msg; を持つ。
 
+remoteの宛先は、Nodeではなく、Etermなのだと思う。
 
 ::
 
-  do_send()
-    remote_send() //Process *p, DistEntry *dep, Eterm to, Eterm msg,
-      erts_dsig_send_req_msg()
-        dsig_send()
-      erts_dsig_send_msg()
-        dsig_send()
+  do_send()     //bif.c
+    //localではなく、remoteへのmessage passingの場合
+    remote_send() //Process *p, DistEntry *dep, Eterm to, Eterm msg,   //bif.c
+      if (is_atom(to)) //toは送り先、is_external_pid(to) なので、pidを含んだheaderもしくは宛先情報のはず
+        erts_dsig_send_req_msg(ErtsDsigData *dsdp, Eterm remote_name, Eterm message) //dist.c
+          ctl = TUPLE_N(&ref, make_small(), sender.id, am_cookie, remote_name,token)
+          dsig_send(dsdp, ctl, message)
+      else
+        erts_dsig_send_msg(ErtsDSigData *dsdp, Eterm remote, Eterm message)     //dist.c
+          ctl = TUPLE_N(&ref, make_small(), am_Cookie, remote, token)
+          dsig_send(dsdp, ctl, message)
     ...
 
     lock
@@ -286,11 +292,22 @@ process構造体が、ErlMessageQueue msg; を持つ。
     unlock
 
 
-  dsig_send() //ErtsDSigData *dsdp, Eterm msg
-    erts_encode_dist_ext(msg, 
+  //remoteへのメッセージ送信
+  //dsig_sendの宛先は、Eterm ctl, ctlの実体はtuple
+  dsig_send() //ErtsDSigData *dsdp,Eterm ctl, Eterm msg   //ctlが宛先
+    obuf = erts_encode_ext_dist_header_setup()
+    erts_encode_dist_ext(ctl, &obuf,  //control用
+    erts_encode_dist_ext(msg, &obuf,  //Encode message
+
+    DistEntry * dep->out_queue.last = obuf;
+    lock
+    erts_schedule_dist_command(NULL, dep);   //dist.h
+      erts_port_task_schedule(id, dep, )     //erl_port_task.c
+    unlock
+
 
   // encodeのメイン処理
-  erts_encode_dist_ext(msg, 
+  erts_encode_dist_ext(ctl, msg, 
     erl_term()
       enc_term_int() //ここ以降は全部externalに記述
 
@@ -385,6 +402,39 @@ supervisorは別threadで起動している。
 
 code_index IXを使って、codeを参照したり、復元してwake_scheduler()するらしい。
 
+Node間
+*******************************************************************************
+
+Erlangは別VMをNodeと表現している。
+
+::
+
+  typedef struct erl_node_ {
+    HashBucket hash_bucket;       /* Hash bucket */
+    erts_refc_t refc;             /* Reference count */
+    Eterm sysname;                /* name@host atom for efficiency */
+    Uint32 creation;              /* Creation */
+    DistEntry *dist_entry;        /* Corresponding dist entry */
+  } ErlNode;
+
+初期化の際 erl_initでは、erts_init_node_tables()
+
+おそらく、erts_this_nodeに参照を持つ。
+
+Nodeは、erts_node_tablesで管理している。Nodeの管理なのであって、分散処理が定義されているわけではない。
+
+Nodeのmonitorやfind/deleteの定義は多数ある。
+
+
+Eterm
 ===============================================================================
+
+ErlangはEtermを対象にメッセージを送る
+
+Etermってなんだ、、実体はタダの整数だけど、汎用ポインタみたいな扱い。
+
+bifのレイヤーでは全部Etermで宣言している。この変が動的言語なのだろうと思う。
+
+
 ===============================================================================
 ===============================================================================
