@@ -1,19 +1,26 @@
-起動のプロセス
+erlangの起動プロセス
 ###############################################################################
+
+hello.beamを実行するコマンドは以下。
 
 ex) ::
 
+  // smp disableの場合
   $ erl -noshell -smp disable -run hello start -run init stop
-  $ erl -noshell -run hello start -s init stop
 
-build時にはbeamとbeam.smpの2種類があり、#ifdef ERTS_SMP で2つビルドしている。
+  // smpを有効にする場合
+  $ erl -noshell -run hello start -run init stop
 
--smp disableでbeamが起動する。デフォルトは-smp=core数で起動、ERTS_SMPをマクロ定義
+build時にはbeamとbeam.smpの2種類があり、内部で#ifdef ERTS_SMP を切っており、2つビルドしている。
+
+-smp disableでbeamが起動する。デフォルトbeam.smp、-smp=coreでコア数指定可能
 
 pthread created
 *******************************************************************************
 
 beam内では、すべてerts_thr_create()を使ってpthreadを生成する。
+
+pthread生成時に指定される、関数のシンボルの一覧が以下
 
 symbols ::
 
@@ -23,12 +30,15 @@ symbols ::
   child_waiter
   sched_thread_func * 8
   aux_thread
-
   runq_supervisor //デフォルトでは起動しない
+
+  起動時に22thread~23threadが起動する。
 
 
 BEAM VMのmainプログラム
 ===============================================================================
+
+上記threadを起動し、mainがwait状態になるまでを追う。
 
 ::
 
@@ -124,7 +134,7 @@ BEAM VMのmainプログラム
   3003    (void)
   3005        select(0, NULL, NULL, NULL, NULL);
 
-  メッセージ受信してやらかすらしい。
+メッセージ受信待ち。
 
 
 ::
@@ -169,9 +179,12 @@ BEAM VMのmainプログラム
   5806     return NULL;
   5807 }
 
-erlangのerl_processのメインループ
+schedの本体は、process_main()。process_main()を8thread起動する。
 
-::
+process_mainがerlang processのscheduler兼インタプリタ。
+
+
+erlangのerl_processのメインループ ::
 
   Breakpoint 1, process_main () at beam/beam_emu.c:1081
   1081  {
@@ -213,9 +226,8 @@ erlangのerl_processのメインループ
   process_main()が全opcodeのインタプリタ兼context switchになっているみたい。
 
 
-BEAM VM
+インタプリタ
 *******************************************************************************
-
 
 emulator OpCase
 ===============================================================================

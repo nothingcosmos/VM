@@ -80,7 +80,6 @@ http://www.sics.se/~joe/thesis/armstrong_thesis_2003.pdf
 http://www.trapexit.org/A_Guide_To_The_Erlang_Source
 ===============================================================================
 
-
 http://basho.com/erlang-at-basho-five-years-later/
 ===============================================================================
 
@@ -143,3 +142,8 @@ Runtime system ::
   Loader (C and Erlang)
   Signal stack handling (C)
   Arithmetic overflow (asm and C)
+
+http://mydevelopedworld.wordpress.com/2012/12/20/erlang-memory-models-private-heap-vs-shared-heap/
+===============================================================================
+
+heapとGCの関係
