@@ -118,6 +118,9 @@ runtime_support::LockObject
 runtime_support::UnlockObject
 runtime_support::RuntimeId
 
+基本的には、runtime_support_llvm_func_list.h
+で定義されているシンボルが、runtime側で実態が定義されている。
+
 runtime/entrypoints
 ===============================================================================
 
