@@ -1,0 +1,282 @@
+Dart VM Advent Calendar 2012 12/04
+###############################################################################
+
+以下のバージョンで確認しています。::
+
+  $dart --version
+   Dart VM version: 0.1.2.0_15619_elise (Sun Dec  2 11:47:05 2012)
+                    ^       ^            ^
+                    version revision     build time
+
+環境は、Linux ubuntu12(ia32) corei7 です。
+
+Dart VMの概要(1)
+===============================================================================
+
+一般的なVMは、ソースコードをASTに変換した後IRに変換し、そのIRをインタプリタ実行します。
+
+Dart VMはV8と同様、ソースコードからAST、IRに変換し、IRをJITコンパイルしてから実行します。
+
+そのため、インタプリタ実行する機能はなく、未対応のARMでは動かないです。
+
+Dart VMのJITコンパイラは1つですが、OPTIONで機能を切り替えます。
+
+(1) 非最適化  どんな型でも動くコードを高速に生成する。
+(2) 最適化    最適化した、高速に動作するコードを生成する。
+
+最初にコンパイルする際には、非最適化でJITコンパイルし、コードを生成します。
+
+非最適化のJITコンパイラは、何回呼び出されたかカウントするコード、
+変数が何の型か情報収集するコードを埋め込んでコンパイルします。
+
+その結果を参照し、2000以上呼び出された関数は、最適化JITコンパイラ(FlowGraphCompiler)で再コンパイルします。
+
+最適化JITコンパイラは、、何の型の情報かフィードバックを受けて、その型に応じた高速なコードを生成します。
+
+.. note::
+
+  AST(Abstract Syntax Tree)
+
+  IR(Intermediate Representation) 中間表現とよく呼びます。
+
+  MozillaのIonMonkeyは、JavaScriptソース --> AST --> IRの後に、インタプリタ実行のはず。
+
+  JVMは、javacがJavaソースコード --> AST -> Bytecode(IR)に変換し、
+  JVM(Hotspot)はbytecode(IR)を入力とし、Bytecodeをインタプリタ実行します。
+
+  LLVMでも、lliのインタプリタモードを使用すれば、Bitcodeをインタプリタ実行できます。
+
+  Dart VMの最適化オプションが有効な場合のJITコンパイラを、
+  最適化JITコンパイラとか、FlowGraphCompilerと私は呼んでいます。
+
+  変数が何の型か情報収集するコードは、曖昧な表現で、実装は異なります。
+
+対応OS
+===============================================================================
+
+Linux, Windows, MacOSで、buildbotで確認されています。
+
+Android(x86のみ)もサポートされており、
+Linux(ia32)環境からクロスビルドしてAndroidEmulatorにadbで転送すると動きます。
+
+os対応は、dart/runtime/vmと、dart/runtime/platformに記述されています。
+
+.. csv-table:: os依存の規模
+  :header: target arch, line
+  :widths: 20,10
+
+  linux, 3.4k
+  win  , 4.2k
+  macos, 3.3k
+  android, 3.4k
+
+linuxを例にあげると、以下のファイルがOS依存です。
+
+.. map "wc" "ls */*_linux.*" | awk '{print $4 "," $1}'
+.. csv-table:: os依存のソースコード一覧(Linux) dart/runtime
+  :header: filename, line
+  :widths: 20,10
+
+  bin/crypto_linux.cc,18
+  bin/dbg_connection_linux.cc,105
+  bin/dbg_connection_linux.h,29
+  bin/directory_linux.cc,435
+  bin/eventhandler_linux.cc,430
+  bin/eventhandler_linux.h,121
+  bin/extensions_linux.cc,23
+  bin/fdutils_linux.cc,134
+  bin/file_linux.cc,244
+  bin/log_linux.cc,18
+  bin/platform_linux.cc,80
+  bin/process_linux.cc,566
+  bin/socket_linux.cc,253
+  bin/socket_linux.h,12
+  bin/utils_linux.cc,44
+  platform/thread_linux.cc,281
+  platform/thread_linux.h,74
+  platform/utils_linux.h,22
+  vm/debuginfo_linux.cc,72
+  vm/gdbjit_linux.cc,79
+  vm/gdbjit_linux.h,15
+  vm/os_linux.cc,233
+  vm/virtual_memory_linux.cc,98
+
+
+ターゲットCPUアーキテクチャ
+===============================================================================
+
+x86(ia32), x64 です。
+
+将来、ARMにも対応予定です。
+V8はMIPSにも対応していますが、Dart VMはどうでしょうね。。買収の影響とかもあるし。
+
+ターゲットアーキテクチャ向けのコードは、ソースコードに_ia32とか、x64とprefixがつきます。
+
+ARM向けのソースコードも多数定義されていますが、中身はからっぽです。
+
+V8のようにディレクトリ単位で分かれていませんし、規模もそれほど大きくはないです。
+
+.. csv-table:: arch依存の規模
+  :header: target arch, line
+  :widths: 20,10
+
+  ia32, 14k
+  x64 , 14k
+  arm ,  1k
+
+ia32を例に挙げると、以下のファイルがarch依存です。
+
+.. map "wc" "ls vm/*_ia.*" | awk '{print $4 "," $1}'
+.. csv-table:: arch依存のソースコード一覧(ia32) dart/runtime/vm
+  :header: filename, line
+  :widths: 20,10
+
+  assembler_ia32.cc,2044
+  assembler_ia32.h,706
+  assembler_macros_ia32.cc,76
+  assembler_macros_ia32.h,82
+  code_patcher_ia32.cc,297
+  constants_ia32.h,135
+  cpu_ia32.cc,29
+  debugger_ia32.cc,68
+  disassembler_ia32.cc,1711
+  flow_graph_compiler_ia32.cc,1435
+  flow_graph_compiler_ia32.h,357
+  instructions_ia32.cc,52
+  instructions_ia32.h,99
+  intermediate_language_ia32.cc,2799
+  intrinsifier_ia32.cc,1742
+  runtime_entry_ia32.cc,39
+  stack_frame_ia32.cc,57
+  stub_code_ia32.cc,2221
+
+V8の場合、arch依存のコードは、40k lineくらいの規模になります。
+
+コード規模が大きく異なる理由は、
+
+(1) V8はlithiumという低レベル中間表現が存在し、archごとに定義。 10k?
+(2) V8はfull-codegenがarchごとに定義。 5k?
+(3) V8はregexpがarchごとに定義。2k?
+(4) V8はmacro-assemblerを定義。4k?   <-- これは高速化の過程で追加されるかも
+
+まだまだ高速化の途中なので、これから増えてくるかもしれません。
+
+実行の大まかな流れ
+===============================================================================
+
+(1) Dart VMの起動
+(2) isolateの生成と初期化(bootstrap含む 詳細は後日)
+(3) 入力ソースコードを解析する。
+(4) ソースコードからASTに変換。
+(5) ASTからIRに変換。
+(6) IRのJITコンパイル(非最適化)
+(7) 生成したコードを実行する。
+
+サンプルfibo()
+===============================================================================
+
+お馴染みのFibonacciを例に説明します。
+
+.. literalinclude:: out/fibo.dart
+
+mainの中間表現
+===============================================================================
+main関数の中間表現です。オプション --print-flow-graphを指定すると出力できます。
+
+.. literalinclude:: out/fibo.main.ir
+
+自動的に、CheckStackOverflowとReturnが追加されています。
+
+コードの対応がとりやすいように、prolog body epilogというコメントを入れています。
+
+mainのアセンブラ
+===============================================================================
+main関数のアセンブラ(非最適化のコンパイル結果)です。オプション --disassembleを指定すると出力できます。
+
+コメントをいれた、prolog, epilog, runtimeは、自動で挿入された処理だと思ってもらってOkです。
+
+.. literalinclude:: out/fibo.main.asm
+
+1点注意すると、 0x50をfiboの引数40だと説明していますが、 0x50は、十進数で80だと思います。
+
+Dart VMは、V8と同様、最下位ビットがtagged pointerになっています。
+
+tagged pointerに関しては、以下のURLの、実行時のデータ型の表現方法が詳しいです。
+
+http://www.slideshare.net/maedaa/ss-15310134
+
+ざっくりいうと、最下位bitが0だとSmallInteger(smi)であると判定し、0x50はsmi型の40です。
+
+最下位bitが1だと、HeapObjectとみなします。
+
+main関数の実行
+===============================================================================
+コンパイルされたコードがどのように実行されるのかざっくり説明します。
+
+中間表現をベースに説明するので、実コードと比較しながら追ってみるとよいかもしれません。
+
+実行::
+
+  //prolog
+  CheckStackOverflow:2()    <-- スタックオーバーフローのチェックをします。
+  //body
+  t0 <- Constant:3(#40)     <-- 定数40を作成します。
+  PushArgument:4(t0)        <-- fiboの引数40をスタックにpushします。
+  StaticCall:5(fibo t0)     <-- fibo関数を呼び出します。もしコンパイルしていない場合、
+                                呼び出し先のfibo関数のコンパイルを指示します。
+  //epilog
+  t0 <- Constant:6(#null)   <-- nullを生成します。
+  Return:7(t0)              <-- 後述
+
+Stub呼び出し
+===============================================================================
+
+StaticCallでは、stub越しにfibo関数を呼び出そうとします。
+
+しかしmain開始直後、fibo関数をコンパイルしていません。
+
+StaticCallでは、未コンパイルのソースコードがあればコンパイル(非最適化)を行い、コードを生成します。
+
+その後、StaticCallで呼び出す先のアドレスをpatchingで書き換え、
+コンパイル(非最適化)したコードをcallできるようにします。
+
+イメージ図だとこんな感じで、StaticCallが参照するmain関数の呼び出し先テーブルを書き換えます。
+
+- 書き換え前 : main.StaticCall[fibo]();  // {"fibo":"fiboのコンパイル指示"}
+- 書き換え後 : main.StaticCall[fibo]();  // {"fobo":"fiboのcode"}
+
+Return処理
+===============================================================================
+
+Returnをコンパイル(非最適化)したコードでは、結構特殊なことをしています。
+
+Return命令に該当するasm ::
+
+  0xb2f88196    ba690421b3             mov edx,0xb3210469  'Function 'main': static.' のテーブル取得。
+  0xb2f8819b    ff422b                 inc [edx+0x2b]                 <-- 'inc usage_counter'
+  0xb2f8819e    817a2bd0070000         cmp [edx+0x2b],0x7d0           <-- check hotcode 0x7d0==2000
+  0xb2f881a5    7c05                   jl 0xb2f881ac
+  0xb2f881a7    e8fc86ffff             call 0xb2f808a8  [stub: OptimizeFunction] <-- call JITCompiler!!!
+  0xb2f881ac    89ec                   mov esp,ebp
+
+Return処理では、'main'関数のテーブルを取得し、
+何回実行されたかカウントするusage_counterをインクリメントします。
+
+このテーブルは、関数ごとに用意されています。
+
+その後、そのusage_counterが2000以上か比較し、もし2000以上だった場合stubのOptimizeFunctionを呼び出します。
+
+2000より小さい場合、何もせずretします。
+
+OptimizeFunctionは、再コンパイル(最適化)するためのstubです。
+
+
+続きは次回で。。
+
+まとめ
+===============================================================================
+(1) Dart VMはインタプリタ実行しない。全部JITコンパイル。
+(2) 対応OSはLinux Windows MacOS Android
+(3) ターゲットアーキテクチャはia32/x64 将来はARMをサポート
+(4) サンプルはFibonacci関数。Pointクラスではない。
+

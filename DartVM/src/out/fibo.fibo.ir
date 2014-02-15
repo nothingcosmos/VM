@@ -1,0 +1,31 @@
+
+==== file:///home/elise/language/dart/work/adven/fibo.dart_::_fibo
+B0[graph]
+B1[target]
+    CheckStackOverflow:2()
+    t0 <- LoadLocal:3(n lvl:0)                        //変数nをLoad(引数という概念はここではない)
+    t1 <- Constant:4(#2)                              //定数2を生成
+    Branch if RelationalOp:5(<, t0, t1) goto (2, 3)   //(t0 < t1)だったら、B2へjump、もしくはB3へjump
+B2[target]
+    t0 <- LoadLocal:7(n lvl:0)                        //定数nをLoad
+    Return:8(t0)                                      //Return
+B3[target]
+    t0 <- LoadLocal:9(n lvl:0)                        //変数nをLoad
+    PushArgument:10(t0)                               //nを引数にpush
+    t0 <- Constant:11(#1)                             //定数1を生成
+    PushArgument:12(t0)                               //#1を引数にpush
+    t0 <- InstanceCall:13(-, t0, t0)                  //InstanceCall (-)(n, #1)みたいなメソッドコール
+    PushArgument:14(t0)                               //返値をpush        [`n-1`]
+    t0 <- StaticCall:15(fibo t0)                      //fibo(n-1)に相当
+    PushArgument:16(t0)                               //返値をpush        [`fibo(n-1)`]
+    t0 <- LoadLocal:17(n lvl:0)                       //変数nをLoad
+    PushArgument:18(t0)                               //nをpush
+    t0 <- Constant:19(#2)                             //定数2を生成
+    PushArgument:20(t0)                               //#2をpush
+    t0 <- InstanceCall:21(-, t0, t0)                  //InstanceCall (-)(n, 2)みたいなメソッドコール
+    PushArgument:22(t0)                               //返値をpush        [`fibo(n-1)`, `n-2`]
+    t0 <- StaticCall:23(fibo t0)                      //fibo(n-2)に相当
+    PushArgument:24(t0)                               //返値をpush        [`fibo(n-1)`, `fibo(n-2)`]
+    t0 <- InstanceCall:25(+, t0, t0)                  //InstanceCall (+)(`fibo(n-1)`, `fibo(n-2)`)
+    Return:26(t0)                                     //返値をreturn
+

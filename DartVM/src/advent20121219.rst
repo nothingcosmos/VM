@@ -1,0 +1,190 @@
+Dart VM Advent Calendar 2012 12/19
+###############################################################################
+
+書く時間がなくなりつつあるので、とりあえず最適化に関してです。
+
+GVN(DominatorBasedCSE)
+===============================================================================
+
+以前、Dart VMの最適化JITコンパイルの最適化に関してふれましたが、もうちょっと深く掘り下げようと思います。
+
+本日のお題はこれ ::
+
+  if (FLAG_common_subexpression_elimination) {
+    if (DominatorBasedCSE::Optimize(flow_graph)) {
+      // Do another round of CSE to take secondary effects into account:
+      // e.g. when eliminating dependent loads (a.x[0] + a.x[0])
+      // TODO(fschneider): Change to a one-pass optimization pass.
+      DominatorBasedCSE::Optimize(flow_graph);
+    }
+  }
+
+最適化の名称は、DominatorBasedCSEになってますけど、これどう考えても、GlobalValueNumberingですよね。。
+
+作者のvegorovさんとfschneiderさんは、GVNっていいたくない理由でもあるんでしょうか。
+
+GVN(GlobalValueNumbering)というのは、SSA形式の代表的な最適化の一つで、冗長な命令を削除する最適化です。
+
+LLVMでも使っている、大変強力な最適化ですので、興味のある人はLLVMも参照してみるとよいと思います。※  Dart VMのDominatorBasedCSEの5倍複雑です。。
+
+DominatorCSEは、runtime/vm/flow_graph_optimizer に記述されてます。
+
+
+Optimize
+===============================================================================
+
+入り口です。 ::
+
+  bool DominatorBasedCSE::Optimize(FlowGraph* graph) {
+    bool changed = false;
+    if (FLAG_load_cse) {
+      GrowableArray<BitVector*> kill_by_offs(10);
+      DirectChainedHashMap<LoadKeyValueTrait> map;
+      const intptr_t max_expr_id =
+          NumberLoadExpressions(graph, &map, &kill_by_offs);
+      if (max_expr_id > 0) {
+        LoadOptimizer load_optimizer(graph, max_expr_id, &map, kill_by_offs);
+        load_optimizer.Optimize();
+      }
+    }
+  
+    DirectChainedHashMap<PointerKeyValueTrait<Instruction> > map;
+    changed = OptimizeRecursive(graph->graph_entry(), &map) || changed;
+  
+    return changed;
+  }
+
+メイン処理は2種類あって、LoadOptimizerとOptimieRecursiveです。
+
+LoadOptimizerは、冗長なLoad命令を除去します。
+
+OptimizeRecursiveが、CSEで様々な命令を除去します。
+
+処理のキモとなるのは、DirectChainedHasheMapになり、CSEの基本処理はこのmapが握っています。
+
+DominatorとBBを辿りながらIRをinsertしていって、SideEffectに注意しながらLookUpして、同一のIRが見つかれば、そのIRは冗長だと判定して削除します。
+
+mapによってLookUpするので、IRをhashにシリアライズします。
+
+runtime/vm/hash_map.h::Hashcode ::
+
+  uword hash = static_cast<uword>(KeyValueTrait::Hashcode(key));
+
+
+runtime/vm/intermediate_language.cc ::
+
+  intptr_t Instruction::Hashcode() const {
+    intptr_t result = tag();
+    for (intptr_t i = 0; i < InputCount(); ++i) {
+      Value* value = InputAt(i);
+      intptr_t j = value->definition()->ssa_temp_index();
+      result = result * 31 + j;
+    }
+    return result;
+  }
+
+baseの値は、対象IRのtag()、つまりIRの種別(AddとかSubとか)を表します。
+
+そのtag()に、IRの引数の値(SSA形式であるため、ssa_temp_index())を加算していきます。
+
+最終的にhashを計算します。
+
+例を示すと、 ::
+
+  v7 <- UnboxedDoubleBinaryOp:15(-,     v1,    v6)
+        ^                        ^      ^      ^
+        tag                      input0 input1 input2
+
+  v9 <- UnboxedDoubleBinaryOp:19(*, v1, v8)    // insert
+
+  v10 <- UnboxedDoubleBinaryOp:19(*, v1, v8)   // lookup  v9とv10は等しいので、v10は冗長
+
+
+map { Hashcode(v7):v7, Hashcode(v9):v9 } というイメージでしょうか。
+
+
+OptimizeRecursive
+===============================================================================
+
+code ::
+
+  bool DominatorBasedCSE::OptimizeRecursive(
+      BlockEntryInstr* block,
+      DirectChainedHashMap<PointerKeyValueTrait<Instruction> >* map) {
+    bool changed = false;
+    // BB単位の処理
+    // BB中のIRを1命令ずつ捜査して、SideEffectがなければ、LookUP
+    for (ForwardInstructionIterator it(block); !it.Done(); it.Advance()) {
+      Instruction* current = it.Current();
+      if (current->AffectedBySideEffect()) continue; //Currentの命令に副作用がある場合、削除候補でない。
+      Instruction* replacement = map->Lookup(current);
+      if (replacement == NULL) {
+        map->Insert(current);     // Lookupして冗長な命令がなければmapにInsert
+        continue;
+      }
+      // Replace current with lookup result.
+      ReplaceCurrentInstruction(&it, current, replacement); //Lookupした冗長な命令をReplace
+      changed = true;
+    }
+
+    // 親BBの支配する 子BBを再起的に辿る。その際に、支配する親BBのMapを共有する。
+    // Process children in the dominator tree recursively.
+    intptr_t num_children = block->dominated_blocks().length();
+    for (intptr_t i = 0; i < num_children; ++i) {
+      BlockEntryInstr* child = block->dominated_blocks()[i];
+      if (i  < num_children - 1) {
+        // Copy map.
+        DirectChainedHashMap<PointerKeyValueTrait<Instruction> > child_map(*map);
+        changed = OptimizeRecursive(child, &child_map) || changed;
+      } else {
+        // Reuse map for the last child.
+        changed = OptimizeRecursive(child, map) || changed;
+      }
+    }
+    return changed;
+  }
+
+BB中のIRを先頭から辿りながら、mapに順にinsertしていきます。
+
+Lookupして同じ意味のIRを見つけた場合、そのIRは冗長と判断し、削除します。
+
+やばい、もう説明のしようがない、、
+
+AffectedBySideEffect
+===============================================================================
+
+SideEffectの影響を受けないIRを、試しに列挙してみます。
+
+1. ConstantInstr
+2. AssertAssignableInstr
+3. AssertBooleanInstr
+4. StrictCompareInstr
+5. LoadStaticFieldInstr
+6. StringCharCodeAtInstr
+7. StringFromCharCodeInstr
+8. LoadIndexedInstr
+9. LoadFieldInstr
+10. CheckEitherNonSmiInstr
+11. BoxDoubleInstr
+12. BoxIntegerInstr
+13. UnboxDoubleInstr
+14. UnboxIntegerInstr
+15. BinaryDoubleOpInstr
+16. BinaryMintOpInstr
+17. ShiftMintOpInstr
+18. UnaryMintOpInstr
+19. BinarySmiOpInstr
+20. CheckClassInstr
+21. CheckSmiInstr
+22. CheckArrayBoundInstr
+
+
+上記にあげたIRは、CSEによって冗長だと判定されて、削除される可能性があります。
+
+上記以外は、どんな副作用があるのか判定できないため、削除しません。
+
+まとめ
+===============================================================================
+(1) よくわからないエントリーでしたね。
+(2) mapにinsertしてlookupするだけの簡単なお仕事。
+(3) LoadOptimizerは、Load,Storeのフィールドの対応を取りながら、冗長なLoadを除去します。詳細は機会があれば、、

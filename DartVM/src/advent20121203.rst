@@ -1,0 +1,176 @@
+Dart VM Advent Calendar 2012 12/03
+###############################################################################
+
+Dart VMのオプションの紹介です。
+
+dartを動かす
+===============================================================================
+
+ビルドされたバイナリは、dartになります。実行する前にちゃんとパスを確認しましょう。
+
+サンプルのソースコードと、よくつかうオプションとして--checkedを紹介します。
+
+ソースコード ::
+
+  cat hello.dart
+  main() {
+    int n = 0.1;
+    print("Hello World! $n");
+  }
+
+実行結果(1) ::
+
+  $ dart hello.dart
+  Hello World! 0.1
+
+実行結果(2) --checked ::
+
+  $ dart --checked hello.dart
+  Unhandled exception:
+  type 'double' is not a subtype of type 'int' of 'n'.
+  #0      main (file:///home/elise/language/dart/work/basic/hello.dart:2:11)
+
+サンプルのhello.dartは、DartEditorで確認すると、warningになります。
+
+Analyzerで確認 ::
+
+  $ dart_analyzer hello.dart
+  file:/home/elise/language/dart/work/basic/hello.dart:2: 'double' is not assignable to 'int'
+      1: main() {
+      2:   int n = 0.1;
+
+オプションの--checkedを指定すると、dartが実行時に、runtime type checkを埋め込んだコードを生成します。
+
+チェックモードと呼ばれるものだと思います。
+
+dartは、precompileのwarningとruntime type checkの埋め込みによる2段構えの型チェックの元開発が行えます。
+
+Dart VMのオプション
+===============================================================================
+
+Dart VMには、2種類のオプションが存在します。
+
+dartコマンドのオプションと、Dart VM本体を制御するオプションです。
+
+dartコマンドのオプションを参照する ::
+
+  $ dart --help
+  dart --help
+  Usage: dart [<vm-flags>] <dart-script-file> [<dart-options>]
+
+  Executes the Dart script passed as <dart-script-file>.
+
+  Common options:
+  --checked Insert runtime type checks and enable assertions (checked mode).
+  --version Print the VM version.
+  --help    Display this message (add --verbose for information about all
+            VM options).
+
+Dart VMの内部制御オプションを参照する ::
+
+  $ dart --verbose
+
+  dart --verbose
+  Usage: dart [<vm-flags>] <dart-script-file> [<dart-options>]
+
+  Executes the Dart script passed as <dart-script-file>.
+
+  Supported options:
+  --checked
+    Insert runtime type checks and enable assertions (checked mode).
+
+  --version
+    Print the VM version.
+
+  --help
+    Display this message (add --verbose for information about all VM options).
+
+  --package-root=<path>
+    Where to find packages, that is, "package:..." imports.
+
+  --debug[:<port number>]
+    enables debugging and listens on specified port for debugger connections
+    (default port number is 5858)
+
+  --break_at=<location>
+    sets a breakpoint at specified location where <location> is one of :
+    url:<line_num> e.g. test.dart:10
+    [<class_name>.]<function_name> e.g. B.foo
+
+  --use_script_snapshot=<file_name>
+    executes Dart script present in the specified snapshot file
+
+  The following options are only used for VM development and may
+  be changed in any future version:
+  Flag settings:
+  array_bounds_check_elimination: true (Eliminate redundant bounds checks.)
+  checked: (Enable checked mode.)
+  code_comments: false (Include comments into code and disassembly)
+  common_subexpression_elimination: true (Do common subexpression elimination.)
+  compiler_stats: false (Compiler stat counters.)
+  ...以降省略。
+
+内部制御オプションは忘れやすいので、--verboseで全部出してくれるのは非常にうれしいです。
+
+オプション-vは--verboseの短縮になり、便利です。
+
+dartコマンドのオプション
+===============================================================================
+
+dartコマンドのオプションは、主にdart/runtime/bin の各ファイルで定義されています。
+
+主にmain.ccや、gen_snapshot.ccでしょうか。
+
+Dart VMの内部制御オプション
+===============================================================================
+
+dartの内部制御オプションの特徴として、オプションの指定は、--でも__でもどちらでもよいです。
+
+Dart VMの内部制御オプションを参照したい場合は、
+
+dart/runtime/vm の中で、DEFINE_FLAG をgrepすればOKです。
+
+自分で使うオプションも、DEFINE_FLAGで自由に追加して大丈夫です。
+
+runtime/vm/dart_api_impl.cc ::
+
+  DEFINE_FLAG(bool, force_exit, false, "force exit without Wait."); /* オプションの定義 */
+  ...
+      while (!data.done) {
+        if (FLAG_force_exit) {  /* オプションの参照方法                 */
+          break;                /* 何をやっているかはお察しください。。 */
+        }
+        ml.Wait();
+      }
+
+
+個人的によく使うオプションを紹介します。
+verboseをgrepして探すことも多いですね。
+
+(1) dart --verbose | grep print
+(2) dart --verbose | grep trace
+(3) dart --verbose | grep heap
+(4) dart --verbose | grep dis
+(5) dart --verbose | grep false
+
+
+.. csv-table:: オプションの紹介
+  :header: "オプション", "概要"
+  :widths: 15, 50
+
+  print-flow-graph ,FlowGraphCompilerの最適化のログをIRレベルで出力します。
+                   ,FlowGraphCompilerのbefore afterのタイミングでIRを出力します。
+                   ,他のオプションと組み合わせると、他フェーズのIRダンプも出力します。
+  print-ast        ,astを出力します。コンパイルエラーやRuntimeチェックがイミフな場合の検証に使います。
+  print-bootstrap  ,起動時にbootstrapして、deserializeされたクラスを出力します。
+  trace-inlining   ,FlowGraphInlinerでのinliningのログを出力します。
+  trace-optimization ,FlowGraphCompilerで最適化した際の、IR変換の副作用を出力します。
+  trace-deoptimization,optimizeされたコードがdeoptimizationされたログを出力します。
+  trace_disabling_optimized_code, deoptimizationログと似たようなものですが、最適化されたコードを破棄したログです。
+  trace-bailout    ,コンパイル途中でbailoutされたログを出力します。コンパイル失敗ログです。
+  trace_isolates   ,isolateの生死のログを出力します。
+  disassemble, 生成した全コードをdisassembleして表示します。
+  disassemble_optimized,FlowGraphCompilerでコンパイルされたコードのみdisassembleして表示します。
+  disassemble_stubs, 生成済みstubをdisassmebleして表示します。上記disassembleオプションでは出力されません。
+  code-comments=true, disassemble時にコメントを出力する。デフォルトでは、IRとの対応を出力する。
+

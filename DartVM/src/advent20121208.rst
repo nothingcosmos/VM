@@ -1,0 +1,138 @@
+Dart VM Advent Calendar 2012 12/08
+###############################################################################
+
+Dart VMと他VMの比較
+===============================================================================
+Dart VMと、他のVMやコンパイラが出力したアセンブラを比較してみようと思います。。
+
+- LLVM(clang3.2 trunk)
+- Dart VM
+- V8
+- JVM(java7 Hotspot)
+
+とはいえ、比較対象はfibonacchi関数なので、実アプリケーションによるベンチマークではないです。
+
+マイクロベンチマークでこの程度かという認識でお願いします。
+
+Time Fibo(40)
+===============================================================================
+fibo(40)の処理時間です。参考までに。
+
+ubuntu12(ia32) corei7 2600です。
+
+clang32$ time fibo.clang32.O3.out ::
+
+  ret=102334155
+  real  0m0.620s
+  user  0m0.616s
+  sys   0m0.000s
+
+V8$ time shell fibo.js ::
+
+  ret=102334155
+  1401 millis
+  real  0m1.401s
+  user  0m1.404s
+  sys   0m0.000s
+
+java7$ time java Fibo ::
+
+  ret=102334155
+  420 millis
+  real  0m0.466s
+  user  0m0.452s
+  sys   0m0.016s
+
+なぜかClangよりも速い。。アセンブラを参照してみたら、再帰関数Fiboをinline展開していました。
+
+そのため、以下のInline展開を抑止した版と比較します。
+
+inline展開を抑止した場合、VM起動時のオーバーヘッドを除くと、ほぼclangと同等の速度ですね。
+
+$ time java -XX:MaxInlineSize=0 -XX:FreqInlineSize=0 Fibo ::
+
+  ret = 102334155
+  602 millis
+  real  0m0.663s
+  user  0m0.628s
+  sys 0m0.036s
+
+
+dart$ time dart --time-all fibo.dart ::
+
+  ret = 102334155
+  897 millis
+  Script Loading :  93 micros.
+  Snapshot Creation :  0 micros.
+  Isolate initialization :  11019 micros.
+  Function compilation :  11742 micros.
+  Bootstrap of core classes :  28 micros.
+  Total runtime for isolate :  909578 micros.
+  real  0m0.924s
+  user  0m0.920s
+  sys   0m0.000s
+
+前回の最後に紹介したデータです。
+
+clangのアセンブラ
+===============================================================================
+
+.. literalinclude:: out/fibo.clang32.asm
+
+シンプルで素直なアセンブラを出力します。これが比較のベースですね。
+
+GCCでない理由は、VMの名前が入っていないからではなく、
+GCCはfiboに対して最適化を行ってしまうため、比較対象にしていません。
+
+.. note ::
+
+  GCCv4.6は、fiboをループに変換し、そのループからfiboを再帰呼び出しする形に変換します。
+
+  gccv4.6でfibo(40)をコンパイルすると、400msでした。
+
+  fiboをif (n==0) ... else if (n==1) ... else の形式に変換すれば、200msになります。
+
+V8のアセンブラ
+===============================================================================
+
+.. literalinclude:: out/fibo.js.asm
+
+頭痛くなってくる。。
+
+Dart VMとV8を比較すると、
+
+- どちらも、StackOverflowCheckがある。
+- V8は、Smi型からuntagして、各種演算を行う。
+- V8は、untagした値をsmitagする際に、overflowcheckを行う。
+- Dart VMは、Smi型のまま各種演算を行っている。
+- V8は、callerのproeprty call checkを行っている。
+
+あと予想として、Dart VMは中間表現のままRegister割付を行うため、無駄なレジスタ操作が発生していそう。。
+
+V8はlithiumという低水準中間表現でレジスタ割付を行うため、無駄なレジスタ操作やスピルは少ないんじゃないかな。
+
+どちらもLinear Scan Register Allocationだけど、レジスタプレッシャが大きい処理やループで傾向を比較すると分かるかもしれない。
+
+Java7(inline展開抑止版)のアセンブラ
+===============================================================================
+
+.. literalinclude:: out/fibo.java7.asm
+
+Dart VMとJava7(HotSpot)を比較すると、
+
+- Dart VMの引数は、すべてスタック渡し、HotSpotの引数は、第2引き数までレジスタ渡し。fastcall風。
+- HotSpotにスタックオーバーフローチェックはない？
+- HotSpotは、int型がpremitive型なので、そのままレジスタで扱える。これはHeapObjectの扱いとGCのオーバーヘッドとメモリ使用量の差を比較しないとなんともいえないけど。。
+- HotSpotは、fiboみたいな単純な関数では、DeoptimizeFrameは存在しない。クラスを使用したり、仮想関数呼び出しが必要かな。
+- HotSpotは、RETの直前に、TEST PollPage,EAX ! Poll Safepointが存在する。GC用のpollingポイントだと思うけど。。謎。
+- Dart VMにはpollingポイントの埋め込みがないけど、別途Stackmapを作成して管理しているから問題ないのかな。その辺はまだよくっってない。
+
+Dart VMのアセンブラ
+===============================================================================
+
+.. literalinclude:: out/fibo.fibo.aasm
+
+まとめ
+===============================================================================
+(1) HotSpotやばい。C言語と性能競争の話題がでるだけはある。
+(2) V8はもうちょっとなんとかならないんですかね。。

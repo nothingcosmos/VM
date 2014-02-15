@@ -1,0 +1,394 @@
+Dart VM Advent Calendar 2012 12/15
+###############################################################################
+
+Dart VMのcore API scalarlist
+===============================================================================
+
+dartのAPI、特にcoreに用意されたAPIは、Dartのみで記述されることが少なく、
+C++で組み込み関数として記述されることが多いです。
+
+dart:scalarlistパッケージを元に、DartのAPIが、Dart VMでどのように処理されているのかを追います。
+
+scalarlistの中でも、よく使うと思われるFloat64Listを元に、
+
+1回目では、Float64ListとList<double>を比較してみます。
+
+2回目では、Float64Listのソースコードから、Dart VMでどのように処理されているのかを追います。
+
+Float64Listのサンプル
+===============================================================================
+scalarlistをインポートして、Float64Listを使用しています。
+
+scalarlist add::
+
+  #import 'dart:scalarlist';
+
+  addvector2(Float64List ret, Float64List l, Float64List r, int index) {
+    ret[index] = l[index] + r[index];
+  }
+
+scalarlistというのは、scalarをメモリ上にシーケンシャルに敷き詰めるListです。
+
+普通のList<>と比較して速いAPIです。私の場合はよくFloat64Listを使います。
+
+インターフェースはnew List<double>(n)とほぼ同じなのですが、scalarlistのFloat64Listは組み込み型としてチューニングされており、高速です。
+
+Float64Listの中間表現
+===============================================================================
+
+まずは中間表現です。 ::
+
+  // sl.dart_::_addvector2
+  Before Optimizations:
+  B1[target]
+      CheckStackOverflow:2()
+      PushArgument:4(v1)
+      PushArgument:6(v4)
+      PushArgument:8(v2)
+      PushArgument:10(v4)
+      v5 <- InstanceCall:11([], v2, v4 IC[1: _Float64Array@0x37975bd9 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2, a3 }
+      PushArgument:12(v5)
+      PushArgument:14(v3)
+      PushArgument:16(v4)
+      v6 <- InstanceCall:17([], v3, v4 IC[1: _Float64Array@0x37975bd9 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2, a3, a4 }
+      PushArgument:18(v6)
+      v7 <- InstanceCall:19(+, v5, v6 IC[1: _Double@0x36924d72, _Double@0x36924d72 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2, a3 }
+      PushArgument:20(v7)
+      InstanceCall:21([]=, v1, v4, v7 IC[1: _Float64Array@0x37975bd9, _Smi@0x36924d72, _Double@0x36924d72 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2 }
+      v8 <- Constant:22(#null)
+      Return:23(v8)
+
+中間表現の段階では、InstanceCall []や []=を呼び出しているだけですね。
+
+TypeFeedbackされた型は、Float64Arrayになっています。これは、Float64List型のDart VM内部の表現になります。
+
+最適化後の中間表現 ::
+
+  After Optimizations:
+    2: B1[target] ParallelMove ebx <- S-4, edx <- S-3, ecx <- S-2, eax <- S-1
+    4:     CheckStackOverflow:2()
+    6:     CheckClass:11(v2 IC[1: _Float64Array@0x37975bd9 #600]) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v2 [edx], v4 [eax] }
+    8:     CheckSmi:11(v4) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v2 [edx], v4 [eax] }
+   10:     CheckArrayBound:11(v2, v4) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v2 [edx], v4 [eax] }
+   12:     v5 <- LoadIndexed:32(v2, v4) {PT: double} {PCid: _Double@0x36924d72}
+   14:     CheckClass:17(v3 IC[1: _Float64Array@0x37975bd9 #600]) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v5 [xmm1], v3 [ecx], v4 [eax] }
+   16:     CheckArrayBound:17(v3, v4) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v5 [xmm1], v3 [ecx], v4 [eax] }
+   18:     v6 <- LoadIndexed:36(v3, v4) {PT: double} {PCid: _Double@0x36924d72}
+   20:     ParallelMove xmm1 <- xmm1
+   20:     v7 <- BinaryDoubleOp:19(+, v5, v6) {PT: double} {PCid: _Double@0x36924d72}
+   22:     CheckClass:21(v1 IC[1: _Float64Array@0x37975bd9 #1]) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v7 [xmm1] }
+   24:     CheckArrayBound:21(v1, v4) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v7 [xmm1] }
+   26:     StoreIndexed:43(v1, v4, v7) {PCid: dynamic}
+   28:     v8 <- Constant:22(#null) {PT: Null} {PCid: Null}
+   29:     ParallelMove eax <- eax
+
+CheckClassと、CheckArrayBoundが挿入されています。
+
+また、InstanceCall []がLoadIndexed, InstanceCall []=がStoreIndexedに変換されています。
+
+Float64Listのアセンブラ
+===============================================================================
+
+コード ::
+
+  -Code for optimized function 'file:///sl.dart_::_addvector2' {
+          ;; Enter frame
+  0xb2fc9a78    55                     push ebp
+  0xb2fc9a79    89e5                   mov ebp,esp
+  0xb2fc9a7b    e800000000             call 0xb2fc9a80
+          ;; B0
+          ;; B1
+  0xb2fc9a80    8b5d14                 mov ebx,[ebp+0x14]
+  0xb2fc9a83    8b5510                 mov edx,[ebp+0x10]
+  0xb2fc9a86    8b4d0c                 mov ecx,[ebp+0xc]
+  0xb2fc9a89    8b4508                 mov eax,[ebp+0x8]
+          ;; CheckStackOverflow:2()
+  0xb2fc9a8c    3b25b4d9a909           cmp esp,[0x9a9d9b4]
+  0xb2fc9a92    0f8686000000           jna 0xb2fc9b1e
+          ;; CheckClass:11(v2 IC[1: _Float64Array@0x37975bd9 #600])
+  0xb2fc9a98    f6c201                 test_b edx,0x1
+  0xb2fc9a9b    0f8499000000           jz 0xb2fc9b3a
+  0xb2fc9aa1    0fb77a01               movzx_w edi,[edx+0x1]
+  0xb2fc9aa5    83ff3c                 cmp edi,0x3c
+  0xb2fc9aa8    0f858c000000           jnz 0xb2fc9b3a
+          ;; CheckSmi:11(v4)
+  0xb2fc9aae    a801                   test al,0x1
+  0xb2fc9ab0    0f8589000000           jnz 0xb2fc9b3f
+          ;; CheckArrayBound:11(v2, v4)
+  0xb2fc9ab6    3b4203                 cmp eax,[edx+0x3]
+  0xb2fc9ab9    0f8385000000           jnc 0xb2fc9b44
+          ;; v5 <- LoadIndexed:32(v2, v4) {PT: double} {PCid: _Double@0x36924d72}
+  0xb2fc9abf    f20f104c8207           movsd xmm1,[edx+eax*0x4+0x7]
+          ;; CheckClass:17(v3 IC[1: _Float64Array@0x37975bd9 #600])
+  0xb2fc9ac5    f6c101                 test_b ecx,0x1
+  0xb2fc9ac8    0f847b000000           jz 0xb2fc9b49
+  0xb2fc9ace    0fb77901               movzx_w edi,[ecx+0x1]
+  0xb2fc9ad2    83ff3c                 cmp edi,0x3c
+  0xb2fc9ad5    0f856e000000           jnz 0xb2fc9b49
+          ;; CheckArrayBound:17(v3, v4)
+  0xb2fc9adb    3b4103                 cmp eax,[ecx+0x3]
+  0xb2fc9ade    0f836a000000           jnc 0xb2fc9b4e
+          ;; v6 <- LoadIndexed:36(v3, v4) {PT: double} {PCid: _Double@0x36924d72}
+  0xb2fc9ae4    f20f10548107           movsd xmm2,[ecx+eax*0x4+0x7]
+          ;; ParallelMove xmm1 <- xmm1
+          ;; v7 <- BinaryDoubleOp:19(+, v5, v6) {PT: double} {PCid: _Double@0x36924d72}
+  0xb2fc9aea    f20f58ca               addsd xmm1,xmm2
+          ;; CheckClass:21(v1 IC[1: _Float64Array@0x37975bd9 #1])
+  0xb2fc9aee    f6c301                 test_b ebx,0x1
+  0xb2fc9af1    0f845c000000           jz 0xb2fc9b53
+  0xb2fc9af7    0fb77b01               movzx_w edi,[ebx+0x1]
+  0xb2fc9afb    83ff3c                 cmp edi,0x3c
+  0xb2fc9afe    0f854f000000           jnz 0xb2fc9b53
+          ;; CheckArrayBound:21(v1, v4)
+  0xb2fc9b04    3b4303                 cmp eax,[ebx+0x3]
+  0xb2fc9b07    0f834b000000           jnc 0xb2fc9b58
+          ;; StoreIndexed:43(v1, v4, v7) {PCid: dynamic}
+  0xb2fc9b0d    f20f114c8307           movsd [ebx+eax*0x4+0x7],xmm1
+          ;; v8 <- Constant:22(#null) {PT: Null} {PCid: Null}
+  0xb2fc9b13    b819003cb5             mov eax,0xb53c0019
+          ;; ParallelMove eax <- eax
+          ;; Return:23(v8)
+  0xb2fc9b18    89ec                   mov esp,ebp
+  0xb2fc9b1a    5d                     pop ebp
+  0xb2fc9b1b    c3                     ret
+  0xb2fc9b1c    90                     nop
+  0xb2fc9b1d    cc                     int3
+
+CheckArrayBoundはありますが、ほぼ1命令でset getできている点が素晴らしい、というかいろいろヤバいですね。
+
+CheckArrayBoundも、条件が揃えばRangeAnalysisの解析結果を元に削除されます。
+
+double型のboxing, unboxingがすべて畳み込まれていますね。
+
+getIndexed ::
+
+          ;; CheckArrayBound:11(v2, v4)
+  0xb304ad76    3b4203                 cmp eax,[edx+0x3]
+  0xb304ad79    0f8385000000           jnc 0xb304ae04
+          ;; v5 <- LoadIndexed:32(v2, v4) {PT: double} {PCid: _Double@0x36924d72}
+  0xb304ad7f    f20f104c8207           movsd xmm1,[edx+eax*0x4+0x7]
+
+setIndexed ::
+
+          ;; CheckArrayBound:21(v1, v4)
+  0xb304adc4    3b4303                 cmp eax,[ebx+0x3]
+  0xb304adc7    0f834b000000           jnc 0xb304ae18
+          ;; StoreIndexed:43(v1, v4, v7) {PCid: dynamic}
+  0xb304adcd    f20f114c8307           movsd [ebx+eax*0x4+0x7],xmm1
+
+List<double>の中間表現
+===============================================================================
+
+addvectorを呼び出す際に、List<double>型を引数として渡します。
+
+dart src ::
+
+  import 'dart:scalarlist';
+
+  addvector(var ret, var l, var r, var index) {
+      ret[index] = l[index] + r[index];
+  }
+
+最適化前の中間表現 ::
+
+  Before Optimizations
+  ==== file:///sl.dart_::_addvector
+  B1[target]
+      CheckStackOverflow:2()
+      PushArgument:4(v1)
+      PushArgument:6(v4)
+      PushArgument:8(v2)
+      PushArgument:10(v4)
+      v5 <- InstanceCall:11([], v2, v4 IC[1: _ObjectArray@0x36924d72 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2, a3 }
+      PushArgument:12(v5)
+      PushArgument:14(v3)
+      PushArgument:16(v4)
+      v6 <- InstanceCall:17([], v3, v4 IC[1: _ObjectArray@0x36924d72 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2, a3, a4 }
+      PushArgument:18(v6)
+      v7 <- InstanceCall:19(+, v5, v6 IC[1: _Double@0x36924d72, _Double@0x36924d72 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2, a3 }
+      PushArgument:20(v7)
+      InstanceCall:21([]=, v1, v4, v7 IC[1: _ObjectArray@0x36924d72, _Smi@0x36924d72, _Double@0x36924d72 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2 }
+      v8 <- Constant:22(#null)
+      Return:23(v8)
+  I
+Float64List版と大して変わらないです。Dartは、実行時dynamic typingなので、最適化前の中間表現は、List<double>もFloat64Listも同じになります。
+
+ただし、上記は最適化JITコンパイル前の中間表現であるため、TypeFeedbackされた型がFloat64ArrayからObjectArrayになっています。
+
+最適化後の中間表現 ::
+
+  After Optimizations:
+  ==== file:///sl.dart_::_addvector
+    2: B1[target] ParallelMove ebx <- S-4, edx <- S-3, ecx <- S-2, eax <- S-1
+    4:     CheckStackOverflow:2()
+    6:     CheckClass:11(v2 IC[1: _ObjectArray@0x36924d72 #600]) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v2 [edx], v4 [eax] }
+    8:     CheckSmi:11(v4) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v2 [edx], v4 [eax] }
+   10:     CheckArrayBound:11(v2, v4) env={ v1 [ebx], v2 [edx], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v2 [edx], v4 [eax] }
+   12:     v5 <- LoadIndexed:32(v2, v4) {PT: dynamic} {PCid: dynamic}
+   14:     CheckClass:17(v3 IC[1: _ObjectArray@0x36924d72 #600]) env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v5 [edi], v3 [ecx], v4 [eax] }
+   16:     CheckArrayBound:17(v3, v4) env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v5 [edi], v3 [ecx], v4 [eax] }
+   18:     v6 <- LoadIndexed:36(v3, v4) {PT: dynamic} {PCid: dynamic}
+   20:     CheckEitherNonSmi:19(v5, v6) env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [S-1], v0 [C], v1 [ebx], v4 [S-1], v5 [edi], v6 [edx] }
+   22:     v9 <- UnboxDouble:19(v5) {PCid: _Double@0x36924d72} env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [S-1], v0 [C], v1 [ebx], v4 [S-1], v5 [edi], v6 [edx] }
+   24:     v10 <- UnboxDouble:19(v6) {PCid: _Double@0x36924d72} env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [S-1], v0 [C], v1 [ebx], v4 [S-1], v5 [edi], v6 [edx] }
+   26:     ParallelMove xmm1 <- xmm1
+   26:     v7 <- BinaryDoubleOp:19(+, v9, v10) {PT: double} {PCid: _Double@0x36924d72}
+   28:     CheckClass:21(v1 IC[1: _ObjectArray@0x36924d72 #1]) env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [S-1], v0 [C], v1 [ebx], v4 [S-1], v7 [xmm1] }
+   29:     ParallelMove eax <- S-1
+   30:     CheckArrayBound:21(v1, v4) env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v7 [xmm1] }
+   32:     v11 <- BoxDouble:45(v7) {PCid: _Double@0x36924d72}
+   34:     ParallelMove ecx <- ecx
+   34:     StoreIndexed:42(v1, v4, v11) {PCid: dynamic}
+   36:     v8 <- Constant:22(#null) {PT: Null} {PCid: Null}
+   37:     ParallelMove eax <- eax
+   38:     Return:23(v8)
+
+Float64List版と比較すると、UnboxDoubleとBoxDoubleが余計に入っています。
+
+これは、List<double>で取得した値は LoadIndexedのreceiver型がDouble型なので、一度Unboxが必要になります。
+
+Float64Listの場合、LoadIndexedのreceiver型は、UnboxedDouble型です。そのため、Double型の値にassignする場合、Boxingが必要になります。
+
+[]の処理 ::
+
+   16:     CheckArrayBound:17(v3, v4) env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v5 [edi], v3 [ecx], v4 [eax] }
+   18:     v6 <- LoadIndexed:36(v3, v4) {PT: dynamic} {PCid: dynamic}
+   20:     CheckEitherNonSmi:19(v5, v6) env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [S-1], v0 [C], v1 [ebx], v4 [S-1], v5 [edi], v6 [edx] }
+   22:     v9 <- UnboxDouble:19(v5) {PCid: _Double@0x36924d72} env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [S-1], v0 [C], v1 [ebx], v4 [S-1], v5 [edi], v6 [edx] }
+
+[]=の処理 ::
+
+   30:     CheckArrayBound:21(v1, v4) env={ v1 [ebx], v2 [S-3], v3 [ecx], v4 [eax], v0 [C], v1 [ebx], v4 [eax], v7 [xmm1] }
+   32:     v11 <- BoxDouble:45(v7) {PCid: _Double@0x36924d72}
+   34:     ParallelMove ecx <- ecx
+   34:     StoreIndexed:42(v1, v4, v11) {PCid: dynamic}
+
+List<double>のアセンブラ
+===============================================================================
+全体像は長くなるので省略し、LoadIndexedとStoreIndexedのみです。
+
+LoadIndexed ::
+
+          ;; CheckArrayBound:17(v3, v4)
+  0xb304af79    3b4107                 cmp eax,[ecx+0x7]
+  0xb304af7c    0f8329010000           jnc 0xb304b0ab
+          ;; v6 <- LoadIndexed:36(v3, v4) {PT: dynamic} {PCid: dynamic}
+  0xb304af82    8b54410b               mov edx,[ecx+eax*0x2+0xb]
+
+LoadIndex自体は1命令ですね。ですが取得した値は、Double型のオブジェクトへのポインタです。
+
+runtime/vm/intermediate_language_ia32.cc ::
+
+  void StoreIndexedInstr::EmitNativeCode(FlowGraphCompiler* compiler) {
+    ...
+    if (class_id() == kFloat64ArrayCid) {
+      __ movsd(element_address, locs()->in(2).xmm_reg());//Float64ArrayのStoreは1命令
+      return;
+    }
+
+    ASSERT(class_id() == kArrayCid);
+    if (ShouldEmitStoreBarrier()) {                      //Smi型、Bool型、Null以外はHeapに領域確保し、GC対象。
+      Register value = locs()->in(2).reg();
+      __ StoreIntoObject(array, element_address, value); //そのため、GC用にStoreBurrier必要
+      return;
+    }
+  }
+
+Storeのアセンブラは大きく異なります。
+
+Float64Array型の場合movsd命令のみですが、通常のArray型の場合、StoreIntoObjectのStubを呼び出しています。
+
+StoreIndexed ::
+
+        ;; StoreIndexed:42(v1, v4, v11) {PCid: dynamic}
+  0xb304b035    894c430b               mov [ebx+eax*0x2+0xb],ecx  // store Double型Instance
+                                                                  // StoreIntoObjectFilter
+  0xb304b039    83e105                 and ecx,0x5                // mask NewObjectAlignmentOffset(4) | HeapTag(1) = 0x5
+  0xb304b03c    d1e9                   shr ecx, 1                 // 0010 ここに来るのはHeapTagだけじゃないのか？ HeapTagが立って入ればキャリーへ
+  0xb304b03e    13cb                   adc ecx,ebx                // ebxにecx下位2bitをorしたい。
+  0xb304b040    83e107                 and ecx,0x7                // mask ObjectAlignment(word*2) - 1 = 0x7
+  0xb304b043    83f904                 cmp ecx,0x4                // ebxがOldかつecxがNew
+  0xb304b046    750b                   jnz 0xb304b053             // goto noupdate
+  0xb304b048    50                     push eax
+  0xb304b049    8d44430b               lea eax,[ebx+eax*0x2+0xb]  // storeしたポインタをupdateする。
+  0xb304b04d    e81651ffff             call 0xb3040168  [stub: UpdateStoreBuffer] //call UpdateStoreBuffer
+  0xb304b052    58                     pop eax
+        ;; v8 <- Constant:22(#null) {PT: Null} {PCid: Null}
+  0xb304b053    b8190044b5             mov eax,0xb5440019         // label noupdate
+
+Storeindexedでは、List自体がHeapのOld領域に格納されている場合に、
+
+NewからAllocateしたDouble型のインスタンスだった場合、Old領域からNew領域への参照を持つことになります。
+
+世代別GCの場合、Old領域からNew領域への参照を厳密に管理するため、ListへのStoreのタイミングで、StoreBufferという記録領域に記録する必要があります。
+
+詳細は、 `GC本`_  の世代別GC、ライトバリア(WriteBarrier)の章や、RubiniusやV8の章を参照してください。
+
+上記のStoreIntoObjectFilterでは、ListがOld領域に格納されているのか判定し、必要であればUpdateStoreBufferを呼び出し、New領域への参照として記録しています。
+
+Float64Arrayの場合はUnboxDoubleのままメモリに書き込んでおり、GCが参照するオブジェクトポインタではないため、非常に高速になります。
+
+StoreBarrierの判定処理
+===============================================================================
+
+参考 ::
+
+  enum ObjectAlignment {
+    // Alignment offsets are used to determine object age.
+    kNewObjectAlignmentOffset = kWordSize,                //ia32なので、WordSizeは4
+    kOldObjectAlignmentOffset = 0,
+    // Object sizes are aligned to kObjectAlignment.
+    kObjectAlignment = 2 * kWordSize,                     //WordSize=4なので、8になる。Objectは1wordのtagを持つため、ObjectAlignment=8なのかな。
+
+  bool IsNewObject() const {
+    uword addr = reinterpret_cast<uword>(this);
+    return (addr & kNewObjectAlignmentOffset) == kNewObjectAlignmentOffset; // 3bit目が1ならNew領域
+  }
+
+  bool IsOldObject() const {
+    uword addr = reinterpret_cast<uword>(this);
+    return (addr & kNewObjectAlignmentOffset) == kOldObjectAlignmentOffset; // 3bit目が0ならOld領域
+  }
+
+bit演算の詳細(予想) ::
+
+  入力はebxとecxです。ebxがListオブジェクト、ecxがListにStoreする値になります。
+
+  ebxは、New領域のHeapTagged オブジェクトか、Old領域のHeapTagged オブジェクトの可能性があります。
+
+  そのため、ebxは、|||||X01 というアドレスを持ちます。Xは、0か1か分からないです。Xが0ならOld領域、Xが1ならNew領域です。
+
+  ecxは、ListにStoreする値になります。
+
+  そのため、New領域かOld領域のHeapTagged オブジェクト、もしくはHeapに格納しないオブジェクトになります。
+
+  そんため、ecxは、|||||Y0Z というアドレスを持ちます。Yが0か1でOld,New領域が決まります。Zが0の場合、Heapに格納しないオブジェクトになります。
+
+  ebxが|||||X01とする。 Old領域かつHeapTaggedなので、00Xとしています。Old領域かつObjectはword*2 alignmentなので3bit目は0
+  ecxが|||||Y0Zとする。 Old領域かNew領域か管理するのがY bit。HeapTaggedなのか管理するのがZ bit。
+
+  and 0x5, shr 1, adcによって、
+   ecx     ecx
+  0Y0Z -> 00YZ
+             ^ adcでキャリーとして足す
+  ecx  =   ebx +  ecx
+       =  |X01 + 00YZ
+
+  andl 0x7(|111)とcmpl 0x4(|100)で検査する。最下位3bit maskと3bit目をチェックし、UpdateStoreBuffer。
+
+  // Compare with the expected bit pattern.
+  cmpl(value, Immediate((kNewObjectAlignmentOffset >> 1) + kHeapObjectTag + kOldObjectAlignmentOffset + kHeapObjectTag));
+
+  2(4>>1) + 1 + 0 + 1 = 4となってます。
+
+  から考察するに、|X01 + 00YZ が |100 になる条件は、ebxがOld領域のオブジェクト(|100) ecxがNew領域のオブジェクト(|011)
+
+  上記以外の場合、UpdateStoreBufferは不要。
+
+まとめ
+===============================================================================
+(1) scalarlist速い。
+(2) ListのStoreIndexは、StoreBarrier処理を行う。
+
+.. _GC本 : http://www.amazon.co.jp/exec/obidos/ASIN/4798025623/nothingcosm05-22/ref=nosim
+

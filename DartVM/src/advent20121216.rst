@@ -1,0 +1,391 @@
+Dart VM Advent Calendar 2012 12/16
+###############################################################################
+
+Dart VMのcore API scalarlist (2)
+===============================================================================
+
+dart:scalarlistパッケージを元に、DartのAPIが、Dart VMでどのように処理されているのか.
+
+今回は、Float64Listのソースコードから追います。
+
+scalarlist ::
+
+  #import 'dart:scalarlist';
+
+  addvector2(Float64List ret, Float64List l, Float64List r, int index) {
+    ret[index] = l[index] + r[index];
+  }
+
+scalarlistのソースコード
+===============================================================================
+
+dart/lib/scalarlist/scalarlist.dart ::
+
+  #source('byte_arrays.dart');
+
+byte_arraysっていうdartのソースコードをインポートしている。
+
+dart/lib/scalarlist/byte_arrays.dart ::
+
+  abstract class Float64List implements List<double>, ByteArrayViewable {
+
+
+dart/runtime/lib/byte_array.dart ::
+
+  patch class Float64List {
+    /* patch */ factory Float64List(int length) {
+      return new _Float64Array(length);               // Float64List -> Float64Array です
+    }
+
+  class _Float64Array extends _ByteArrayBase implements Float64List {
+  ...
+
+    double operator[](int index) {
+      return _getIndexed(index);
+    }
+
+    int operator[]=(int index, double value) {
+      _setIndexed(index, value);
+    }
+
+    double _getIndexed(int index) native "Float64Array_getIndexed";            // native
+    int _setIndexed(int index, double value) native "Float64Array_setIndexed"; // native
+  }
+
+ここでdart/lib/scalarlistから、dart/runtime/libを参照しています。
+
+ここからちょっと特殊で、[]や[]=から、_getIndexedや_setIndexedを経由してnativeな実装を参照します。
+
+nativeというキーワードは、dartのsyntaxで、native extention機能になります。
+
+JVMのJNIみたいなもんですね。DartからC/C++で実装されたコードを参照できます。
+
+runtime/lib/byte_array.cc
+===============================================================================
+
+ここからはC++の世界です。。ここからが本当の、、、
+
+dart/runtime/lib/byte_array.cc ::
+
+  DEFINE_NATIVE_ENTRY(Float64Array_getIndexed, 2) {
+    GETTER(Float64Array, Double, double);
+  }
+
+  DEFINE_NATIVE_ENTRY(Float64Array_setIndexed, 3) {
+    SETTER(Float64Array, Double, value, double);
+  }
+
+  #define GETTER(ArrayT, ObjectT, ValueT)                                        \
+    GETTER_ARGUMENTS(ArrayT, ValueT);                                            \
+    RangeCheck(array, index.Value() * sizeof(ValueT), sizeof(ValueT));           \
+    ValueT result = array.At(index.Value());                                     \
+    return ObjectT::New(result);
+
+  #define SETTER(ArrayT, ObjectT, Getter, ValueT)                                \
+    SETTER_ARGUMENTS(ArrayT, ObjectT, ValueT);                                   \
+    RangeCheck(array, index.Value() * sizeof(ValueT), sizeof(ValueT));           \
+    ValueT value = value_object.Getter();                                        \
+    array.SetAt(index.Value(), value);                                           \
+    return Object::null();
+
+  #define GETTER_ARGUMENTS(ArrayT, ValueT)                                       \
+    GET_NON_NULL_NATIVE_ARGUMENT(ArrayT, array, arguments->NativeArgAt(0));      \
+    GET_NON_NULL_NATIVE_ARGUMENT(Smi, index, arguments->NativeArgAt(1));
+
+  #define SETTER_ARGUMENTS(ArrayT, ObjectT, ValueT)                              \
+    GET_NON_NULL_NATIVE_ARGUMENT(ArrayT, array, arguments->NativeArgAt(0));      \
+    GET_NON_NULL_NATIVE_ARGUMENT(Smi, index, arguments->NativeArgAt(1));         \
+    GET_NON_NULL_NATIVE_ARGUMENT(                                                \
+        ObjectT, value_object, arguments->NativeArgAt(2));
+
+  // Checks to see if (index * num_bytes) is in the range
+  // [0..array.ByteLength()).  without the risk of integer overflow.  If
+  // the index is out of range, then a RangeError is thrown.
+  static void RangeCheck(const ByteArray& array,
+                         intptr_t index,
+                         intptr_t num_bytes) {
+    if (!Utils::RangeCheck(index, num_bytes, array.ByteLength())) {
+      const String& error = String::Handle(String::NewFormatted(
+          "index (%"Pd") must be in the range [0..%"Pd")",
+          index, (array.ByteLength() / num_bytes)));
+      GrowableArray<const Object*> args;
+      args.Add(&error);
+      Exceptions::ThrowByType(Exceptions::kRange, args);
+    }
+  }
+
+C++のコードだと思ってファイルを開いたと思ったら、全部マクロだった。。
+
+結局は、ByteArray型のarray.GetAt(), array.SetAt()するだけのはず。
+
+あとは、DEFINE_NATIVE_ENTRYマクロが不明ですね。
+
+
+dart/runtime/vm/native_entry.h ::
+
+  #define NATIVE_ENTRY_FUNCTION(name) BootstrapNatives::DN_##name
+
+  #define DEFINE_NATIVE_ENTRY(name, argument_count)                              \
+    static RawObject* DN_Helper##name(Isolate* isolate,                          \
+                                      NativeArguments* arguments);               \
+    void NATIVE_ENTRY_FUNCTION(name)(Dart_NativeArguments args) {                \
+      CHECK_STACK_ALIGNMENT;                                                     \
+      VERIFY_ON_TRANSITION;                                                      \
+      NativeArguments* arguments = reinterpret_cast<NativeArguments*>(args);     \
+      ASSERT(arguments->NativeArgCount() == argument_count);                     \
+      if (FLAG_trace_natives) OS::Print("Calling native: %s\n", ""#name);        \
+      {                                                                          \
+        StackZone zone(arguments->isolate());                                    \
+        HANDLESCOPE(arguments->isolate());                                       \
+        arguments->SetReturnUnsafe(                                              \
+            DN_Helper##name(arguments->isolate(), arguments));                   \
+        if (FLAG_deoptimize_alot) DeoptimizeAll();                               \
+      }                                                                          \
+      VERIFY_ON_TRANSITION;                                                      \
+    }                                                                            \
+    static RawObject* DN_Helper##name(Isolate* isolate,                          \
+                                      NativeArguments* arguments)
+
+うわああああああああああ。。。
+
+before ::
+
+  DEFINE_NATIVE_ENTRY(Float64Array_getIndexed, 2) {
+    GETTER(Float64Array, Double, double);
+  }
+
+after ::
+
+    static RawObject* DN_HelperFloat64Array_getIndexed(Isolate* isolate, NativeArguments* arguments);
+    void BootstrapNatives::DN_Float64Array_getIndexed(Dart_NativeArguments args) {
+      CHECK_STACK_ALIGNMENT;
+      VERIFY_ON_TRANSITION;
+      NativeArguments* arguments = reinterpret_cast<NativeArguments*>(args);
+      ASSERT(arguments->NativeArgCount() == 2);
+      if (FLAG_trace_natives) OS::Print("Calling native: %s\n", "Float64Array_getIndexed");
+      {
+        StackZone zone(arguments->isolate());
+        HANDLESCOPE(arguments->isolate());
+        arguments->SetReturnUnsafe(
+            DN_HelperFloat64Array_getIndex(arguments->isolate(), arguments));
+        if (FLAG_deoptimize_alot) DeoptimizeAll();
+      }
+      VERIFY_ON_TRANSITION;
+    }
+    static RawObject* DN_HelperFloat64Array_getIndexed(Isolate* isolate, NativeArguments* arguments)
+    {
+      //GETTER(Float64Array, Double, double);
+      const Instance& __array_instance__ =
+          Instance::CheckedHandle(isolate, arguments->NativeArgAt(0));
+      if (!__array_instance__.IsFloat64Array()) {
+        GrowableArray<const Object*> __args__;
+        __args__.Add(&__array_instance__);
+        Exceptions::ThrowByType(Exceptions::kArgument, __args__);
+      }
+      const Float64Array array = Float64Array::Cast(__array_instance__);
+      const Instance& __index_instance__ =
+          Instance::CheckedHandle(isolate, arguments->NativeArgAt(1));
+      if (!__index_instance__.IsSmi()) {
+        GrowableArray<const Object*> __args__;
+        __args__.Add(&__index_instance__);
+        Exceptions::ThrowByType(Exceptions::kArgument, __args__);
+      }
+      const Smi& index = Smi::Cast(__index_instance__);
+      RangeCheck(array, index.Value() * sizeof(double), sizeof(double));
+      double result = array.At(index.Value());
+      return Double::New(result);
+    }
+
+やばい、、マクロを展開してみたら、Float64Array型のarrayから、Smi型のindexで、要素を取得していた。。
+
+結局どれが呼ばれるのか。
+===============================================================================
+ポイントになるのは、以下の2メソッドです。。 ::
+
+  static RawObject* DN_HelperFloat64Array_getIndexed(Isolate* isolate, NativeArguments* arguments);
+  void BootstrapNatives::DN_Float64Array_getIndexed(Dart_NativeArguments args) {
+
+BootstrapNatives が気になる。
+
+dart/runtime/vm/bootstrap_natives.h ::
+
+  // List of bootstrap native entry points used in the core dart library.
+  #define BOOTSTRAP_NATIVE_LIST(V)                                               \
+  ...
+    V(Float64Array_new, 1)                                                       \
+    V(Float64Array_newTransferable, 1)                                           \
+    V(Float64Array_getIndexed, 2)                                                \
+    V(Float64Array_setIndexed, 3)                                                \
+  ...
+
+  class BootstrapNatives : public AllStatic {
+    public:
+      static Dart_NativeFunction Lookup(Dart_Handle name, int argument_count);
+
+  #define DECLARE_BOOTSTRAP_NATIVE(name, ignored)                                \
+    static void DN_##name(Dart_NativeArguments args);
+
+    BOOTSTRAP_NATIVE_LIST(DECLARE_BOOTSTRAP_NATIVE)
+
+  #undef DECLARE_BOOTSTRAP_NATIVE
+  };
+
+マクロでstatic DN_XXX(...)という関数を大量に宣言します。
+
+こういうマクロはLLVMやJVMでも登場するので、、コンパイラ業界では一般的なテクニックなのだと思います。
+
+
+dart/runtime/lib/byte_array.dart ::
+
+    double _getIndexed(int index) native "Float64Array_getIndexed";            // native
+
+上記で呼んでいる、Float64Array_getIndexedは、BootstrapNatives::Lookup()により、
+DN_Float64Array_getIndexedが呼ばれるようです。
+
+DN_Float64Array_getIndexedは、DEFINE_NATIVE_ENTRYマクロによって生成されたstatic関数です。
+
+static RawObject* DN_HelperFloat64Array_getIndexed(Isolate* isolate, NativeArguments* arguments)
+を経由して、Float64Array.At(intptr_t index)が最終的に呼ばれます。
+
+Float64Arrayクラスは、dart/runtime/vm/object.hで定義されたクラスであり、やっとscalarlistのFloat64Listが、vm/object.hのFloat64Arrayクラスに結びつきました。。
+
+intrinsic
+===============================================================================
+
+... と思うじゃないですか。
+
+実装としては上記が用意されていますが、Dart VMのIntrinsic機能により、Float64Array_getIndexedが呼ばれると、
+
+runtime/vm/intrinsicに定義された組み込み関数が呼ばれます。 ::
+
+  V(_Float64Array, [], Float64Array_getIndexed, 476393480)
+  V(_Float64Array, []=, Float64Array_setIndexed, 283625119)
+
+runtime/vm/intrinsic_ia32.cc ::
+
+  bool Intrinsifier::Float64Array_getIndexed(Assembler* assembler) {
+    Label fall_through;
+    TestByteArrayIndex(assembler, &fall_through);
+    // After TestByteArrayIndex:
+    // * EAX has the base address of the byte array.
+    // * EBX has the index into the array.
+    // EBX contains the SMI index which is shifted left by 1.
+    // This shift means we only multiply the index by 4 not 8 (sizeof double).
+    // Load double precision float into XMM7.
+    __ movsd(XMM7, FieldAddress(EAX, EBX, TIMES_4,
+                                Float64Array::data_offset()));
+    // Allocate a double instance.
+    const Class& double_class = Class::Handle(
+      Isolate::Current()->object_store()->double_class());
+    AssemblerMacros::TryAllocate(assembler,
+                                 double_class,
+                                 &fall_through,
+                                 Assembler::kNearJump, EAX);
+    // Store XMM7 into double instance.
+    __ movsd(FieldAddress(EAX, Double::value_offset()), XMM7);
+    __ ret();
+    __ Bind(&fall_through);
+    return false;
+  }
+
+movsdでarray+offset*4で、目的の配列位置の値を取得したのち、Double型のインスタンスを生成して、値をboxingして返しています。
+
+でもこれって、Float64Listのアセンブラの出力結果と一致しませんし、Double型へのBoxingは畳み込まれていたはず。。
+
+IR
+===============================================================================
+Intrinsicは、JITコンパイル(非最適化)の際に呼ばれるのですが、JITコンパイル(最適化)の際には、別処理になります。。
+
+中間表現上は、 ::
+
+  v6 <- InstanceCall:17([], v3, v4 IC[1: _Float64Array@0x37975bd9 #600]) env={ v1, v2, v3, v4, v0, a0, a1, a2, a3, a4 }
+
+[]シンボルは、LoadIndexedというInstanceCallの分類になるのですが、
+
+FlowGraphOptimizerで、以下のように最適化されます。 ::
+
+  bool FlowGraphOptimizer::TryReplaceWithLoadIndexed(InstanceCallInstr* call) {
+    const intptr_t class_id = ReceiverClassId(call);
+    switch (class_id) {
+      case kArrayCid:
+      case kImmutableArrayCid:
+      case kGrowableObjectArrayCid:
+      case kFloat32ArrayCid:
+      case kFloat64ArrayCid:
+      case kUint8ArrayCid:
+      case kExternalUint8ArrayCid:
+        // Acceptable load index classes.
+        break;
+      default:
+        return false;
+    }
+    Value* array = NULL;
+    Value* index = NULL;
+    intptr_t array_cid = PrepareIndexedOp(call, class_id, &array, &index);
+    Definition* array_op = new LoadIndexedInstr(array, index, array_cid);
+    call->ReplaceWith(array_op, current_iterator());
+    RemovePushArguments(call);
+    return true;
+  }
+
+InstanceCall([]が、 LoadIndexedInstrに変換されました。
+
+その後、 ::
+
+  Representation LoadIndexedInstr::representation() const {
+    switch (class_id_) {
+      case kArrayCid:
+      case kImmutableArrayCid:
+      case kUint8ArrayCid:
+      case kExternalUint8ArrayCid:
+        return kTagged;
+      case kFloat32ArrayCid :
+      case kFloat64ArrayCid :
+        return kUnboxedDouble;
+      default:
+        UNIMPLEMENTED();
+        return kTagged;
+    }
+  }
+
+  void LoadIndexedInstr::EmitNativeCode(FlowGraphCompiler* compiler) {
+    Register array = locs()->in(0).reg();
+    Location index = locs()->in(1);
+
+    ...
+  
+    FieldAddress element_address = index.IsRegister() ?
+        FlowGraphCompiler::ElementAddressForRegIndex(
+            class_id(), array, index.reg()) :
+        FlowGraphCompiler::ElementAddressForIntIndex(
+            class_id(), array, Smi::Cast(index.constant()).Value());
+  
+    if (representation() == kUnboxedDouble) {
+      XmmRegister result = locs()->out().xmm_reg();
+      if (class_id() == kFloat32ArrayCid) {
+        // Load single precision float.
+        __ movss(result, element_address);
+        // Promote to double.
+        __ cvtss2sd(result, locs()->out().xmm_reg());
+      } else {
+        ASSERT(class_id() == kFloat64ArrayCid);
+        __ movsd(result, element_address);               <-- ここ
+      }
+      return;
+    }
+
+Represent処理において、Float64ArrayのLoadIndexedInstrはreceiverはUnboxedDouble型であることを設定し、
+
+最終的なEmitNativeCodeにおいて、UnboxedDoubleかつFloat64ArrayCidであるため、movsd命令を出力するのでした。。
+
+出力アセンブラ ::
+
+          ;; v6 <- LoadIndexed:36(v3, v4) {PT: dynamic} {PCid: dynamic}
+  0xb304af82    8b54410b               mov edx,[ecx+eax*0x2+0xb]
+
+
+まとめ
+===============================================================================
+(1) マクロこわい
+(2) 非最適化時にはintrinsicが呼ばれる。
+(3) 最適化時には、IRになって特殊化されたEmitterが呼ばれる。

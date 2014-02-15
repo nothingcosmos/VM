@@ -1,0 +1,71 @@
+Code for optimized function 'file:///home/elise/language/dart/work/adven/fibo.dart_::_fibo' {
+0xb3048308    55                     push ebp              //  v0 <- Constant:29(#null)
+0xb3048309    89e5                   mov ebp,esp           //  v1 <- Parameter:30(0) {PT: dynamic} {PCid: dynamic}
+0xb304830b    e800000000             call 0xb3048310
+0xb3048310    83ec04                 sub esp,0x4
+0xb3048313    8b4508                 mov eax,[ebp+0x8]     //  2: B1[target] ParallelMove eax <- S-1
+0xb3048316    3b257c7a6b08           cmp esp,[0x86b7a7c]   //  4:     CheckStackOverflow:2()
+0xb304831c    0f8668000000           jna 0xb304838a
+                                                           //  8:     CheckSmi:5(v1) env={ v1 [eax], v1 [eax], v2 [C] }
+0xb3048322    a801                   test al,0x1           // check SmiTag
+0xb3048324    0f8573000000           jnz 0xb304839d        // goto DeoptimizeStub
+                                                           //  6:     v2 <- Constant:4(#2) {PT: _Smi@0x36924d72} {PCid: _Smi@0x36924d72} [2, 2]
+                                                           // 10:     Branch if RelationalOp:5(<, v1, v2 IC[1: _Smi@0x36924d72, _Smi@0x36924d72 #588]) goto (2, 3)
+0xb304832a    83f804                 cmp eax,0x4           // if n < 2  // (n<<1 < 2<<1)
+0xb304832d    0f8d05000000           jnl 0xb3048338        // goto B3[target]
+0xb3048333    89ec                   mov esp,ebp           // 14:     Return:8(v1)
+0xb3048335    5d                     pop ebp
+0xb3048336    c3                     ret
+0xb3048337    90                     nop                   // 16: B3[target]
+                                                           // 18:     v3 <- Constant:11(#1) {PT: _Smi@0x36924d72} {PCid: _Smi@0x36924d72} [1, 1]
+                                                           // 20:     ParallelMove ecx <- eax
+                                                           // 20:     v4 <- BinarySmiOp:13(-, v1, v3) {PT: _Smi@0x36924d72} {PCid: _Smi@0x36924d72} [1, 1073741822] -o
+0xb3048338    89c1                   mov ecx,eax
+0xb304833a    83e902                 sub ecx,0x2           // n - 1  (n<<1 - 1<<1)
+0xb304833d    51                     push ecx              // 22:     PushArgument:14(v4) {PCid: dynamic}
+0xb304833e    bab16b0fb3             mov edx,0xb30f6bb1    // 24:     v5 <- StaticCall:15(fibo v4) {PT: dynamic} {PCid: dynamic} env={ v1 [S-1], a0 }
+0xb3048343    e8c0803702             call 0xb53c0408  [stub: CallStaticFunction]  // call fibo(n-1)
+0xb3048348    83c404                 add esp,0x4
+0xb304834b    8b4d08                 mov ecx,[ebp+0x8]     // 26:     ParallelMove ecx <- S-1, S+0 <- eax
+0xb304834e    8945f8                 mov [ebp-0x8],eax
+                                                           // 26:     v7 <- BinarySmiOp:21(-, v1, v2) {PT: _Smi@0x36924d72} {PCid: _Smi@0x36924d72} [0, 1073741821] -o
+0xb3048351    83e904                 sub ecx,0x4           // n - 2 (n<<1 - 2<<1)
+0xb3048354    51                     push ecx              // 28:     PushArgument:22(v7) {PCid: dynamic}
+0xb3048355    bab16b0fb3             mov edx,0xb30f6bb1    // 30:     v8 <- StaticCall:23(fibo v7) {PT: dynamic} {PCid: dynamic} env={ v1 [S-1], v5 [S+0], a0 }
+0xb304835a    e8a9803702             call 0xb53c0408  [stub: CallStaticFunction]  // call fibo(n-2)
+0xb304835f    83c404                 add esp,0x4
+0xb3048362    89c1                   mov ecx,eax           // 31:     ParallelMove ecx <- eax, eax <- S+0
+0xb3048364    8b45f8                 mov eax,[ebp-0x8]
+                                                           // 32:     CheckSmi:25(v5) env={ v1 [S-1], v5 [eax], v8 [ecx] }
+0xb3048367    a801                   test al,0x1           // check SmiTag
+0xb3048369    0f8533000000           jnz 0xb30483a2        // goto DeoptimizeStub
+                                                           // 34:     CheckSmi:25(v8) env={ v1 [S-1], v5 [eax], v8 [ecx] }
+0xb304836f    f6c101                 test_b ecx,0x1        // check SmiTag
+0xb3048372    0f852f000000           jnz 0xb30483a7        // goto DeoptimizeStub
+0xb3048378    89c2                   mov edx,eax           // 36:     ParallelMove edx <- eax
+                                                           // 36:     v9 <- BinarySmiOp:25(+, v5, v8) {PT: _Smi@0x36924d72} {PCid: _Smi@0x36924d72} [-inf, +inf] +o env={ v1 [S-1], v5 [eax], v8 [ecx] }
+0xb304837a    03d1                   add edx,ecx           // fibo(n-1) + fibo(n-2)
+0xb304837c    0f802a000000           jo 0xb30483ac
+0xb3048382    89d0                   mov eax,edx           // 37:     ParallelMove eax <- edx
+0xb3048384    89ec                   mov esp,ebp           // 38:     Return:26(v9)
+0xb3048386    5d                     pop ebp
+0xb3048387    c3                     ret
+//Runtime
+0xb3048388    90                     nop
+0xb3048389    cc                     int3
+0xb304838a    50                     push eax
+0xb304838b    b9f0c20a08             mov ecx,0x80ac2f0
+0xb3048390    ba00000000             mov edx,0
+0xb3048395    e88e7c3702             call 0xb53c0028  [stub: CallToRuntime]
+0xb304839a    58                     pop eax
+0xb304839b    eb85                   jmp 0xb3048322
+0xb304839d    e8c6813702             call 0xb53c0568  [stub: Deoptimize]
+0xb30483a2    e8c1813702             call 0xb53c0568  [stub: Deoptimize]
+0xb30483a7    e8bc813702             call 0xb53c0568  [stub: Deoptimize]
+0xb30483ac    e8b7813702             call 0xb53c0568  [stub: Deoptimize]
+0xb30483b1    e972813702             jmp 0xb53c0528  [stub: FixCallersTarget]
+0xb30483b6    e94d823702             jmp 0xb53c0608  [stub: DeoptimizeLazy]
+}
+
+
+

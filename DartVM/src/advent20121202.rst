@@ -1,0 +1,132 @@
+Dart VM Advent Calendar 2012 12/02
+###############################################################################
+
+Dart VMのビルド方法
+===============================================================================
+ビルド方法を紹介します。
+
+Linuxを前提に話を進めます。 私の環境は、Ubuntu12 ia32です。
+
+Dart VMのソースコード取得
+===============================================================================
+ソースコードの取得方法は、以下のURLでも紹介しています。gitでの取得方法は、URLを参照ください。
+
+http://code.google.com/p/dart/wiki/GettingTheSource
+
+Dart VMのソースコードは、gclientを使ってダウンロードします。
+
+Dartの関連すべてをダウンロードしてくるので、結構時間がかかります。
+
+gclientの取得方法::
+
+  $ svn co http://src.chromium.org/svn/trunk/tools/depot_tools
+  $ ls
+    depot_tools
+
+Dartのソースコード取得&更新方法::
+
+  $ export PATH=/home/elise/language/dart/depot_tools:$PATH
+  $ gclient config http://dart.googlecode.com/svn/branches/bleeding_edge/deps/all.deps
+  $ gclient sync
+  $ ls
+    dart
+
+ソースコードの取得先は2ヶ所あります。trunkとbleeding_edgeです。::
+
+  gclient config http://dart.googlecode.com/svn/trunk/deps/all.deps
+  gclient config http://dart.googlecode.com/svn/branches/bleeding_edge/deps/all.deps
+
+trunkは、テストでALLOKになった単位で、bleeding_edgeからmergeして管理しているようです。
+
+bleeding_edgeは毎日更新されるリポジトリで、以下のbuildbotで様子が見れます。
+
+http://build.chromium.org/p/client.dart/console
+
+
+Dart VMのビルド
+===============================================================================
+
+ビルド方法は以下のURLで紹介しています。デフォルトではDebugビルドです。
+
+http://code.google.com/p/dart/wiki/Building
+
+ビルドは、build.pyというスクリプトを使用します。
+
+Dartのパッケージすべてをビルドする場合 ::
+
+  $ ls
+    dart
+  $ cd dart
+  $ ./tools/build.py --mode=release --arch=ia32
+  $ ls out
+    ReleaseIA32
+
+Dart VMのみをビルドする場合 ::
+
+  $ ls
+    dart
+  $ cd dart/runtime
+  $ ../tools/build.py --mode=release --arch=ia32
+  $ ls out
+    ReleaseIA32
+  $ ls out/ReleaseIA32
+    dart
+    dart_no_snapshot
+    gen_snapshot
+    packages
+    process_test
+    run_vm_tests
+
+オプションの指定で切り替えられます。 archの指定は、なくてもいいかも。
+
+デフォルトではDebugビルドなので、Release版の場合、release指定が必須です。
+
+ビルドが終わったら、適当にパスを通しておくことをおすすめします。 ::
+
+  $ export PATH=xxx/dart/runtime/out/ReleaseIA32
+  $ export PATH=xxx/dart/out/ReleaseIA32
+  $ export PATH=xxx/dart/out/ReleaseIA32/dart-sdk/bin
+
+dart-sdk、たぶんよく配布されるDartSDKと呼ばれるものだとおもいます。
+
+その中には、dart_analyzer、dartdoc, pubが入っています。
+
+build.py オプションの一覧 ::
+
+  $ ./build.py  --help
+  Usage: build.py [options]
+
+  Options:
+    -h, --help            show this help message and exit
+    -m [all,debug,release], --mode=[all,debug,release]
+                          Build variants (comma-separated).
+    -v, --verbose         Verbose output.
+    -a [all,ia32,x64,simarm,arm], --arch=[all,ia32,x64,simarm,arm]
+                          Target architectures (comma-separated).
+    --os=[all,host,android]
+                          Target OSs (comma-separated).
+    -j 8                  The number of parallel jobs to run.
+    --devenv=DEVENV       Path containing devenv.com on Windows
+    --executable=EXECUTABLE
+                          Name of the devenv.com/msbuild executable on Windows
+                          (varies for different versions of Visual Studio)
+
+
+その他
+===============================================================================
+ビルド環境は、gypで管理されています。
+
+gypは、Linuxのみなので、他のプラットフォームでのビルドは不明。
+
+Dart自体は、ia32 or x64の、Linux, MacOS, Windowsに対応しています。
+
+また、おもしろいことに、Linux ia32環境から、android向けにクロスビルドすることもできます。
+
+以下のURLでクロスビルド方法を解説しています。
+
+http://code.google.com/p/dart/wiki/Android
+
+また、私がAndroid on DartVMを試したときのことも紹介します。
+
+http://www.slideshare.net/nothingcosmos/yokohamapf25-nothingcosmos
+

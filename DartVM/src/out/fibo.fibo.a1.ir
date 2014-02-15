@@ -1,0 +1,28 @@
+==== file:///home/elise/language/dart/work/adven/fibo.dart_::_fibo
+B0[graph] {
+      v0 <- Constant:29(#null)
+      v1 <- Parameter:30(0)
+}
+B1[target]
+    CheckStackOverflow:2()
+    v2 <- Constant:4(#2)
+    Branch if RelationalOp:5(<, v1, v2 IC[1: _Smi@0x36924d72, _Smi@0x36924d72 #588]) goto (2, 3) env={ v1, v1, v2 }
+B2[target]                                   ^ (<)のreceiverがSmi  ^ arg1がSmi
+    Return:8(v1)
+B3[target]
+    PushArgument:10(v1)
+    v3 <- Constant:11(#1)
+    PushArgument:12(v3)
+    v4 <- InstanceCall:13(-, v1, v3 IC[1: _Smi@0x36924d72, _Smi@0x36924d72 #309]) env={ v1, a0, a1 }
+    PushArgument:14(v4)                   ^ (-)のreceiverがSmi  ^ arg1がSmi
+    v5 <- StaticCall:15(fibo v4) env={ v1, a0 }
+    PushArgument:16(v5)
+    PushArgument:18(v1)
+    v6 <- Constant:19(#2)
+    PushArgument:20(v6)
+    v7 <- InstanceCall:21(-, v1, v6 IC[1: _Smi@0x36924d72, _Smi@0x36924d72 #278]) env={ v1, a0, a1, a2 }
+    PushArgument:22(v7)                   ^ (-)のreceiverがSmi ^ arg1がSmi
+    v8 <- StaticCall:23(fibo v7) env={ v1, a0, a1 }
+    PushArgument:24(v8)
+    v9 <- InstanceCall:25(+, v5, v8 IC[1: _Smi@0x36924d72, _Smi@0x36924d72 #274]) env={ v1, a0, a1 }
+    Return:26(v9)                         ^ (+)のreceiverがSmi ^ arg1がSmi

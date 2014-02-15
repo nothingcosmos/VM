@@ -1,0 +1,14 @@
+==== file:///home/elise/language/dart/work/adven/fibo.dart_::_main
+B0[graph]
+B1[target]
+
+//prolog
+    CheckStackOverflow:2()
+//body
+    t0 <- Constant:3(#40)
+    PushArgument:4(t0)
+    StaticCall:5(fibo t0)
+//epilog
+    t0 <- Constant:6(#null)
+    Return:7(t0)
+

@@ -1,0 +1,155 @@
+Dart VM Advent Calendar 2012 12/07
+###############################################################################
+
+VM Advent Calendar 2012/12/07
+
+Dart VMの概要(3)
+===============================================================================
+
+前回の続き、fiboが2000回以上よばれて最適化JITコンパイルされるところから！！！
+
+Dart VMは、2000回以上実行された関数は、returnする際にOptimizeFunctionを呼び出し、最適化JITコンパイルします。
+
+stub_OptimizeFunction自体は、Dart VMのRuntime API(OptimizeInvokedFunction)を呼び出すためのstubです。
+
+Returnのコード ::
+
+  0xb30482b1    ba11042db3             mov edx,0xb32d0411  'Function 'fibo': static.'
+  0xb30482b6    ff422b                 inc [edx+0x2b]       // fiboのusage_counterをinc
+  0xb30482b9    817a2bd0070000         cmp [edx+0x2b],0x7d0 // 2000と比較してhotcode check
+  0xb30482c0    7c05                   jl 0xb30482c7
+  0xb30482c2    e8e185ffff             call 0xb30408a8  [stub: OptimizeFunction]
+
+stub: OptimizeFuntion::
+
+  Code for stub '_stub_OptimizeFunction': {
+  0xb30408a8    55                     push ebp
+  0xb30408a9    89e5                   mov ebp,esp
+  0xb30408ab    6800000000             push 0
+  0xb30408b0    50                     push eax
+  0xb30408b1    52                     push edx
+  0xb30408b2    b950070b08             mov ecx,0x80b0750
+  0xb30408b7    ba01000000             mov edx,0x1
+  0xb30408bc    e867f73702             call 0xb53c0028  [stub: CallToRuntime]
+  0xb30408c1    5a                     pop edx
+  0xb30408c2    58                     pop eax
+  0xb30408c3    89ec                   mov esp,ebp
+  0xb30408c5    5d                     pop ebp
+  0xb30408c6    c3                     ret
+
+Dart VMは、JITコンパイルしたコードに、Dart VMが提供するRuntime APIを呼び出すStubを埋め込みます。
+
+fiboの中間表現(非最適化時)
+===============================================================================
+.. literalinclude:: out/fibo.fibo.ir
+
+JITコンパイル(非最適化)とJITコンパイル(最適化)の中間表現を比較してみます。
+
+fiboの中間表現(最適化時、型情報のフィードバック後)
+===============================================================================
+.. literalinclude:: out/fibo.fibo.a1.ir
+
+非最適化のfiboのコードを実行した際に、InlineCacheは値がSmi型であると記録しておきます。
+
+最適化JITコンパイル時には、その型情報をフィードバックして最適化を行います。
+
+型情報は、receiverとargsのtripleで記録されます。
+
+仮に、複数の型が混在する場合、
+
+[PT: _Smi, _Smi | _Smi, _Double | _Double, _Smi]のような表現になるはずです。
+
+.. note ::
+
+  一言断っておくと、JITコンパイル(非最適化)の中間表現は非SSA形式です。
+
+  JITコンパイル(最適化)の中間表現はSSA形式になるため、
+  IRのdefinevalueはtからvに変わって、重ならないようにnumberingされます。
+
+
+fiboの中間表現(最適化後)
+===============================================================================
+.. literalinclude:: out/fibo.fibo.a2.ir
+
+最適化後の中間表現です。最適化により様々な変化があります。
+
+(1) 型情報のフィードバック結果から型推論を行う。
+(2) CheckSmi命令の挿入
+(3) 型推論の結果、高速な中間表現に置き換える。
+(4) スタックとレジスタ割付けが行われ、ParallelMove命令に置き換える。
+
+高速な命令に置き換える、では、Smi型でのみ呼び出すInstanceCallをBinarySmiOpに置き換えています。
+
+BinarySmiOpは、receiverとarg1がSmi型である場合に置き換えられる(特殊化)命令になります。
+
+BinarySmiOpは、最終的にアセンブラ数命令に変換されます。
+
+Type Guard
+===============================================================================
+
+Check命令の挿入は、少々特殊なことを行います。 ::
+
+  24:     v5 <- StaticCall:15(fibo v4)
+  30:     v8 <- StaticCall:23(fibo v7)
+  32:     CheckSmi:25(v5) env={ v1 [S-1], v5 [eax], v8 [ecx] }  <-- CheckSmi
+  34:     CheckSmi:25(v8) env={ v1 [S-1], v5 [eax], v8 [ecx] }  <-- CheckSmi
+  36:     ParallelMove edx <- eax
+  36:     v9 <- BinarySmiOp:25(+, v5, v8) {PT: _Smi@0x36924d72} {PCid: _Smi@0x36924d72}
+
+上記は、v5とv8をCheckSmi命令で、Smi型であることを保証した上で(Smi型のGuard)
+BinarySmiOp(+, v5, v8)を行っています。
+
+v5とv8は、StaiticCall(fibo)の返値であり、Smi型である保証がないため、CheckSmiで確認を行っています。
+
+BinarySmiOpはSmi型でしか動作しない命令であるため、
+Smi型以外が入ってきたら異常終了してしまう可能性があります。
+
+仮に、StaticCall(fibo)の返値がdouble型やnull型だった場合、CheckSmiにひっかかってしまいます。
+
+Smi型以外だった場合、CheckSmiは脱最適化(Deoptimization)を行い、この最適化したコードを捨て、
+元のどんな型でも動く非最適化コードに戻します。
+
+型情報のフィードバックを受けたこの最適化JITコンパイルが生成したコードは、
+Smi型が入ってくる限り非常に高速に動作します。
+
+
+fiboのアセンブラ(最適化)
+===============================================================================
+.. literalinclude:: out/fibo.fibo.aasm
+
+非最適化のコードと比較して、高速なコードを生成しています。
+
+特に、InlineCacheのStub呼び出しをしていたところは、すべて高速な命令に置き換えられており、
+BinarySmiOpは、アセンブラ1-2命令になっています。
+
+またBinarySmiOpでは、両者ともSmi型であるため、1bit左シフト済みの値が入っているはずですが、
+
+右シフトで元の値に戻さずに、add sub cmp命令を行っています。
+
+print(ret)など、int値を参照する場合には、右シフトが挿入されるはずです。
+
+Dart VMの初期化、JITコンパイル(非最適化)、JITコンパイル(最適化)、fibo(40)の計算まで、
+大体900msecくらいなので、かなり速いと思います。
+
+corei7(ia32)にて、 ::
+
+  dart$ time dart --time-all fibo.dart
+  102334155
+  ret = 897 ms                                 <-- fibo(40)の処理時間
+  Script Loading :  93 micros.                 <-- Dart VMがソースコードを読み込んだ合計時間
+  Snapshot Creation :  0 micros.               <-- Snapshotの合計時間、最後に行うんだっけかな？
+  Isolate initialization :  11019 micros.      <-- Isolateの初期化時間
+  Function compilation :  11742 micros.        <-- Compileの合計時間 main, fibo以外のcoreも含む。
+  Bootstrap of core classes :  28 micros.      <-- Bootstrap時の、core libのdeserialize処理時間
+  Total runtime for isolate :  909578 micros.  <-- main以降の合計時間
+
+  real  0m0.924s                               <-- VMの起動時間は、25,000 microsくらいかな？
+  user  0m0.920s
+  sys   0m0.000s
+
+まとめ
+===============================================================================
+(1) 最適化JITコンパイルは、型情報のフィードバックをもらう。
+(2) 最適化JITコンパイルは、特殊化された中間表現に置き換える。
+(3) 特殊化された中間表現は、少ないアセンブラ命令に落ちる。
+

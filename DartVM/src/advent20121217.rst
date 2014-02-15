@@ -1,0 +1,447 @@
+Garbage Collection Advent Calendar 2012 12/17
+###############################################################################
+
+Dart VMは世代別GCを採用しており、そのNew領域を管理するScavenger(CopyGC)の説明です。
+
+Heap
+===============================================================================
+
+heapの生成箇所 ::
+
+  Heap::Heap() {
+    ...
+    new_space_ = new Scavenger(this, ...)
+    old_space_ = new PageSpace(this, ...)
+    ...
+  }
+
+  Heap::~Heap() {
+    delete new_space_;
+    delete old_space_;
+  }
+
+Allocateの起点 ::
+
+  // Heap.h
+  Heap::AllocateNew(size) {
+    uward addr = new_space_->TryAllocate(size); <-- Newへ領域確保
+    if (addr != 0) {                            <-- 成功したら、アドレスを返す。
+      return addr;
+    }
+    CollectGarbage(kNew)                        <-- NewのAllocateに失敗したらGC
+    addr = new_space_->TryAllocate(size);
+    if (addr != 0) {
+      return addr;
+    }
+    return AllocateOld(size, HeapPage::kData);  <-- 再度失敗したらOld領域に確保
+  }
+
+Scavenger
+===============================================================================
+
+Scavengerの管理する領域は、VirtualMemoryにより、mmapでmax_capacity分領域確保します。
+
+その後、2分割してfrom領域とto領域とし、CopyGCを行います。
+
+from領域とto領域へのポインタは、CopyGCのたびに入れ替えます。
+
+Scavengerの管理領域 ::
+
+  VirtualMemory* space_;
+  MemoryRegion * from_;
+  MemoryRegion * to_;
+  Heap* heap_;
+
+Scavengerのコンストラクタ、デストラクタ ::
+
+  Scavenger::Scavenger(Heap* heap, intptr_t max_capacity, uword object_alignment) {
+    ...
+    space_ = VirtualMemory::Reserve(max_capacity);
+    ...
+    uword semi_space_size = space_->size() / 2;
+    to_ = new MemoryRegion(space_->address(), semi_space_size);
+    uword middle = space_->start() + semi_space_size;
+    from_ = new MemoryRegion(reinterpret_cast<void*>(middle), semi_space_size);
+    // Setup local fields.
+    top_ = FirstObjectStart();                    //toの先頭をさします。
+    resolved_top_ = top_;
+    end_ = to_->end();
+    ...
+  }
+
+  Scavenger::~Scavenger() {
+    delete to_;
+    delete from_;
+    delete space_;
+  }
+
+Allocate
+===============================================================================
+Allocateする際は、主にtop(to領域の先頭)から順に割り付けていきます。
+
+New領域のTryAllocate() ::
+
+  // runtime/vm/scavenger.h
+  uword TryAllocate(intptr_t size) {
+    ASSERT(Utils::IsAligned(size, kObjectAlignment));
+    uword result = top_;                        // 1. 返すアドレス(予定)
+    intptr_t remaining = end_ - top_;           // 2. 残heapを確認
+    if (remaining < size) {                     // 3. size分確保可能か確認
+      return 0;                                 // Allocateに失敗
+    }
+    ASSERT(to_->Contains(result));
+    ASSERT((result & kObjectAlignmentMask) == object_alignment_);
+
+    top_ += size;                               // Topを更新、size分増加。
+    ASSERT(to_->Contains(top_) || (top_ == to_->end()));
+    return result;
+  }
+
+なるほど、New領域のTopとEndだけ管理して、size分のAllocate要求が来たら、topをsize分減算するだけなんだね！
+
+でもTryAllocateは、Dartでnewした時に呼ばれないんですよ、、
+
+上記コードは、主にDart VMが、内部で使用するObjectをAllocateする際に走るようです。
+
+例えば、Dartでnewした場合、中間表現的にはAllocateObjectになり、以下のようなStubが生成されます。
+
+大まかには、TryAllocate()と同じ処理です。
+
+AllocateObject ::
+
+  Code for allocation stub 'Library:'file:///fiboc.dart' Class: fibo': {
+  0xb2fc8768    8b05f83db908           mov eax,[0x8b93df8] //1. TopAddressの取得
+  0xb2fc876e    8d5810                 lea ebx,[eax+0x10]  //2. size分加算
+  0xb2fc8771    3b1dfc3db908           cmp ebx,[0x8b93dfc] //3. EndAddressと比較
+  0xb2fc8777    732a                   jnc 0xb2fc87a3      //4. goto return 0
+  0xb2fc8779    891df83db908           mov [0x8b93df8],ebx //5. TopAddressを更新。eaxがallocated addr
+
+その後、allocateした領域にクラス情報を書き込みます。::
+
+  0xb2fc877f    ba594625b3             mov edx,0xb3254659  'Library:'file:///fiboc.dart //load class
+  0xb2fc8784    c70000025802           mov [eax],0x2580200      // set tag
+  0xb2fc878a    c7400419003cb5         mov [eax+0x4],0xb53c0019 // set raw_null
+  0xb2fc8791    c7400819003cb5         mov [eax+0x8],0xb53c0019 // set raw_null
+  0xb2fc8798    c7400c19003cb5         mov [eax+0xc],0xb53c0019 // set raw_null
+  0xb2fc879f    83c001                 add eax,0x1              // set HeapObjectTag
+  0xb2fc87a2    c3                     ret
+
+また、TryAllocate()には、以下のような高速なassembler_macroが定義されています。
+
+runtime/vm/assembler_macros_ia32.cc ::
+
+  // Static.
+  void AssemblerMacros::TryAllocate(Assembler* assembler,
+                                    const Class& cls,
+                                    Label* failure,           // 失敗時に飛ぶLabel
+                                    bool near_jump,
+                                    Register instance_reg) {
+    ASSERT(failure != NULL);
+    if (FLAG_inline_alloc) {
+      Heap* heap = Isolate::Current()->heap();
+      const intptr_t instance_size = cls.instance_size();            //必要なsize
+      __ movl(instance_reg, Address::Absolute(heap->TopAddress()));  //1. new_spaceのTopAddress()
+      __ addl(instance_reg, Immediate(instance_size));               //2. addr = TopAddress + size
+      // instance_reg: potential next object start.
+      __ cmpl(instance_reg, Address::Absolute(heap->EndAddress()));  //3. addrがnew_spaceの終端を越えた？
+      __ j(ABOVE_EQUAL, failure, near_jump);                         //4. 越えたら失敗、slow_pathへ
+      // Successfully allocated the object, now update top to point to
+      // next object start and store the class in the class field of object.
+      __ movl(Address::Absolute(heap->TopAddress()), instance_reg);  //5. TopAddressの更新
+      ASSERT(instance_size >= kHeapObjectTag);
+      __ subl(instance_reg, Immediate(instance_size - kHeapObjectTag));//6. Tagのoffsetを取得
+      uword tags = 0;
+      tags = RawObject::SizeTag::update(instance_size, tags);
+      ASSERT(cls.id() != kIllegalCid);
+      tags = RawObject::ClassIdTag::update(cls.id(), tags);
+      __ movl(FieldAddress(instance_reg, Object::tags_offset()), Immediate(tags)); //7. このcls用のTagを設定
+    } else {
+      __ jmp(failure);
+    }
+  }
+
+領域確保するクラスを事前に分かっている組み込み関数のgenerateや組み込み関数用IRのemitで使用し、
+Allocate処理をinlineします。
+
+Code ::
+
+  ;; callee Macros TryAllocate()
+  0xb300a85b    8b0df06d7409           mov ecx,[0x9746df0]          //1. new_space TopAddress()
+  0xb300a861    83c110                 add ecx,0x10                 //2. add instance size
+  0xb300a864    3b0df46d7409           cmp ecx,[0x9746df4]          //3. over EndAddress ?
+  0xb300a86a    0f83d9000000           jnc 0xb300a949               //4. goto failure
+  0xb300a870    890df06d7409           mov [0x9746df0],ecx          //5. update TopAddress
+  0xb300a876    83e90f                 sub ecx,0xf                  //6. get tag offset
+  0xb300a879    c741ff00022a00         mov [ecx-0x1],0x2a0200       //7. set tag
+  ;; callee Macros TryAllocate() Success
+
+Scavengerの主なクラス
+===============================================================================
+
+主なクラス ::
+
+  // New領域の管理
+  class Scavenger(Heap*, intptr_t max_capacity, uword object_alignment)
+  // CopyGCのVisitor。Isolateが、全参照のRootを持つ。
+  class ScavengerVisitor(Isolate*, Scavenger*)
+  // Weak参照の、CopyGCのVisitor、普通に使って入れば出てこないはず。
+  class ScavengerWeakVisitor(Scavenger*)
+
+ScavengerはCopyGCであり、オブジェクトのコピーと参照の張替えにforwardingを使用します。
+
+forwarding ::
+
+  // vm/raw_object.h
+  private:                                               // RawObjectの先頭はtags_になっています。
+    uword tags_;  // Various object tags (bits).         // ForwardToで潰す。
+  static RawObject* FromAddr(uword addr) {
+    // We expect the untagged address here.
+    ASSERT((addr & kSmiTagMask) != kHeapObjectTag);
+    return reinterpret_cast<RawObject*>(addr + kHeapObjectTag);
+  }
+  static uword ToAddr(RawObject* raw_obj) {
+    return reinterpret_cast<uword>(raw_obj->ptr());
+  }
+  RawObject* ptr() const {
+    ASSERT(IsHeapObject());
+    return reinterpret_cast<RawObject*>(
+    reinterpret_cast<uword>(this) - kHeapObjectTag);
+  }
+
+  // vm/scavenger.cc
+  enum {
+    kForwardingMask = 1,
+    kNotForwarded = 0,
+    kForwarded = 1,
+  };
+
+  static inline void ForwardTo(uword orignal, uword target) {
+    // Make sure forwarding can be encoded.
+    ASSERT((target & kForwardingMask) == 0);
+    *reinterpret_cast<uword*>(orignal) = target | kForwarded; // forwarded flagは最下位1bit
+  }
+
+  tatic inline bool IsForwarding(uword header) {
+    uword bits = header & kForwardingMask;
+    ASSERT((bits == kNotForwarded) || (bits == kForwarded));
+    return bits == kForwarded;                                // 最下位bitが立っていたらisforwarding
+  }
+
+  static inline uword ForwardedAddr(uword header) {
+    ASSERT(IsForwarding(header));
+    return header & ~kForwardingMask;                         // 最下位bitを0にして返す。
+  }
+
+オブジェクトの領域確保には、従来のTryAllocate()を使用し、
+オブジェクトをmemmoveを使用してコピーします。
+
+参照の張り替えにForwardedAddr()、参照張り替え済みかのチェックにIsForwarding()、
+参照張り替え後のアドレス取得にForwardedAddr()を使用します。
+
+Scavenger::Scavenge()
+===============================================================================
+Scavenger(CopyGC)のメイン処理です。
+
+大きく分けると、以下の4つです。
+
+- Prologue, Epilogue
+- ScavengerVisitor
+- ScavengerWeakVisitor        // WeakReferenceはここでは割愛
+- ProcessPeerRefenrets
+
+Scavenger::Scavenge() ::
+
+  // Setup the visitor and run a scavenge
+  ScavengerVisitor visitor(isolate, this);
+  // Prologue処理
+  Prologue(isolate, invoke_api_callbacks);
+    // from_領域へのポインタとto_領域へのポインタをswapします。
+    // from領域から、to領域へ生きているオブジェクトを移動するためです。
+    swap from_ <=> to_
+
+  //Isolateのrootから、visit
+  IterateRoots(isolate, &visitor, !invoke_api_callbacks);
+    IterateStoreBuffer(isolate, visitor)                      // ライトバリア(StoreBuffer)向けの処理
+      isolate->store_buffer()->DedupSets()を走査する。        // GC本の世代別GCのライトバリアや、V8 記憶集合更新を参照
+        RawObject** pointer = ...                             // Old領域からNew領域を参照するポインタ集合を特別に処理する。
+        if (IsHeapObject(*pointer)) {
+          visitor->VisitPointer(pointer)                      //ScavengerVisitor
+            ScavengePointer()
+        }
+      isolate->store_buffer_block()を走査する。
+        RawObject** pointer = ...
+        if (IsHeapObject(*pointer)) {
+          visitor->VisitPointer(pointer)                      //ScavengerVisitor
+            ScavengePointer()
+        }
+    isolate->VisitObjectPointers(visitor,...)                 // ここが重要。isolateがもつ各種Rootからポインタを辿る。
+      ... 各種rootからvisitor叩く
+        visitor->VisitPointer(pointer)                        //ScavengerVisitor
+          ScavengePointer()
+  ProcessToSpace(&visitor);
+    // VisitPointers()により、副作用がある。なくなるまで繰り返す。
+    while(delayed_weak_stack->isEmpty() || resolve_top  < top || PromotedStackHasMore()) {
+      resolved_top_ から topまで走査
+        if (! kWeakPropertyCid) {
+          resolved_top_ += raw_obj->VisitPointers(visitor);
+        } else {                                                   // WeakPropertyの詳細な発生条件はわからない
+          resolved_top_ += ProcessWeakProperty(raw_weak, visitor); // DartAPIにWeakPropertyを生成する処理が用意されている。
+        }
+      //set VisitingOldPointersAddr
+      PromotedStackを走査
+        raw_object->visitPointers(visitor);
+    }
+  // ここにWeakRefenrece関連の処理があるが、省略。
+  ...
+  //WeakVisitor
+  // WeakVisitorの処理も省略。IsoalteのApiState()からWeakReferenceを辿る。
+  visitor.Finalize(); //WeakPropertyのクリア
+  //Epilogue
+  ProcessPeerReferents();
+  Epilogue(isolate, invoke_api_callbacks);
+    survivor_end_ = top_;  // CopyGCで生き残ったオブジェクトを移動した後の境界を記録します。
+    // 以後、to領域のSuvivorの後ろから、順にAllocateされていきます。
+
+ScavengerVisitor::ScavengePointer()
+===============================================================================
+
+様々なvisitorによってオブジェクトをたどりますが、
+各オブジェクトのポインタを処理するのは、ScavengePointer()になります。
+
+ScavengePointerの対象は、すべてRawObjectを継承したクラスになります。
+
+code ::
+
+  ScavengePointer(RawObject** p) {
+    // Smi or old heap object
+    if (!row_obj->IsHeapObject() || raw_obj->IsOldObject()) {
+      return;
+    }
+    uword raw_addr = RawObject::ToAddr(raw_obj);
+    // from領域に存在しない場合、return
+    // containsは、アドレスの大小比較のみ。
+    if (!scavenger_->from_->contains(raw_addr)) {
+      return ;
+    }
+    uword header = *reinterpret_cast<uword*>(raw_addr); //raw_objの先頭フィールドget
+    uword new_addr = 0;
+    if (IsForwarding(header)) {
+      new_addr = ForwardedAddr(header);
+    } else {
+      //WeakReference関連の処理。
+      if (raw_obj->IsWatched()) {
+        ...
+      }
+      // 前回のCopyGCでsurviveしたオブジェクトでない場合、普通にコピー
+      if (survivor_end <= raw_addr) {
+        new_addr = scavenger_->TryAllocate(size);       // 普通に領域確保。後で参照張替え
+      } else {
+        // 前回のCopyGCでsurviveしたものは、Oldへpromotion
+        // Copyの生存回数は1回のみ。
+        new_addr = heap_->TryAllocate(size, Heap::kOld, growth_policy_);
+        if (new_addr != 0) { //Oldへpromoteできたら、PromotedStackに挿入
+          scavenger_->PushToPromotedStack(new_addr);
+          bytes_promoted_ += size;
+        } else if (!had_promotion_failure_) { // promotionに初失敗 ...
+          had_promotion_failure_ = true;
+          // Old領域を拡張して再度Oldへのpromotionにトライ
+          growth_policy = PageSpace::kForceGrowth;
+          new_addr = heap_->TryAllocate(size, Heap::kOld, growth_policy_);
+          if (new_addr != 0) {
+            scavenger_->PushToPromotedStack(new_addr);
+            bytes_promoted_ += size;
+          } else {
+             // Oldに空きがなければ、New領域に確保してみる。
+             new_addr = scavenger_->TryAllocate(size);
+          }
+        } else { // kForceGrowthにしたのに、promotionに再度失敗。Old領域に空きがない。
+          // Oldに空きがなければ、New領域に確保してみる。
+          new_addr = scavenger_->TryAllocate(size);
+        }
+      }
+      memmove(new_addr, raw_addr, size);   //raw data copy
+      ForwardTo(raw_addr, new_addr);       //forwarding addressを記録。参照張替え。
+    }
+    RawObject* new_obj = RawObject::FromAddr(new_addr);
+    *p = new_obj;
+    // privateな変数を直参照しているけど、Old領域を走査しているかどうかの状態
+    // trueになるのは、IterateStoreBuffers()と、ProcessToSpace()のPromotedStackHasMore()を走査する間のみ。
+    if (visiting_old_pointers_) {
+      UpdateStoreBuffer(p, new_obj); //Old領域からNew領域を参照するポインタ集合の更新
+    }
+  }
+
+IsolateのVisitObjectPointers()
+===============================================================================
+
+GC対象を見つけるためには、すべての参照を管理するRootからPointerを辿る必要があります。
+
+Dart VMの場合、そのRootを管理するのはIsolateです。
+
+GCはIsolateごとに分割されており、RootもIsolateごとに管理します。
+
+ベースクラスObjectPointerVisitorを継承するScavengerVisitorとMarkingVisitorは、
+Isolate::VisitObjectPointers()を使ってIsolateの管理するRootから同様の辿り方をします。
+
+Isolate::VisitObjectPointers()::
+
+    // Visit objects in the object store.
+    object_store()->VisitObjectPointers(visitor);
+
+    // Visit objects in the class table.
+    class_table()->VisitObjectPointers(visitor);
+
+    // Visit objects in per isolate stubs.
+    StubCode::VisitObjectPointers(visitor);
+
+    // Visit objects in zones.
+    current_zone()->VisitObjectPointers(visitor);
+
+    // Iterate over all the stack frames and visit objects on the stack.
+    StackFrameIterator frames_iterator(validate_frames);
+    StackFrame* frame = frames_iterator.NextFrame();
+    while (frame != NULL) {
+      frame->VisitObjectPointers(visitor);
+      frame = frames_iterator.NextFrame();
+    }
+
+    // Visit the dart api state for all local and persistent handles.
+    if (api_state() != NULL) {
+      api_state()->VisitObjectPointers(visitor, visit_prologue_weak_handles);
+    }
+
+    // Visit the top context which is stored in the isolate.
+    visitor->VisitPointer(reinterpret_cast<RawObject**>(&top_context_));
+
+    // Visit the currently active IC data array.
+    visitor->VisitPointer(reinterpret_cast<RawObject**>(&ic_data_array_));
+
+    // Visit objects in the debugger.
+    debugger()->VisitObjectPointers(visitor);
+  }
+
+
+省略したこと
+===============================================================================
+1. 世代別GCであるため、Old領域からNew領域へ参照するポインタのことも考慮する必要があります。
+   上記を管理するクラスとして、StoreBufferがありますが、省略。
+   詳細は、 `GC本`_ の世代別GC、ライトバリア、V8の記憶集合更新を参照。
+2. IsolateのRootから辿るVisitorに関してざっくり省略、まだちゃんと読んでない。詳細編があるといいね。。
+3. Dart VMには、WeakPropertyというのがあって、複雑なのでGCのコード説明から省略。
+   WeakPropertyは、主にDart APIのPersistentHandle用の処理なのですが、
+   特殊なAPI(Mirrorなどのreflection)を使用しない限りは出てこないはず。
+4. Dart VMには、PeerReferenceという特殊な参照があって、GCで特別に処理されているが、用途がよくわからないので省略。
+5. Dart VMには、external_dataという特殊なデータの持ち方もサポートしていますが、どちらかというとVisitorとMemoryレイアウトに関する話なので省略。
+   external_dataは、ざっくり以下URLで紹介されている、実データをHeap外で管理する構造です。
+   `GCAdventCalendar 2012/12/09 <http://d.hatena.ne.jp/authorNari/20121209/1355045348>`_
+
+まとめ
+===============================================================================
+(1) この解説だけだと、表面上、素直なCopyGCに見える。
+(2) Allocateは、topをsize分加算するだけ。
+(3) 前回Surviveしたものはpromotion
+(4) Tag部分にForwardedAddrを埋め込む。
+(5) いっぱい省略した。
+
+.. _GC本 : http://www.amazon.co.jp/exec/obidos/ASIN/4798025623/nothingcosm05-22/ref=nosim
+

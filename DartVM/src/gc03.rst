@@ -1,0 +1,351 @@
+Garbage Collection 03
+###############################################################################
+
+GC Isolate Root
+===============================================================================
+
+vm/runtime/scavenger.cc ::
+
+  void Scavenger::IterateRoots(Isolate* isolate,
+                               ScavengerVisitor* visitor,
+                               bool visit_prologue_weak_persistent_handles) {
+    IterateStoreBuffers(isolate, visitor);
+    isolate->VisitObjectPointers(visitor,
+                                 visit_prologue_weak_persistent_handles,
+                                 StackFrameIterator::kDontValidateFrames);
+  }
+
+StoreBufferは、世代別GCのOld領域からNew領域への参照を管理するライトバリア向けの処理になります。
+
+isolateクラスのVisitObjectPointers()を観ていきます。
+
+Isolate::VisitObjectPointers()::
+
+    // Visit objects in the object store.
+    object_store()->VisitObjectPointers(visitor);
+
+    // Visit objects in the class table.
+    class_table()->VisitObjectPointers(visitor);
+
+    // Visit objects in the megamorphic cache.
+    megamorphic_cache_table()->VisitObjectPointers(visitor);
+
+    // Visit objects in per isolate stubs.
+    StubCode::VisitObjectPointers(visitor);
+
+    // Visit objects in zones.
+    current_zone()->VisitObjectPointers(visitor);
+
+    // Iterate over all the stack frames and visit objects on the stack.
+    StackFrameIterator frames_iterator(validate_frames);
+    StackFrame* frame = frames_iterator.NextFrame();
+    while (frame != NULL) {
+      frame->VisitObjectPointers(visitor);
+      frame = frames_iterator.NextFrame();
+    }
+
+    // Visit the dart api state for all local and persistent handles.
+    if (api_state() != NULL) {
+      api_state()->VisitObjectPointers(visitor, visit_prologue_weak_handles);
+    }
+
+    // Visit the top context which is stored in the isolate.
+    visitor->VisitPointer(reinterpret_cast<RawObject**>(&top_context_));
+
+    // Visit the currently active IC data array.
+    visitor->VisitPointer(reinterpret_cast<RawObject**>(&ic_data_array_));
+
+    // Visit objects in the debugger.
+    debugger()->VisitObjectPointers(visitor);
+  }
+
+走査対象は以下のようです。
+
+- ObjectStore::VisitObjectPointers()
+- ClassTable::VisitObjectPointers()
+- MegamorphicCacheTable
+- StubCode::VisitObjectPointers()
+- Zone::VisitObjectPointers()
+- StackFrame::VisitObjectPointers()
+- ApiState::VisitObjectPointers()
+- RawContext::VisitObjectPointers() , top_context_
+- RrawArray::VisitObjectPointers() , ic_data_array_
+- Debugger::VisitObjectPointers();
+
+
+object_store
+===============================================================================
+順にObjectStoreから
+
+このクラスは、
+
+VisitObjectPointers ::
+
+    // Visit objects in the object store.
+    object_store()->VisitObjectPointers(visitor); //Isolate
+      visitor->VisitPointers(from(), to());       //ObjectStore
+
+from()からto()までのアドレスをスキャンします。
+
+class ObjectStore ::
+
+  RawObject** from() { return reinterpret_cast<RawObject**>(&object_class_); }
+  RawClass* object_class_;    //from address
+  RawType* object_type_;
+  RawType* null_type_;
+  ...
+  RawInstance* out_of_memory_;
+  RawArray* keyword_symbols_; //to address
+  RawFunction* receive_port_create_function_;
+  RawFunction* lookup_receive_port_function_;
+  RawFunction* handle_message_function_;
+  RawObject** to() { return reinterpret_cast<RawObject**>(&keyword_symbols_); }
+
+fromからtoまでのアドレスを捜査する。
+
+Visitorを使うオブジェクトには、すべてfromからtoで、スキャン対象のObjectPointerを定義しています。
+
+runtime/vm/visitor.h ::
+
+  class ObjectPointerVisitor {
+    ...
+
+    // Range of pointers to visit 'first' <= pointer <= 'last'.
+    virtual void VisitPointers(RawObject** first, RawObject** last) = 0;
+
+ScavengerVisitor
+===============================================================================
+
+  void VisitPointers(RawObject** first, RawObject** last) {
+    for (RawObject** current = first; current <= last; current++) {
+      ScavengePointer(current);
+    }
+  }
+
+
+ClassTable Visitor
+===============================================================================
+runtime/vm/isolate.cc ::
+
+  // Visit objects in the class table.
+  class_table()->VisitObjectPointers(visitor);
+
+runtime/vm/class_table.cc ::
+
+  void ClassTable::VisitObjectPointers(ObjectPointerVisitor* visitor) {
+    ASSERT(visitor != NULL);
+    visitor->VisitPointers(reinterpret_cast<RawObject**>(&table_[0]), top_);
+  }
+
+ScavengerVisitorのVisitPointersを同様に叩きます。
+
+MegamorphicCacheTable visitor
+===============================================================================
+
+runtime/vm/isolate.cc ::
+
+    // Visit objects in the megamorphic cache.
+    megamorphic_cache_table()->VisitObjectPointers(visitor);
+
+runtime/vm/megamorphic_cache_table.cc ::
+
+  void MegamorphicCacheTable::VisitObjectPointers(ObjectPointerVisitor* v) {
+    ASSERT(v != NULL);
+    v->VisitPointer(reinterpret_cast<RawObject**>(&miss_handler_));
+    for (intptr_t i = 0; i < length_; ++i) {
+      v->VisitPointer(reinterpret_cast<RawObject**>(&table_[i].name));
+      v->VisitPointer(reinterpret_cast<RawObject**>(&table_[i].descriptor));
+      v->VisitPointer(reinterpret_cast<RawObject**>(&table_[i].cache));
+    }
+  }
+
+VisitPointerは、RawObject**を引数にしてわたしています。 
+
+runtiem/vm/visitor.h ::
+
+  void VisitPointer(RawObject** p) { VisitPointers(p , p); }
+
+
+StubCode
+===============================================================================
+
+runtime/vm/isolate.cc ::
+
+  // Visit objects in per isolate stubs.
+  StubCode::VisitObjectPointers(visitor);
+
+
+runtime/vm/stub_code.cc ::
+
+  // Visit all object pointers.
+  void StubEntry::VisitObjectPointers(ObjectPointerVisitor* visitor) {
+    ASSERT(visitor != NULL);
+    visitor->VisitPointer(reinterpret_cast<RawObject**>(&code_));
+  }
+
+
+Zone
+===============================================================================
+runtime/vm/zone.cc ::
+
+    // Visit objects in zones.
+    current_zone()->VisitObjectPointers(visitor);
+
+
+
+ObjectStoreのクラス
+===============================================================================
+
+RawObject
+===============================================================================
+
+VisitObjectPointers()は、ルーとからObjectPointerをたどってGC向けの処理を行います。
+
+重要なメソッドは、以下のRawObjectクラスの、VisitPointers()になります。
+
+runtime/vm/raw_object.cc ::
+
+  intptr_t RawObject::VisitPointers(ObjectPointerVisitor* visitor) {
+    intptr_t size = 0;
+    NoHandleScope no_handles(visitor->isolate());
+  
+    // Only reasonable to be called on heap objects.
+    ASSERT(IsHeapObject());
+  
+    // Read the necessary data out of the class before visting the class itself.
+    intptr_t class_id = GetClassId();
+  
+    if (class_id < kNumPredefinedCids) {
+      switch (class_id) {
+  #define RAW_VISITPOINTERS(clazz)                                               \
+        case clazz::kClassId: {                                                  \
+          Raw##clazz* raw_obj = reinterpret_cast<Raw##clazz*>(this);             \
+          size = Raw##clazz::Visit##clazz##Pointers(raw_obj, visitor);           \
+          break;                                                                 \
+        }
+        CLASS_LIST_NO_OBJECT(RAW_VISITPOINTERS)
+  #undef RAW_VISITPOINTERS
+        case kFreeListElement: {
+          ASSERT(FreeBit::decode(ptr()->tags_));
+          uword addr = RawObject::ToAddr(const_cast<RawObject*>(this));
+          FreeListElement* element = reinterpret_cast<FreeListElement*>(addr);
+          size = element->Size();
+          break;
+        }
+        default:
+          OS::Print("Class Id: %"Pd"\n", class_id);
+          UNREACHABLE();
+          break;
+      }
+    } else {
+      RawInstance* raw_obj = reinterpret_cast<RawInstance*>(this);
+      size = RawInstance::VisitInstancePointers(raw_obj, visitor);
+    }
+  
+    ASSERT(size != 0);
+    ASSERT(size == Size());
+    return size;
+  }
+
+
+
+RawType
+===============================================================================
+サンプルとして、ソースコードをそのまま張り付けています。
+
+Visitorでは、fromからtoまでのアドレス領域をチェックします。
+
+runtime/vm/raw_object.h ::
+
+  class RawType : public RawAbstractType {
+   private:
+    RAW_HEAP_OBJECT_IMPLEMENTATION(Type);
+
+    RawObject** from() {
+      return reinterpret_cast<RawObject**>(&ptr()->type_class_);
+    }
+    RawObject* type_class_;  // Either resolved class or unresolved class.
+    RawAbstractTypeArguments* arguments_;
+    RawError* malformed_error_;  // Error object if type is malformed.
+    RawObject** to() {
+      return reinterpret_cast<RawObject**>(&ptr()->malformed_error_);
+    }
+    intptr_t token_pos_;
+    int8_t type_state_;
+  };
+
+  #define VISITOR_SUPPORT(object)                                                \
+    static intptr_t Visit##object##Pointers(Raw##object* raw_obj,                \
+                                            ObjectPointerVisitor* visitor);
+
+
+上記例では、type_class_, arguments_, malformed_errorの3フィールドのObjectPointerをチェックします。
+
+VISITOR_SUPPOTマクロにより、以下に示すVisitClassPointers()を実装する。
+
+runtime/vm/raw_object.cc ::
+
+  intptr_t RawClass::VisitClassPointers(RawClass* raw_obj,
+                                        ObjectPointerVisitor* visitor) {
+    visitor->VisitPointers(raw_obj->from(), raw_obj->to());
+    return Class::InstanceSize();
+  }
+
+
+
+RawClass
+===============================================================================
+
+RawBool
+===============================================================================
+
+RawArray
+===============================================================================
+
+RawLibrary
+===============================================================================
+
+RawGrowableObjectArray
+===============================================================================
+
+RawError
+===============================================================================
+
+RawString
+===============================================================================
+
+RawContext
+===============================================================================
+
+RawInstance
+===============================================================================
+
+RawArray
+===============================================================================
+
+
+RawObject
+===============================================================================
+
+from to
+===============================================================================
+
+
+
+===============================================================================
+説明の順番
+===============================================================================
+プラントしてまとめるべきだろう。
+特に変わらないところと、変わるところを分けてかければベストかもしれない。
+図にするのは後回しでよいかもしれない。まずはどういう仕組みなのか。
+
+まとめ
+===============================================================================
+
+
+verbose-gcの読み方
+
+得に理由のところ
+
+
+

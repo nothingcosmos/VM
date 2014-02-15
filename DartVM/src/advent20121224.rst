@@ -1,0 +1,521 @@
+Dart VM Advent Calendar 2012 12/24
+###############################################################################
+
+Dart VMに関して、今回が最終日です。
+
+Dart VMのアーキテクチャ
+===============================================================================
+
+前日のDartのアーキテクチャから。
+
+.. blockdiag::
+
+  blockdiag {
+    orientation = portrait
+
+    L1 [label="Dartのプログラム" color=lightpink];
+    L2 [label="SDK CoreのInterface(Dart)" color=lightpink];
+    L3 [label="CoreのInternal(Dart)" color=lightpink];
+    L4 [label="Dart VMの公開I/F" color=lightgreen];
+    L5 [label="C++のオブジェクト" color=lightblue];
+    L6 [label="C++のデータ定義" color=lightblue];
+
+    L1 -- L2 -- L3 -- L4 -- L5 -- L6
+
+    L1Src [label="ユーザプログラム" color=lightpink];
+    L2Core [label="Core APIのInterface" color=lightpink];
+    L3Core [label="Core APIのImpl" color=lightpink];
+    L7Code2 [label="JITCompiledCode" color=lightgray];
+    L5JIT [label="Dart VM JIT Compiler" color=lightblue];
+    L4Api [label="Dart API" color=lightgreen];
+    L4Bootstrap [label="BootstrapNatives" color=lightgreen];
+    L4Stubs [label="Stubs" color=lightgreen];
+    L5Object [label="dart::Object" color=lightblue];
+    L5Runtime [label="Runtime" color=lightblue];
+    L7Code [label="JITCompiledCode" color=lightgray];
+
+    L1Src -> L2Core -> L3Core -> L4Api -> L5JIT -> L7Code
+    L1Src -> L7Code2[style = dashed];
+    L7Code2 -> L4Bootstrap -> L5Object
+    L7Code2 -> L4Stubs -> L5Runtime
+    L5Runtime -> L5Object [folded]
+
+    group {
+      color=white
+      L2Core;
+      L7Code2;
+    }
+
+    group {
+      label="runtime/vm Dart VMの処理"
+      L5JIT;
+      L5Runtime;
+      L5Object;
+    }
+
+    group {
+      label="runtime/vm Bootstrap & Stubs"
+      L4Api;
+      L4Stubs;
+      L4Bootstrap;
+    }
+  }
+
+Bootstrapから下をもうちょっと掘り下げてみようと思います。
+
+runtime/include
+===============================================================================
+
+実は、いままで触れてこなかったのですが、dart/runtime/includeというディレクトリ中に、
+
+dart_api.hというのが定義されており、これによりDart VM本体を制御することができます。
+
+dartはruntime/bin/main.ccがmain関数になるのですが、runtime/binからruntime/include/dart_api.hをincludeしています。
+
+Dart VM本体を制御するためのDart APIが、以下のDart APIになります。
+
+runtime/include/dart_api.hは、Dartのnative extension機能でも必須です。
+
+runtime/bin/main.cc ::
+
+  #include "include/dart_api.h"
+  #include "include/dart_debugger_api.h"
+
+  #include "bin/builtin.h"
+  #include "bin/dartutils.h"
+  #include "bin/dbg_connection.h"
+  #include "bin/directory.h"
+  #include "bin/eventhandler.h"
+  #include "bin/extensions.h"
+  #include "bin/file.h"
+  #include "bin/isolate_data.h"
+  #include "bin/log.h"
+  #include "bin/platform.h"
+  #include "bin/process.h"
+  #include "platform/globals.h"
+
+  int main(int argc, char** argv) {
+    ...
+    if (ParseArguments(argc,
+                       argv,
+                       &vm_options,
+                       &executable_name,
+                       &script_name,
+                       &dart_options,
+                       &print_flags_seen) < 0) {
+    }
+  
+    // Initialize the Dart VM.
+    if (!Dart_Initialize(CreateIsolateAndSetup, NULL, NULL, ShutdownIsolate,
+                         OpenFile, WriteFile, CloseFile)) {
+      ...
+    }
+  
+    // Call CreateIsolateAndSetup which creates an isolate and loads up
+    // the specified application script.
+    char* error = NULL;
+    char* isolate_name = BuildIsolateName(script_name, "main");
+    if (!CreateIsolateAndSetupHelper(script_name,
+                                     "main",
+                                     new IsolateData(),
+                                     &error)) {
+    }
+  
+    Dart_Isolate isolate = Dart_CurrentIsolate();
+    Dart_Handle result;
+  
+    Dart_EnterScope();
+  
+    // Lookup and invoke the top level main function.
+    result = Dart_Invoke(library, DartUtils::NewString("main"), 0, NULL);
+    // Keep handling messages until the last active receive port is closed.
+    result = Dart_RunLoop();
+  
+    Dart_ExitScope();
+    // Shutdown the isolate.
+    Dart_ShutdownIsolate();
+    // Terminate process exit-code handler.
+    Process::TerminateExitCodeHandler();
+    return Process::GlobalExitCode();
+  }
+
+Dart_xxxというのが、Dart APIになります。
+
+dartはmain処理で、scriptを読み込んで、Isolateを初期化したのち、Dart_Invoke()により実行を始めます。
+
+
+.. blockdiag::
+
+  blockdiag {
+    orientation = portrait
+
+    L3 [label="Dart" color=lightpink];
+    L4 [label="Dart VMの公開I/F" color=lightgreen];
+    L5 [label="C++のオブジェクト" color=lightblue];
+    L6 [label="C++のデータ定義" color=lightblue];
+    //L7 [label="JITコンパイルされたCode" color=lightgray];
+
+    //L3 -- L4 -- L5 -- L6 -- L7
+    L3 -- L4 -- L5 -- L6
+
+    Main [label="dart(main)" color=lightblue];
+    L3Src [label="Dartのソースコード" color=lightpink];
+    L7Code2 [label="JITCompiledCode" color=lightgray];
+    L5JIT [label="Dart VM JIT Compiler" color=lightblue];
+    L4Api [label="Dart API" color=lightgreen];
+    L4Bootstrap [label="BootstrapNatives" color=lightgreen];
+    L4Stubs [label="Stubs" color=lightgreen];
+    L5Object [label="dart::Object" color=lightblue];
+    L5Runtime [label="Runtime" color=lightblue];
+    L7Code [label="JITCompiledCode" color=lightgray];
+
+    Main -> L3Src [folded]
+    Main -> L4Api -> L5JIT -> L7Code
+    L7Code2 -> L4Bootstrap -> L5Object
+    L7Code2 -> L4Stubs -> L5Runtime
+    L5Runtime -> L5Object [folded]
+
+    group {
+      color=white
+      Main;
+      L3Src;
+      L7Code2;
+    }
+
+    group {
+      label="runtime/vm Dart VMの処理"
+      L5JIT;
+      L5Runtime;
+      L5Object;
+    }
+
+    group {
+      label="runtime/vm Bootstrap & Stubs"
+      L4Api;
+      L4Stubs;
+      L4Bootstrap;
+    }
+  }
+
+前の図と違う点は、Dart API経由でJITコンパイルされている点です。JITコンパイルされたコードは、左上です。
+
+JITコンパイルされたコードがDart VMと連携したり、次の呼び出し先をcallする際には、
+StubsかBootstrapNativesのメソッドを呼び出します。
+
+JITコンパイラされるコード
+===============================================================================
+
+Dart VMがJITコンパイルするコードには2種類あって、
+
+1つ目は、Dartのソースコード。今まで説明してきたDartのソースコードをJITコンパイルしたものです。
+
+2つ目は、Stubコード。これはIsolateを初期化した際に、JITコンパイルしたコードが呼び出すStubを、
+事前にコード生成しておきます。
+
+JITコンパイルしたコードは、BootstrapNativesの処理か、Stub経由でDart VMが提供するRuntime処理を呼び出すことができます。
+
+今までStubと一括りにしていた処理は、generateされたStubと、Stub経由で呼ばれるRuntimeEntryに分かれます。
+
+Stubが存在する理由は、JITコンパイルしたコードから直接Runtimeを呼び出すのではなく、
+以下の処理を生成コード側で行うための間接的な構造にしているためです。
+
+1. 処理の共通化。JITコンパイルされたユーザプログラムのアセンブラがシンプルになり、サイズが減る。
+2. Runtime処理ごとに異なる、CallingConvの差異の吸収。Stubを呼び出す際のCallingConvは共通ですが、呼び出すRuntimeごとに異なります。
+3. Isolate共通のRuntime処理と、各Isolate固有のRuntime処理を呼び分けたい。共通化してテーブル引きしたくない。
+
+
+.. blockdiag::
+
+  blockdiag {
+    orientation = portrait
+
+    L0 [label="JITコンパイルされたコード" color=lightgray];
+    L4 [label="Dart VMの公開I/F" color=lightgreen];
+    L5 [label="Dart VMのRuntime" color=lightblue];
+    L6 [label="Dart VMのオブジェクト" color=lightblue];
+    L7 [label="Dart VMのデータ定義" color=lightblue];
+
+    L0 -- L4 -- L5 -- L6 -- L7
+
+    L0Code [label="JITCompiledCode" color=lightgray];
+    L0Stub [label="GeneratedStubs" color=lightgray];
+    L1Src [label="Dartのソースコード" color=lightpink];
+
+    L4Api [label="Dart API" color=lightgreen];
+    L4Bootstrap [label="BootstrapNatives" color=lightgreen];
+    L4RuntimeEntry [label="RuntimeEntry" color=lightgreen];
+
+    L5JIT [label="JITCompiler" color=lightblue];
+    L5Runtime [label="Runtime" color=lightblue];
+    L5GC [label="GC" color=lightblue];
+
+    L0Code2 [label="JITCompiledCode" color=lightgray];
+    L6Object [label="dart::Object" color=lightblue];
+    L7RawObject [label="dart::RawObject" color=lightblue];
+
+
+    L1Src -> L0Code -> L0Stub [folded]
+    L1Src -> L4Api -> L5JIT -> L0Code2
+    L0Code -> L4Bootstrap
+    L0Stub -> L4RuntimeEntry -> L5Runtime -> L6Object -> L7RawObject
+
+    //L4RuntimeEntry -> L6Object
+    L6Object -> L7RawObject
+    L5GC -> L7RawObject
+
+    group {
+      color=white
+      L1Src;
+      L0Code;
+      L0Stub;
+    }
+
+    group {
+      label="runtime/vm API & Bootstrap & RuntimeEntry"
+      L4Api;
+      L4Bootstrap;
+      L4RuntimeEntry;
+    }
+
+    group {
+      label="runtime/vm Dart VMの処理"
+      L5JIT;
+      L5Runtime;
+      L5GC;
+    }
+
+ }
+
+stubは以下が定義されており、すべてgenerate処理がアーキテクチャごとに定義されています。
+
+また、VM起動時に1度だけgenerateされるものと、isolateごとにgenerateするものに分けられています。
+
+runtime/vm/stub_code.h ::
+
+  // List of stubs created in the VM isolate, these stubs are shared by different
+  // isolates running in this dart process.
+  #define VM_STUB_CODE_LIST(V)                                                   \
+    V(CallToRuntime)                                                             \
+    V(PrintStopMessage)                                                          \
+    V(CallNativeCFunction)                                                       \
+    V(AllocateArray)                                                             \
+    V(CallNoSuchMethodFunction)                                                  \
+    V(InstanceFunctionLookup)                                                    \
+    V(CallStaticFunction)                                                        \
+    V(CallClosureFunction)                                                       \
+    V(FixCallersTarget)                                                          \
+    V(Deoptimize)                                                                \
+    V(DeoptimizeLazy)                                                            \
+    V(BreakpointStatic)                                                          \
+    V(BreakpointReturn)                                                          \
+    V(Subtype1TestCache)                                                         \
+    V(Subtype2TestCache)                                                         \
+    V(Subtype3TestCache)                                                         \
+    V(GetStackPointer)                                                           \
+    V(JumpToExceptionHandler)                                                    \
+    V(JumpToErrorHandler)                                                        \
+    V(IdenticalWithNumberCheck)                                                  \
+  
+  // Is it permitted for the stubs above to refer to Object::null(), which is
+  // allocated in the VM isolate and shared across all isolates.
+  // However, in cases where a simple GC-safe placeholder is needed on the stack,
+  // using Smi 0 instead of Object::null() is slightly more efficient, since a Smi
+  // does not require relocation.
+  
+  // List of stubs created per isolate, these stubs could potentially contain
+  // embedded objects and hence cannot be shared across isolates.
+  #define STUB_CODE_LIST(V)                                                      \
+    V(InvokeDartCode)                                                            \
+    V(AllocateContext)                                                           \
+    V(UpdateStoreBuffer)                                                         \
+    V(OneArgCheckInlineCache)                                                    \
+    V(TwoArgsCheckInlineCache)                                                   \
+    V(ThreeArgsCheckInlineCache)                                                 \
+    V(OneArgOptimizedCheckInlineCache)                                           \
+    V(TwoArgsOptimizedCheckInlineCache)                                          \
+    V(ThreeArgsOptimizedCheckInlineCache)                                        \
+    V(ClosureCallInlineCache)                                                    \
+    V(MegamorphicCall)                                                           \
+    V(OptimizeFunction)                                                          \
+    V(BreakpointDynamic)                                                         \
+    V(EqualityWithNullArg)                                                       \
+
+Isolateごとに分割するStubをぱっとみると、
+
+1. InvokeとOptimizeFunction。Dart srcとJITコンパイル済みCodeの管理がIsolateごとに分かれているためです。
+2. InlineCache系。これもJITコンパイルしたCodeに依存するためです。
+3. リソース管理系、AllocateContextやUpdateStoreBufferは、HeapやGC向けの処理になります。これらもIsolateごとに分かれています。
+
+まとめ
+===============================================================================
+Dart VMの構成要素は、以下に分けられると考えています。
+
+各要素は相互に連携しています。
+
+1. Dartの構造管理
+2. ObjectPool
+3. JITコンパイラ
+4. Runtimeサービス
+5. リソース管理
+6. 外部連携インターフェース
+
+.. blockdiag::
+
+  blockdiag {
+    orientation = portrait
+
+    L0 [label="外部連携インターフェース" color=lightgreen];
+    L1 [label="Dartの構造管理" color=lightblue];
+    L2 [label="JITコンパイラ" color=lightblue];
+    L3 [label="Runtimeサービス" color=lightblue];
+    L4 [label="ObjectPool" color=lightblue];
+    L5 [label="リソース管理" color=lightblue];
+
+    L0 -- L1 -- L4
+    L0 -- L2 -- L5
+    L0 -- L3 -- L5
+    L4 -- L5 [folded]
+
+    group {
+      color=white
+      L1;
+      L2;
+      L3;
+    }
+
+    group {
+      color=white
+      L4;
+      L5;
+    }
+  }
+
+Dartの構造管理
+===============================================================================
+Dart のオブジェクト間の構造管理に関してはまったく触れてきませんでした。
+
+DartはIsolateというTopLevelのContextが存在し、
+Isolateごとにソースコードの管理、JITコンパイルされたコードの管理、Heapの管理、GCの管理を行います。
+
+Isolateの配下には、Class or Function -> ContextScopeなどを定義しています。
+
+他にも、Closure、LocalScopeなどがあり、function_level, loop_level, context_levelなどに応じて、
+ネストして定義しています。
+
+ObjectPool
+===============================================================================
+あまりObjectPoolという呼び方はしていませんが、18日目に紹介した、ObjectとRawObject群のことです。
+
+- :doc:`advent20121218`
+
+ObjectとRawObjectを継承したクラスは多数存在します。
+
+Objectクラス系が、主に操作を定義しています。
+そのため、ObjectクラスのメソッドはBootstrapNativesによって外部に公開されます。
+
+Objectクラスは、必ず対応するRawObjectの参照Raw()をフィールドに持ちます。
+
+RawObjectは実データを定義するクラスです。
+そのため、GCの対象はすべてRawObjectになります。
+
+JITコンパイラ
+===============================================================================
+Dart VMのJITコンパイラは、以下のパーツに分解されます。
+
+1. Parser(DartのソースコードをASTに変換する処理)
+2. AST(各種ASTNodeの定義)
+3. IRBuilder(ASTからIRに変換する処理)
+4. IR(各種IRの定義)
+5. Optimizer(IRを最適化する処理)
+6. Compiler(IRからアセンブラに変換する処理)
+7. Assembler(アセンブラからObjectCodeに変換する処理)
+
+非最適化JITコンパイルの場合、Optimizerの処理をskipします。
+
+Dart VMは、Dartのソースコード、AST、ObjectCode(非最適化、最適化の2つ)を管理対象とします。
+
+- :doc:`advent20121212` JITコンパイルの概要
+- :doc:`advent20121214` IR
+- :doc:`advent20121219` Optimizer(DominatorBasedCSE)
+- :doc:`advent20121220` Optimizer(LICM)
+
+Runtimeサービス
+===============================================================================
+Dart VMは、JITコンパイルされたコードから呼ばれるRuntimeサービスを定義しています。
+
+1. JITコンパイル
+2. リソース管理(Allocate/StoreBuffer更新)
+3. Call
+4. InlineCaching & TypeFeedback
+5. Deoptimization
+
+Allocateは、newした場合の空きメモリの確保です。
+StoreBuffer更新は、Old領域からNew領域への参照を更新し、世代別GCで処理します。
+
+Callは、メソッド呼び出しの解決です。Dart VMの場合、呼び出し先のアドレスを直接Callするのではなく、
+CallSiteごとにTableを引くことが多いです。
+
+InlineCachingは、非最適化コンパイル時の動的なメソッド呼び出し処理です。
+非最適化時の場合、呼び出し候補は多数存在するため、
+InlineCachingというテクニックを使用して呼び出し候補を高速に探し、解決します。
+
+TypeFeedbackは、InlineCacheの際に解決したメソッド呼び出し先を記録する処理です。
+
+CallSiteごとのメソッド呼び出し先情報を最適化JITコンパイル時に渡します。
+
+Deoptimizationは、最適化JITコンパイルされたコードの実行途中から、非最適化JITコンパイルされたコードに戻す処理です。
+
+Deoptimizationがあるため、最適化JITコンパイル時に、投機的に型を決めたり、投機的にinline展開を行うことができます。
+
+- :doc:`advent20121211` JITコンパイル
+- :doc:`advent20121215` StoreBuffer
+
+リソース管理
+===============================================================================
+Dart VMのリソース管理は、ざっくり以下です。
+
+1. Heap
+2. Handle(RAII)
+3. GC
+4. Zone
+
+DartのObjectPoolはすべてHeapで管理します。HeapはNew領域とOld領域にわけ、世代別GCによって回収します。
+
+Allocateしたメモリを管理するHandle(RAII)を多数提供しています。Handleの参照は、GCにも関係します。
+
+Zoneは、Heap以外に確保する一時的なメモリ確保、管理です。
+ObjectPool以外に使うことが多く、処理が終了したら一斉に解法します。
+
+ScopeにHandleされたスタックのようなものかもしれません。
+
+- :doc:`advent20121210` HeapとGCの概要に関して
+- :doc:`advent20121217` GCのScavenger
+
+外部連携インターフェース
+===============================================================================
+Dart VMの外部連携インターフェースを定義しています。
+
+1. DartAPI
+2. BootstrapNatives
+3. Stubs
+4. NativeEntry
+5. CodeObserver
+6. Debugger
+
+DartAPIは、runtime/includeに定義されたDart VMを制御するためのAPIです。
+
+BootstrapNativesは、主にDartのCore APIがnative extensionで呼び出すシンボルです。
+
+Stubsは、JITコンパイルしたコード用に用意された補助です。
+
+NativeEntryは、上記BootstrapNativesとStub経由で呼ばれるシンボルと処理を定義します。
+
+CodeObserverとDebuggerは、Dart VMと連携する外部プログラム用に用意した処理になります。
+
+プロセスレベルで連携したり、何らかのファイルを経由して連携します。
+
+- :doc:`advent20121209` CodeObserver(perf連携)
+- :doc:`advent20121216` NativeEntry
+- :doc:`advent20121223` BootstrapNatives
+- :doc:`advent20121224` Stub
+
