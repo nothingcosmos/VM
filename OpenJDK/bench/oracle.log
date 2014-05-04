@@ -1,0 +1,249 @@
+java version "1.7.0_51"
+Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)
+     46    1    b        java.lang.String::hashCode (55 bytes)
+seed: 1700461846
+size: 10000000 bytes
+loop: 100 times
+     62    2 %  b        java.util.Random::nextBytes @ 25 (56 bytes)
+                            @ 11   java.util.Random::nextInt (7 bytes)   inline (hot)
+                            @ 20   java.lang.Math::min (11 bytes)   (intrinsic)
+     72    3    b        java.util.concurrent.atomic.AtomicLong::get (5 bytes)
+     73    4    b        java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)
+                            @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+     73    5     n       sun.misc.Unsafe::compareAndSwapLong (native)   
+     73    6    b        java.util.Random::next (47 bytes)
+                            @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                            @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                              @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+                            @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                            @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                              @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+    127    7    b        java.nio.HeapByteBuffer::_get (7 bytes)
+    131    8    b        java.nio.HeapByteBuffer::ix (7 bytes)
+    135    9    b        java.nio.Buffer::checkIndex (22 bytes)
+    136   10    b        java.nio.HeapByteBuffer::get (15 bytes)
+                            @ 7   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                            @ 10   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+    137   11    b        java.nio.Buffer::checkIndex (24 bytes)
+    140   12 %  b        DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
+                            @ 23   java.nio.HeapByteBuffer::get (15 bytes)   inline (hot)
+                             \-> TypeProfile (11264/11264 counts) = java/nio/HeapByteBuffer
+                              @ 7   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 10   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                            @ 40   java.nio.HeapByteBuffer::getInt (19 bytes)   inline (hot)
+                             \-> TypeProfile (5724/5724 counts) = java/nio/HeapByteBuffer
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 15   java.nio.Bits::getInt (18 bytes)   inline (hot)
+                                @ 6   java.nio.Bits::getIntB (30 bytes)   inline (hot)
+                                  @ 2   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 9   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 16   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 23   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 26   java.nio.Bits::makeInt (29 bytes)   inline (hot)
+                                @ 14   java.nio.Bits::getIntL (30 bytes)   never executed
+                            @ 58   java.nio.HeapByteBuffer::getLong (20 bytes)   inline (hot)
+                             \-> TypeProfile (5540/5540 counts) = java/nio/HeapByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 16   java.nio.Bits::getLong (18 bytes)   inline (hot)
+                                @ 6   java.nio.Bits::getLongB (60 bytes)   inline (hot)
+                                  @ 2   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 9   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 16   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 23   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 30   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 37   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 45   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 53   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 56   java.nio.Bits::makeLong (77 bytes)   inline (hot)
+                                @ 14   java.nio.Bits::getLongL (60 bytes)   too big
+    170   13    b        DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+                            @ 4   java.nio.Buffer::limit (5 bytes)   accessor
+                            @ 23   java.nio.HeapByteBuffer::get (15 bytes)   inline (hot)
+                             \-> TypeProfile (11264/11264 counts) = java/nio/HeapByteBuffer
+                              @ 7   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 10   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                            @ 40   java.nio.HeapByteBuffer::getInt (19 bytes)   inline (hot)
+                             \-> TypeProfile (5724/5724 counts) = java/nio/HeapByteBuffer
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 15   java.nio.Bits::getInt (18 bytes)   inline (hot)
+                                @ 6   java.nio.Bits::getIntB (30 bytes)   inline (hot)
+                                  @ 2   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 9   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 16   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 23   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 26   java.nio.Bits::makeInt (29 bytes)   inline (hot)
+                                @ 14   java.nio.Bits::getIntL (30 bytes)   never executed
+                            @ 58   java.nio.HeapByteBuffer::getLong (20 bytes)   inline (hot)
+                             \-> TypeProfile (5540/5540 counts) = java/nio/HeapByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 16   java.nio.Bits::getLong (18 bytes)   inline (hot)
+                                @ 6   java.nio.Bits::getLongB (60 bytes)   inline (hot)
+                                  @ 2   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 9   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 16   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 23   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 30   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 37   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 45   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 53   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 56   java.nio.Bits::makeLong (77 bytes)   inline (hot)
+                                @ 14   java.nio.Bits::getLongL (60 bytes)   too big
+-- ByteBuffer heap
+  10.96 msec/loop
+  870.14 MB/s
+   2373   12 %           DeserBenchmark$ByteBufferRunnable::run @ -2 (74 bytes)   made not entrant
+   2374   14 %  b        DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
+                            @ 23   java.nio.HeapByteBuffer::get (15 bytes)   inline (hot)
+                            @ 23   java.nio.DirectByteBuffer::get (16 bytes)   inline (hot)
+                             \-> TypeProfile (4096/16384 counts) = java/nio/DirectByteBuffer
+                             \-> TypeProfile (12288/16384 counts) = java/nio/HeapByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                              @ 7   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 10   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                            @ 40   java.nio.HeapByteBuffer::getInt (19 bytes)   inline (hot)
+                            @ 40   java.nio.DirectByteBuffer::getInt (15 bytes)   inline (hot)
+                             \-> TypeProfile (2034/8273 counts) = java/nio/DirectByteBuffer
+                             \-> TypeProfile (6239/8273 counts) = java/nio/HeapByteBuffer
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   too big
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 15   java.nio.Bits::getInt (18 bytes)   inline (hot)
+                                @ 6   java.nio.Bits::getIntB (30 bytes)   inline (hot)
+                                  @ 2   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 9   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 16   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 23   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 26   java.nio.Bits::makeInt (29 bytes)   inline (hot)
+                                @ 14   java.nio.Bits::getIntL (30 bytes)   never executed
+                            @ 58   java.nio.HeapByteBuffer::getLong (20 bytes)   inline (hot)
+                            @ 58   java.nio.DirectByteBuffer::getLong (16 bytes)   inline (hot)
+                             \-> TypeProfile (2062/8111 counts) = java/nio/DirectByteBuffer
+                             \-> TypeProfile (6049/8111 counts) = java/nio/HeapByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   too big
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 16   java.nio.Bits::getLong (18 bytes)   inline (hot)
+                                @ 6   java.nio.Bits::getLongB (60 bytes)   inline (hot)
+                                  @ 2   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 9   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 16   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 23   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 30   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 37   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 45   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 53   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 56   java.nio.Bits::makeLong (77 bytes)   inline (hot)
+                                @ 14   java.nio.Bits::getLongL (60 bytes)   too big
+   2397   15    b        java.nio.DirectByteBuffer::getInt (39 bytes)
+                            @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                            @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                              @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+   2397   16     n       sun.misc.Unsafe::getInt (native)   
+   2398   17    b        java.nio.Bits::swap (5 bytes)
+                            @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+   2398   18    b        java.lang.Integer::reverseBytes (26 bytes)
+   2399   19     n       sun.misc.Unsafe::getLong (native)   
+   2399   20    b        java.nio.DirectByteBuffer::getLong (39 bytes)
+                            @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+                            @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                              @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+   2400   21    b        java.nio.Bits::swap (5 bytes)
+                            @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+   2400   22    b        java.lang.Long::reverseBytes (46 bytes)
+   2418   13             DeserBenchmark$ByteBufferRunnable::run (74 bytes)   made not entrant
+   2419   23    b        java.nio.DirectByteBuffer::ix (10 bytes)
+   2446   24     n       sun.misc.Unsafe::getByte (native)   
+   2446   25    b        java.nio.DirectByteBuffer::get (16 bytes)
+                            @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                            @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                            @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+   2512   26    b        DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+                            @ 4   java.nio.Buffer::limit (5 bytes)   accessor
+                            @ 23   java.nio.DirectByteBuffer::get (16 bytes)   inline (hot)
+                            @ 23   java.nio.HeapByteBuffer::get (15 bytes)   inline (hot)
+                             \-> TypeProfile (12288/26624 counts) = java/nio/HeapByteBuffer
+                             \-> TypeProfile (14336/26624 counts) = java/nio/DirectByteBuffer
+                              @ 7   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 10   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                            @ 40   java.nio.DirectByteBuffer::getInt (15 bytes)   inline (hot)
+                            @ 40   java.nio.HeapByteBuffer::getInt (19 bytes)   inline (hot)
+                             \-> TypeProfile (6239/13397 counts) = java/nio/HeapByteBuffer
+                             \-> TypeProfile (7158/13397 counts) = java/nio/DirectByteBuffer
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 15   java.nio.Bits::getInt (18 bytes)   inline (hot)
+                                @ 6   java.nio.Bits::getIntB (30 bytes)   inline (hot)
+                                  @ 2   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 9   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 16   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 23   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 26   java.nio.Bits::makeInt (29 bytes)   inline (hot)
+                                @ 14   java.nio.Bits::getIntL (30 bytes)   never executed
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   inline (hot)
+                                @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                                @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                  @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+                            @ 58   java.nio.DirectByteBuffer::getLong (16 bytes)   inline (hot)
+                            @ 58   java.nio.HeapByteBuffer::getLong (20 bytes)   inline (hot)
+                             \-> TypeProfile (6049/13227 counts) = java/nio/HeapByteBuffer
+                             \-> TypeProfile (7178/13227 counts) = java/nio/DirectByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.HeapByteBuffer::ix (7 bytes)   inline (hot)
+                              @ 16   java.nio.Bits::getLong (18 bytes)   inline (hot)
+                                @ 6   java.nio.Bits::getLongB (60 bytes)   inline (hot)
+                                  @ 2   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 9   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 16   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 23   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 30   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 37   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 45   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 53   java.nio.HeapByteBuffer::_get (7 bytes)   inline (hot)
+                                  @ 56   java.nio.Bits::makeLong (77 bytes)   inline (hot)
+                                @ 14   java.nio.Bits::getLongL (60 bytes)   too big
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   inline (hot)
+                                @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+                                @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                  @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+-- ByteBuffer direct
+  8.97 msec/loop
+  1063.18 MB/s
+   4254   27    b        java.lang.String::indexOf (70 bytes)
+                            @ 66   java.lang.String::indexOfSupplementary (71 bytes)   too big
+   4261   28     n       sun.misc.Unsafe::getByte (native)   
+   4262   29 %  b        DeserBenchmark$UnsafeRunnable::run @ 10 (98 bytes)
+                            @ 29   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                            @ 55   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                            @ 82   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+   4273   30    b        DeserBenchmark$UnsafeRunnable::run (98 bytes)
+                            @ 29   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                            @ 55   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                            @ 82   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+-- Unsafe heap
+  6.17 msec/loop
+  1545.66 MB/s
+-- Unsafe direct
+  6.16 msec/loop
+  1548.17 MB/s
+writing data to random.data file
+java version "1.7.0_51"
+Java(TM) SE Runtime Environment (build 1.7.0_51-b13)
+Java HotSpot(TM) 64-Bit Server VM (build 24.51-b03, mixed mode)

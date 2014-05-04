@@ -147,3 +147,11 @@ http://mydevelopedworld.wordpress.com/2012/12/20/erlang-memory-models-private-he
 ===============================================================================
 
 heapとGCの関係
+
+http://jlouisramblings.blogspot.jp/2013/01/how-erlang-does-scheduling.html
+===============================================================================
+
+erlangはプリエンプティブマルチタスク
+
+golangは
+cooperative

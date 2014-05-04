@@ -1,23 +1,1298 @@
 リビジョンログを読んで興味深かったもの抜粋
 
-2014/01
-
-dart 1.1 release
-
-service関連をdart/runtime/vm/serviceに移動し、
-そこにservice関連のdartのコードを置いている。
-runtime/bin/vmservice/clientにclient用のコードを新規追加。
-
-serviceに以下を追加
-code
-profile
-allocationprofile
-coverage
-
+2014/02
 
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+
+
+
+
+
+
+
+r33736 | fschneider@google.com | 2014-03-17 19:31:33 +0900 (月, 17  3月 2014) | 14 lines
+Alternative fix for .call invocation of closures.
+
+This also covers "closurization" of the .call method.
+This relies on the fact that f.call === f if f is a closure.
+This means that adding a simple getter to _FunctionImpl that
+returns this is enough. No need for a separate dispatch.
+
+This CL reverts the previous fix for issue 12602 (modulo the additional tests).
+BUG=dartbug.com/17473, dartbug.com/12602
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//200193002
+
+
+r33704 | iposva@google.com | 2014-03-15 02:30:05 +0900 (土, 15  3月 2014) | 5 lines
+- Do not rely on time to seed the default PRNG.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//200483003
+
+
+r33702 | johnmccutchan@google.com | 2014-03-15 02:03:38 +0900 (土, 15  3月 2014) | 6 lines
+Show object pool on code page
+R=turnidge@google.com
+Review URL: https://codereview.chromium.org//197853005
+
+
+r33701 | johnmccutchan@google.com | 2014-03-15 01:16:21 +0900 (土, 15  3月 2014) | 6 lines
+Basic tag infrastructure
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//195733009
+
+
+r33666 | johnmccutchan@google.com | 2014-03-14 06:18:27 +0900 (金, 14  3月 2014) | 5 lines
+Fix C++11 compilation error
+Review URL: https://codereview.chromium.org//197763011
+
+
+r33665 | johnmccutchan@google.com | 2014-03-14 06:00:44 +0900 (金, 14  3月 2014) | 5 lines
+Create a shadow table to track CodeRegions of reused code address space.
+R=asiva@google.com, turnidge@google.com
+Review URL: https://codereview.chromium.org//197803004
+
+
+r33662 | iposva@google.com | 2014-03-14 05:38:24 +0900 (金, 14  3月 2014) | 6 lines
+- Implement a PauseTimerScope so that we can properly exclude
+  times when a TimerScope is active.
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//196413011
+
+
+r33657 | asiva@google.com | 2014-03-14 03:10:06 +0900 (金, 14  3月 2014) | 5 lines
+Remove Dart_AddGcPrologueCallback and Dart_RemoveGcPrologueCallback from the Dart API.
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//198103004
+
+
+r33651 | fschneider@google.com | 2014-03-13 23:28:07 +0900 (木, 13  3月 2014) | 13 lines
+VM: Fix infinite recursion in optimization of of string interpolation.
+
+Don't compile-time fold string interpolation when compiling
+the interpolation function itself. This would otherwise case
+an infiniti recursion.
+
+Also check he result of calling the interpolation function before casting to a String.
+BUG=dartbug.com/17461
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//196353012
+
+
+r33641 | fschneider@google.com | 2014-03-13 18:07:40 +0900 (木, 13  3月 2014) | 8 lines
+Generate smaller unoptimized code for certain expressions.
+Code for compound assignments, pre- and post-fix ++, --, cascades in
+effect contexts is now smaller by 1 push/pop instructions.
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//197283004
+
+
+r33640 | fschneider@google.com | 2014-03-13 17:41:14 +0900 (木, 13  3月 2014) | 8 lines
+Add aliasing disambiguation for typed data lists.
+Typed list factories are now also recognized as allocation instructions.
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//194773002
+
+
+r33625 | koda@google.com | 2014-03-13 08:12:48 +0900 (木, 13  3月 2014) | 10 lines
+Correct capacity reporting for new space; show external size in Observatory.
+
+Before, the reported capacity included *both* semi-spaces, which seems wrong.
+
+Also exclude external size from capacity, to be consistent with old space and
+the comment on Heap::CapacityInWords.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//196603009
+
+
+r33624 | srdjan@google.com | 2014-03-13 08:10:23 +0900 (木, 13  3月 2014) | 5 lines
+Recognize _TypedListBase._cid native.
+Use Lists.copy instead of native _setRange if list is small. Restore performance of HttpServeStrings.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//197873005
+
+
+r33622 | asiva@google.com | 2014-03-13 07:39:15 +0900 (木, 13  3月 2014) | 6 lines
+Remove the ability to allow multiple gc prologue and gc epilogue callbacks
+to be registered at any given time. Dartium seems to use only one.
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//197963002
+
+
+
+r33616 | srdjan@google.com | 2014-03-13 06:28:50 +0900 (木, 13  3月 2014) | 5 lines
+Stop/restart compilation timer when running Dart code from within the parser.
+SMall perfromance fix.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//197923003
+
+
+r33612 | turnidge@google.com | 2014-03-13 06:08:19 +0900 (木, 13  3月 2014) | 5 lines
+I forgot to filter a machine-dependent field in the service unit test.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//197763004
+
+
+r33609 | koda@google.com | 2014-03-13 05:54:27 +0900 (木, 13  3月 2014) | 5 lines
+Fix arm/mac builds: cast enum.
+TBR=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//195943003
+
+
+r33608 | koda@google.com | 2014-03-13 05:46:09 +0900 (木, 13  3月 2014) | 9 lines
+Heap maps: add VM service message.
+A heap map is serialized as arrays of sizes + class ids:
+{"type":"HeapMap","id":"heapmap","pages":[[15,2,10,3,...,100,0],...,]}
+
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//197663006
+
+
+r33592 | turnidge@google.com | 2014-03-13 02:18:14 +0900 (木, 13  3月 2014) | 9 lines
+Improve the instance-view page in observatory.
+Add an eval-box element which is used to evaluate expressions.
+Support expression evaluation for instances in the vm service.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//194623006
+
+
+
+r33576 | fschneider@google.com | 2014-03-12 23:02:27 +0900 (水, 12  3月 2014) | 15 lines
+Fix invocation of closures via .call in the VM.
+
+Calling closures via .call does now work in the VM - it was working in
+dart2js already.  Calling .call on a closure is implemented to go through
+a dispatcher method. These dispatcher methods are automatically created and
+cached in the same way as NoSuchMethod- or field-invocation dispatchers.
+
+This CL does not change the way regular closure invocation works in
+the VM. It is therefore performance-neutral for normal closure calls.
+
+BUG=dartbug.com/12602
+TEST=language/call_test
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//188703004
+
+
+r33570 | iposva@google.com | 2014-03-12 18:16:21 +0900 (水, 12  3月 2014) | 5 lines
+- Fix formatting of generated sources.
+R=hausner@google.com
+Review URL: https://codereview.chromium.org//196653004
+
+
+r33566 | asiva@google.com | 2014-03-12 09:14:03 +0900 (水, 12  3月 2014) | 7 lines
+Use CHECK_ISOLATE instead of DARTSCOPE for Dart_GetNativeInstanceField after
+fixing Instance::IsValidFieldOffset to use a reusable handle instead of
+creating a new one (this was the issue last time which caused assertions).
+
+R=rmacnak@google.com
+Review URL: https://codereview.chromium.org//196243002
+
+
+r33559 | asiva@google.com | 2014-03-12 07:07:22 +0900 (水, 12  3月 2014) | 5 lines
+Return error object from Dart_Allocate when an error occurs.
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//193513002
+
+
+r33555 | johnmccutchan@google.com | 2014-03-12 06:14:24 +0900 (水, 12  3月 2014) | 5 lines
+Add compile timestamp to Code
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//194813008
+
+
+
+r33552 | koda@google.com | 2014-03-12 05:27:44 +0900 (水, 12  3月 2014) | 10 lines
+Fix external size accounting for prologue weak persistent handles.
+Include prologue weak persistent handles (PWPH) when checking for promotion.
+
+Since pointers have already been updated for PWPHs, use a bit in the handle to
+remember whether the referent used to be in new space.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//193473002
+
+
+r33548 | johnmccutchan@google.com | 2014-03-12 04:27:52 +0900 (水, 12  3月 2014) | 6 lines
+Code view tweaks and crasher fix
+R=turnidge@google.com
+Review URL: https://codereview.chromium.org//194503006
+
+
+r33545 | johnmccutchan@google.com | 2014-03-12 03:38:03 +0900 (水, 12  3月 2014) | 5 lines
+Fix service test breakage
+Review URL: https://codereview.chromium.org//195613002
+
+
+r33544 | zra@google.com | 2014-03-12 03:28:30 +0900 (水, 12  3月 2014) | 9 lines
+Disables TargetCPUFeatures::Cleanup().
+
+Until the thread pool shutdown race is solved, we can't
+do this cleanup because there may still be a thread querying CPU features.
+
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//195563002
+
+
+r33542 | johnmccutchan@google.com | 2014-03-12 02:59:45 +0900 (水, 12  3月 2014) | 5 lines
+Unboxed Float64x2 fields and some misc fixes
+R=srdjan@google.com, zra@google.com
+Review URL: https://codereview.chromium.org//195333002
+
+
+
+r33541 | johnmccutchan@google.com | 2014-03-12 02:48:09 +0900 (水, 12  3月 2014) | 10 lines
+Switch Observatory to use only ServiceObject instances.
+
+All fetched objects are upgraded to a ServiceObject.
+ServiceObjectCache.
+Uniform updating / refreshing.
+Fix UTF8 string escaping in TextBuffer
+(should fix invalid character bug https://code.google.com/p/dart/issues/detail?id=16590)
+R=turnidge@google.com
+Review URL: https://codereview.chromium.org//192443004
+
+
+r33540 | srdjan@google.com | 2014-03-12 01:56:55 +0900 (水, 12  3月 2014) | 5 lines
+Fix performance of setRange by avoiding going to Lists.copy which can become polymorphic.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//189443004
+
+
+r33531 | koda@google.com | 2014-03-11 23:43:27 +0900 (火, 11  3月 2014) | 5 lines
+Include external size when printing heap stats.
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//193563002
+
+
+r33527 | koda@google.com | 2014-03-11 23:11:25 +0900 (火, 11  3月 2014) | 8 lines
+Replace RoundMicrosecondsTo* with non-rounding MicrosecondsTo*.
+(The existing function didn't actually round, it just incorrectly added 0.5.)
+
+BUG=dart:17348
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//191743002
+
+
+r33523 | fschneider@google.com | 2014-03-11 18:39:23 +0900 (火, 11  3月 2014) | 23 lines
+Add alias identity information to array allocations.
+Loads/stores with non-escaping arrays can be disambiguated from loads/store
+with unknown identity.
+
+This enables better load elimination for non-escaping arrays.
+For example in the following code:
+
+test() {
+  var a = new List(1);
+  var b = new List(1);
+  a[0] = 42;
+  b[0] = 43;
+  return a[0] + b[0];
+}
+
+we can now eliminate both loads a[0] and b[0] where before all stores to [0] were
+considered to interfere with each other..
+
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//189543013
+
+
+r33506 | johnmccutchan@google.com | 2014-03-11 07:34:56 +0900 (火, 11  3月 2014) | 6 lines
+Inline Float64x2 methods that take 1 argument
+R=srdjan@google.com, zra@google.com
+Review URL: https://codereview.chromium.org//193183003
+
+
+r33504 | johnmccutchan@google.com | 2014-03-11 05:58:04 +0900 (火, 11  3月 2014) | 6 lines
+Inline Float64x2 methods with zero arguments
+R=srdjan@google.com, zra@google.com
+Review URL: https://codereview.chromium.org//192573008
+
+
+
+r33478 | fschneider@google.com | 2014-03-10 18:59:49 +0900 (月, 10  3月 2014) | 13 lines
+Add alias disambiguation for VM fields.
+
+This is needed for generalizing allocation sinking to
+work with instance fields and plain field offsets.
+
+MaterializeObject now works with  a set of Field/Smi objects
+Right now this should be performance-neutral, but it already
+simplifies the code be removing the fake fields previously used
+for type arguments, closure function/context.
+
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//189513003
+
+
+
+
+r33471 | asiva@google.com | 2014-03-08 09:26:29 +0900 (土, 08  3月 2014) | 6 lines
+1. Restructure reusable handles to make individual Scopes for each handle type
+2. Add a convenience macro to make use of reusable handle scopes easier
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//187503002
+
+
+r33469 | koda@google.com | 2014-03-08 08:59:29 +0900 (土, 08  3月 2014) | 5 lines
+Missing file from r33467.
+TBR=asiva@google.com
+Review URL: https://codereview.chromium.org//191683002
+
+
+r33467 | koda@google.com | 2014-03-08 08:53:32 +0900 (土, 08  3月 2014) | 9 lines
+Track external allocated memory for weak persistent handles.
+The amount of external allocation is tracked per generation and informs GC policy.
+BUG=dart:11471
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//187113003
+
+
+r33463 | johnmccutchan@google.com | 2014-03-08 08:16:54 +0900 (土, 08  3月 2014) | 5 lines
+Fix mips intermediate language
+Review URL: https://codereview.chromium.org//191553006
+
+
+r33459 | johnmccutchan@google.com | 2014-03-08 06:43:49 +0900 (土, 08  3月 2014) | 6 lines
+Inline of Float64x2 operations round 1
+R=srdjan@google.com, zra@google.com
+Review URL: https://codereview.chromium.org//183923026
+shufpdを追加
+Float64x2を向けのIRを追加
+
+
+r33444 | zra@google.com | 2014-03-08 04:37:58 +0900 (土, 08  3月 2014) | 3 lines
+Changes that somehow got lost from my last commit.
+Review URL: https://codereview.chromium.org//189833006
+
+
+r33443 | iposva@google.com | 2014-03-08 04:37:04 +0900 (土, 08  3月 2014) | 6 lines
+- Ensure that all names in local scopes are symbols.
+- Avoid calling Equals when comparing names in local scopes.
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//190753004
+
+
+r33442 | zra@google.com | 2014-03-08 04:17:36 +0900 (土, 08  3月 2014) | 13 lines
+Adds support for ARMv6.
+
+When we detect ARMv6, instead of using movw and
+movt, this change loads each individual byte.
+Although this is not the best way to achieve this,
+a modification to store large constants in the
+object pool would be more invasive. Further,
+this change will be easier to back-out once
+ARMv6 is obsolete.
+
+R=regis@google.com
+Review URL: https://codereview.chromium.org//183803024
+
+
+r33441 | rmacnak@google.com | 2014-03-08 04:00:20 +0900 (土, 08  3月 2014) | 7 lines
+Reapply "Access to imports in the VM's runtime mirrors. Extend test coverage of the source mirrors."
+Regenerate snapshot test due to change in the size of Namespace.
+Relate the types source mirror libraries dependencies to the runtime library dependencies.
+BUG=http://dartbug.com/10360
+Review URL: https://codereview.chromium.org//189843003
+
+
+r33435 | hausner@google.com | 2014-03-08 01:59:17 +0900 (土, 08  3月 2014) | 9 lines
+Fix checked tests
+
+Follow-on change to implicit static getter elimination. Class finalizer
+needed to be updated accordingly so type checks are made on non-final
+fields as well.
+Review URL: https://codereview.chromium.org//191063002
+
+
+r33433 | hausner@google.com | 2014-03-08 01:20:11 +0900 (土, 08  3月 2014) | 11 lines
+Eliminate more implicit getters
+
+For some reason I don’t remember, we only attempt to optimize
+away the implicit getter functions of const and final static
+fields, but not non-final static fields. This change applies the
+same optimization for all static fields, and also for all
+top-level fields.
+
+R=srdjan@google.com
+
+Review URL: https://codereview.chromium.org//189583003
+
+
+r33402 | rmacnak@google.com | 2014-03-07 07:45:29 +0900 (金, 07  3月 2014) | 3 lines
+Revert "Access to imports in the VM's runtime mirrors. Extend test coverage of the source mirrors."
+Review URL: https://codereview.chromium.org//189293002
+
+
+r33397 | rmacnak@google.com | 2014-03-07 07:02:29 +0900 (金, 07  3月 2014) | 6 lines
+Access to imports in the VM's runtime mirrors. Extend test coverage of the source mirrors.
+BUG=http://dartbug.com/10360
+R=gbracha@google.com, hausner@google.com
+Review URL: https://codereview.chromium.org//154733003
+
+
+r33395 | srdjan@google.com | 2014-03-07 06:17:07 +0900 (金, 07  3月 2014) | 5 lines
+Change --code-comments default to true. Code comments activated only if disassembly is activated.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//188963003
+
+
+r33392 | srdjan@google.com | 2014-03-07 04:32:18 +0900 (金, 07  3月 2014) | 5 lines
+Force inlining of all known list operators [] and []=, to prevent occasional perfrormance degradation.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//188773004
+
+
+r33389 | srdjan@google.com | 2014-03-07 04:00:11 +0900 (金, 07  3月 2014) | 5 lines
+More performance fixes.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//183973035
+
+
+r33386 | turnidge@google.com | 2014-03-07 02:38:16 +0900 (金, 07  3月 2014) | 9 lines
+Handle collected objects and expired handles more gracefully.
+Prints <collected> or <expired>.
+Added tooltips to explain these to users.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//177473004
+
+
+r33380 | johnmccutchan@google.com | 2014-03-07 01:48:49 +0900 (金, 07  3月 2014) | 7 lines
+Display sample count and refresh time.
+Fix some uninitialized variables.
+Don't send disassembly by default.
+R=turnidge@google.com
+Review URL: https://codereview.chromium.org//185563013
+
+
+r33363 | ajohnsen@google.com | 2014-03-06 18:16:41 +0900 (木, 06  3月 2014) | 6 lines
+Fix fromEnvironment when called from isolates.
+R=sgjesse@google.com
+Review URL: https://codereview.chromium.org//180243022
+
+
+r33344 | koda@google.com | 2014-03-06 06:09:19 +0900 (木, 06  3月 2014) | 8 lines
+Pretenure large external typed data and strings.
+Also fix an incorrect API comment about handle return type.
+BUG=dart:17284
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//180113009
+
+
+
+r33340 | asiva@google.com | 2014-03-06 04:24:02 +0900 (木, 06  3月 2014) | 11 lines
+1. When reading a full snapshot use the class id from the snapshot instead
+   of generating a new one. This ensures that assumptions made about the
+   class id when generating a snapshot will still hold in the version that runs from a snapshot.
+2. remove ObjectHistogram code as it is not used anymore and has been replaced by VM service.
+
+R=johnmccutchan@google.com, regis@google.com
+Review URL: https://codereview.chromium.org//187133004
+
+
+r33335 | turnidge@google.com | 2014-03-06 02:59:23 +0900 (木, 06  3月 2014) | 5 lines
+Use HasResolvedTypeClass to avoid crash in Field::PrintToJSONStream.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//183023011
+
+
+r33334 | fschneider@google.com | 2014-03-06 02:58:46 +0900 (木, 06  3月 2014) | 8 lines
+VM: Fix bug in aliasing computation.
+Values flowing into arrays were not correctly computed as aliased.
+
+TEST=tests/language/vm/load_to_load_forwarding_vm_test.dart
+R=srdjan@google.com, vegorov@google.com
+Review URL: https://codereview.chromium.org//184273005
+
+
+r33333 | srdjan@google.com | 2014-03-06 02:42:40 +0900 (木, 06  3月 2014) | 5 lines
+Minor VM performance improvements based on profiling.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//185553015
+
+
+r33331 | fschneider@google.com | 2014-03-06 00:46:41 +0900 (木, 06  3月 2014) | 8 lines
+Mark compiler-internal fields of closure objects as final.
+
+Those fields are written once at allocation time. Marking them
+as final improves code generation for closure allocation.
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//187763002
+
+
+r33314 | srdjan@google.com | 2014-03-05 09:10:41 +0900 (水, 05  3月 2014) | 5 lines
+Move StackOverflow check after context chaining at function entry
+so that the context is properly setup before stop at entry.
+R=turnidge@google.com
+Review URL: https://codereview.chromium.org//183513015
+
+
+r33305 | turnidge@google.com | 2014-03-05 06:54:09 +0900 (水, 05  3月 2014) | 5 lines
+Remove overassertive assert.
+
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//187053002
+
+
+r33299 | hausner@google.com | 2014-03-05 05:44:51 +0900 (水, 05  3月 2014) | 11 lines
+Always evaluate e in (e is T)
+
+(e is T) is compiled  to a throw TypeError when T is malformed.
+This change makes sure that e is evaluated even though it is
+ignored. We need to do this due to possible side effects.
+
+Fixes issue 17253
+R=regis@google.com
+Review URL: https://codereview.chromium.org//185553018
+
+
+r33294 | srdjan@google.com | 2014-03-05 04:52:21 +0900 (水, 05  3月 2014) | 5 lines
+When running compile-all, clear code after compiling
+so that we do not out too much pressure on GC and measure the compilation instead.
+
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//186623005
+
+
+r33288 | hausner@google.com | 2014-03-05 03:44:53 +0900 (水, 05  3月 2014) | 11 lines
+Fix error message when assigning to a local const variable
+
+Remove front-end optimization that turned load local const
+value into a load literal. Change backend to recognize loading
+of const locals. This fixes the error message automagically.
+
+Fix for issue 17258
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//186853003
+
+
+r33286 | iposva@google.com | 2014-03-05 03:20:03 +0900 (水, 05  3月 2014) | 9 lines
+Fix dartbug.com/17261
+- Make sure to preserve type arguments when morphing a growable
+  array to a fixed sized array.
+- Small performance optimization for getting the number of type
+  parameters in a class.
+
+R=asiva@google.com, regis@google.com
+Review URL: https://codereview.chromium.org//186673003
+
+
+r33282 | asiva@google.com | 2014-03-05 03:11:19 +0900 (水, 05  3月 2014) | 10 lines
+Pass in the isolate parameter to the weak persistent callback handler so that
+there is no need to access the current isolate in the callback and delete
+path (this code is run while a GC is in progress).
+
+See https://codereview.chromium.org/185643003/ for corresponding changes in dartium
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//186003002
+
+
+r33267 | fschneider@google.com | 2014-03-04 20:53:16 +0900 (火, 04  3月 2014) | 9 lines
+Change deoptimization description for materialized objects.
+
+Use field offset instead of fields as arguments in the deoptimization
+instructions for materialization of objects. This is to prepare for
+materializing contexts and fixed-size arrays when doing allocation sinking.
+
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//183683013
+
+
+r33254 | asiva@google.com | 2014-03-04 09:35:45 +0900 (火, 04  3月 2014) | 7 lines
+Use a tag bit for indicating prologue weak persistent handles, this avoids
+the costly lookup to determine if a handle is a prologue weak persistent
+handle or a regular weak persistent handle in Dart_DeleteWeakPersistentHandle
+
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//177093010
+
+
+r33253 | hausner@google.com | 2014-03-04 08:27:44 +0900 (火, 04  3月 2014) | 21 lines
+Fix type checks with malformed types
+
+Parser must continue to parse the rest of an expression that contains
+a type test with a malformed type.
+
+Before:
+ 'file:XXX’: error: line 5 pos 12: ')' expected
+  if (3 is X && 2 == 2) print("foo");
+
+After:
+ 'file:XXX’: malformed type: line 5 pos 12: type 'X' is not loaded
+  if (3 is X && 2 == 2) print("foo");
+           ^
+type error.
+#0      main (file:XXX:5:12)
+#1      _startIsolate.isolateStartHandler (dart:isolate-patch/isolate_patch.dart:216)
+#2      _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:115)
+
+R=regis@google.com
+Review URL: https://codereview.chromium.org//183743015
+
+
+r33231 | fschneider@google.com | 2014-03-04 03:08:59 +0900 (火, 04  3月 2014) | 15 lines
+Better inlining of type tests.
+
+The optimizing compiler can replace a type test with a cid-comparison
+under certain conditions. This CL translates the instance-of call
+into a inline comparison in the optimizer and not - as previously -
+in the code generator. This results in better generated code for
+like
+
+if (x is y) {...}
+
+when y does not have sub-classes and does not have type arguments.
+
+R=regis@google.com
+Review URL: https://codereview.chromium.org//178193020
+
+
+r33220 | johnmccutchan@google.com | 2014-03-04 00:39:06 +0900 (火, 04  3月 2014) | 9 lines
+Add user resetable accumulator to allocation profiler.
+Display aggregate of new and old space in a separate table.
+Speed up display of tables by 10x.
+Fix heap display bug (heap stats were always for new space).
+Keep sort across refreshes.
+
+R=turnidge@google.com
+Review URL: https://codereview.chromium.org//173013004
+
+
+
+r33203 | fschneider@google.com | 2014-03-03 19:24:59 +0900 (月, 03  3月 2014) | 9 lines
+Inline context allocation in optimized code.
+
+Instead of just calling the generic stub in optimized code, there is now
+inlined code to handle allocation and initialization of the context. A
+deferred code path handles inline allocation failure.
+R=regis@google.com
+Review URL: https://codereview.chromium.org//182303005
+
+
+r33177 | johnmccutchan@google.com | 2014-03-01 07:55:53 +0900 (土, 01  3月 2014) | 5 lines
+Cleanup native, collected, and stub code handling in profiler
+R=iposva@google.com, turnidge@google.com
+Review URL: https://codereview.chromium.org//182703003
+
+
+r33148 | asiva@google.com | 2014-02-28 12:22:16 +0900 (金, 28  2月 2014) | 3 lines
+Fix dartium crasher, use DARTSCOPE when getting/setting native fields as it creates a Handle.
+Review URL: https://codereview.chromium.org//180153009
+
+
+r33142 | asiva@google.com | 2014-02-28 08:38:39 +0900 (金, 28  2月 2014) | 8 lines
+1. Added new versions of Api::UnWrapStringHandle Api::UnWrapInstanceHandle to
+   use a reused handle instead of creating a new one
+2. Use CHEK_ISOLATE instead of DARTSCOPE in some of the API functions where
+   no handles are created
+R=rmacnak@google.com
+Review URL: https://codereview.chromium.org//181843007
+
+
+r33141 | rmacnak@google.com | 2014-02-28 08:24:05 +0900 (金, 28  2月 2014) | 6 lines
+Fix VM crash when parsing what looks like a closure call during metadata evaluation.
+BUG=http://dartbug.com/17141
+R=gbracha@google.com, hausner@google.com
+Review URL: https://codereview.chromium.org//180313003
+
+
+r33129 | johnmccutchan@google.com | 2014-02-28 04:35:57 +0900 (金, 28  2月 2014) | 6 lines
+Turn stack walking verification into a flag
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//183633002
+
+
+r33125 | johnmccutchan@google.com | 2014-02-28 03:14:51 +0900 (金, 28  2月 2014) | 5 lines
+Add flag to pin and service command to release isolates
+Review URL: https://codereview.chromium.org//181503006
+
+
+r33124 | johnmccutchan@google.com | 2014-02-28 03:07:22 +0900 (金, 28  2月 2014) | 5 lines
+Fix usage of heap_
+Review URL: https://codereview.chromium.org//183113005
+
+
+r33122 | johnmccutchan@google.com | 2014-02-28 02:39:04 +0900 (金, 28  2月 2014) | 5 lines
+Stop creating dummy call frames when calling out to C functions
+R=asiva@google.com, regis@google.com
+Review URL: https://codereview.chromium.org//180243013
+
+
+r33118 | fschneider@google.com | 2014-02-28 01:31:58 +0900 (金, 28  2月 2014) | 12 lines
+Fix bug in load elimination with multiple phis.
+The in-set has to be computed on the out-sets of the predecessors with
+the phi-moves of the predecessor applied. This is now done on a temporary
+copy of out, instead of the out-set itself - otherwise the phi-moves may
+be applied more than once to the same set.
+
+BUG=http://dartbug.com/17159
+TEST=tests/language/vm/load_to_load_forwarding_vm_test.dart
+R=vegorov@chromium.org
+Review URL: https://codereview.chromium.org//183303002
+
+
+r33112 | iposva@google.com | 2014-02-27 18:57:46 +0900 (木, 27  2月 2014) | 3 lines
+- Actually allocate memory.
+Review URL: https://codereview.chromium.org//182943002
+
+
+r33111 | iposva@google.com | 2014-02-27 18:40:08 +0900 (木, 27  2月 2014) | 3 lines
+- Another necessary const_cast.
+Review URL: https://codereview.chromium.org//182903002
+
+
+
+r33110 | iposva@google.com | 2014-02-27 18:33:44 +0900 (木, 27  2月 2014) | 3 lines
+- Sort out confusion between malloc/free and new/delete.
+Review URL: https://codereview.chromium.org//182883002
+
+
+r33105 | hausner@google.com | 2014-02-27 10:14:15 +0900 (木, 27  2月 2014) | 10 lines
+Fix stepping after a breakpoint
+The first “step over” command after a breakpoint was accidentally
+converted into a “step into”.
+Fixes issue 17074
+R=regis@google.com
+Review URL: https://codereview.chromium.org//178623003
+
+
+r33104 | asiva@google.com | 2014-02-27 09:34:43 +0900 (木, 27  2月 2014) | 5 lines
+Avoid creation of a handle when ssetting native fields for the first time.
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//176963015
+
+
+r33101 | johnmccutchan@google.com | 2014-02-27 08:36:39 +0900 (木, 27  2月 2014) | 5 lines
+Disable jit dump output by default
+Review URL: https://codereview.chromium.org//181593006
+
+
+r33098 | johnmccutchan@google.com | 2014-02-27 07:30:25 +0900 (木, 27  2月 2014) | 5 lines
+Add support for dumping code in jitdump file format
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//23437046
+
+
+r33096 | johnmccutchan@google.com | 2014-02-27 07:20:07 +0900 (木, 27  2月 2014) | 6 lines
+Always inline byte views and math functions
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//178713003
+
+
+r33074 | regis@google.com | 2014-02-27 03:38:47 +0900 (木, 27  2月 2014) | 6 lines
+Allocate instance closures similarly to regular closures, i.e. without a
+specific stub and runtime call.
+
+R=fschneider@google.com
+Review URL: https://codereview.chromium.org//178233003
+
+
+r33059 | fschneider@google.com | 2014-02-26 21:12:40 +0900 (水, 26  2月 2014) | 11 lines
+VM: Replace StoreVMField with StoreInstanceField.
+
+This simplifies a lot of code in the optimizer and avoids the confusion
+and errors due to mismatch input operands when using StoreVMField.
+
+I added a separate constructor for LoadFieldInstr to avoid having
+to explicily set the associated field there.
+
+R=regis@google.com
+Review URL: https://codereview.chromium.org//179443004
+
+
+r33058 | fschneider@google.com | 2014-02-26 20:44:03 +0900 (水, 26  2月 2014) | 5 lines
+VM: Eliminate a redundant store of the context at function entry.
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//179003005
+
+
+r33036 | johnmccutchan@google.com | 2014-02-26 06:41:57 +0900 (水, 26  2月 2014) | 8 lines
+Code regions now have list of callers and callees.
+Address ticks track exclusive / inclusive separately.
+Code regions only receive one inclusive tick per sample regardless of how many times they appear
+in the sample's stack trace.
+Provide useful name for most stub functions.
+
+R=asiva@google.com, turnidge@google.com
+Review URL: https://codereview.chromium.org//168833005
+
+
+r33030 | hausner@google.com | 2014-02-26 03:48:37 +0900 (水, 26  2月 2014) | 5 lines
+Fix formatting issue from previous CL
+TBR: iposva
+Review URL: https://codereview.chromium.org//179083005
+
+
+
+r33028 | hausner@google.com | 2014-02-26 03:01:35 +0900 (水, 26  2月 2014) | 9 lines
+Better error message for assignment to final local variables
+“No top-level getter found” becomes “cannot assign to final variable xxx”.
+
+Fixes issue 16782.
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//177633008
+
+
+r32987 | zra@google.com | 2014-02-25 05:54:41 +0900 (火, 25  2月 2014) | 3 lines
+Fixes wrong query string in ARM/Linux CPU feature detection.
+Review URL: https://codereview.chromium.org//177933008
+
+
+r32980 | zra@google.com | 2014-02-25 04:28:30 +0900 (火, 25  2月 2014) | 6 lines
+Updates refactoring of CPU feature detection
+with fix that uses cpuid for Intel/Linux.
+
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//136303012
+
+
+r32975 | hausner@google.com | 2014-02-25 03:40:51 +0900 (火, 25  2月 2014) | 9 lines
+Fix mixin of patched classes
+When mixing in functions that were patched into the mixin class,
+set the “origin” to the patch class so we find the right source location to parse the function.
+
+Fixes issue 16230
+R=regis@google.com
+Review URL: https://codereview.chromium.org//177653006
+
+
+r32959 | fschneider@google.com | 2014-02-24 21:15:55 +0900 (月, 24  2月 2014) | 7 lines
+Revert r32930 (Add more timing information in the VM to track time...)
+It caused severe performance regressions that should be addressed.
+TBR=asiva@google.com
+Review URL: https://codereview.chromium.org//177733002
+
+
+r32940 | regis@google.com | 2014-02-22 08:09:02 +0900 (土, 22  2月 2014) | 7 lines
+Modify growth policy for table of canonical types in each class.
+Modify growth policy for cache of type arguments instantiations.
+Add language test for generic closure.
+
+R=iposva@google.com
+Review URL: https://codereview.chromium.org//175403004
+
+
+r32939 | iposva@google.com | 2014-02-22 07:44:39 +0900 (土, 22  2月 2014) | 5 lines
+- Restore the better error message.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//170313008
+
+
+r32938 | hausner@google.com | 2014-02-22 07:40:11 +0900 (土, 22  2月 2014) | 9 lines
+Handle stepping requests after isolate interrupt event
+Adding test case provided by jacobr.
+Fix issue 17008
+R=jacobr@google.com, regis@google.com
+Review URL: https://codereview.chromium.org//175533003
+
+
+r32930 | asiva@google.com | 2014-02-22 06:30:29 +0900 (土, 22  2月 2014) | 5 lines
+Add more timing information in the VM to track time spent is dart code Vs native code.
+R=johnmccutchan@google.com, turnidge@google.com
+Review URL: https://codereview.chromium.org//137483010
+
+
+r32905 | asiva@google.com | 2014-02-22 01:53:23 +0900 (土, 22  2月 2014) | 8 lines
+Add Dart_GetNativeFieldsOfArgument to get all the native fields of a dart
+object. This is especially useful for dartium which has two native fields
+the type id and the native implementation field for the wrapper. This allows
+for both values to be extracted in one call.
+
+R=vsm@google.com
+Review URL: https://codereview.chromium.org//174393004
+
+
+r32900 | lrn@google.com | 2014-02-21 22:59:36 +0900 (金, 21  2月 2014) | 3 lines
+Remove test change after revert code change.
+Review URL: https://codereview.chromium.org//167913005
+
+
+r32898 | lrn@google.com | 2014-02-21 22:34:29 +0900 (金, 21  2月 2014) | 3 lines
+Doesn't work as written when int != intptr_t.
+Review URL: https://codereview.chromium.org//175083003
+
+
+r32896 | lrn@google.com | 2014-02-21 22:15:16 +0900 (金, 21  2月 2014) | 9 lines
+Add internal operation that converts a growable list to a fixed list.
+The conversion breaks the original list, but doesn't copy data.
+Currently only used in List.from(Iterable).
+BUG= http://dartbug.com/9458
+R=floitsch@google.com, iposva@google.com
+Review URL: https://codereview.chromium.org//134893003
+
+
+r32891 | fschneider@google.com | 2014-02-21 21:12:29 +0900 (金, 21  2月 2014) | 43 lines
+Explicit conversions for Float32 array loads/stores.
+Added two new IL instructions: DoubleToFloat and FloatToDouble.
+This enables store-to-load forwarding for Float32 arrays which was
+not working before because of the implicit conversions.
+
+Loads are now translated as:
+
+v3 <- LoadIndexed(v2, v1)
+v4 <- FloatToDouble(v3)
+
+Stores:
+
+v5 <- DoubleToFloat(v4)
+      StoreIndexed(v7, v6, v5)
+
+There is no explicit representation for float values because
+they are never used in a deoptimization environment. The only
+real uses are at FloatToDouble and StoreIndexed.
+
+For example when copying a value from one Float32 array to another
+there is no intermediate conversions anymore
+
+a[0] = b[0] before:
+
+  movss xmm1,[ebx+0x7]
+  cvtss2sd xmm1,xmm1
+  cvtsd2ss xmm2,xmm1
+  movss [edx+0x7],xmm2
+
+after:
+
+  movss xmm1,[ebx+0x7]
+  movss [edx+0x7],xmm1
+
+Also in this change:
+  Eliminate GuardField based on cid information of list factories.
+  GC unused symbols
+
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//172293004
+
+
+r32874 | johnmccutchan@google.com | 2014-02-21 08:05:50 +0900 (金, 21  2月 2014) | 5 lines
+Use the correct value offset for Float64x2 on ARM
+Review URL: https://codereview.chromium.org//174353003
+
+
+r32870 | johnmccutchan@google.com | 2014-02-21 06:10:07 +0900 (金, 21  2月 2014) | 6 lines
+Rework Sample class
+BUG=
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//174213002
+
+
+r32869 | johnmccutchan@google.com | 2014-02-21 05:41:54 +0900 (金, 21  2月 2014) | 5 lines
+Unbox/Box Float64x2 and inline typed array loads and stores
+R=fschneider@google.com
+Review URL: https://codereview.chromium.org//172653002
+
+
+
+
+
+
+
+
+r32831 | iposva@google.com | 2014-02-20 08:35:55 +0900 (木, 20  2月 2014) | 6 lines
+Another round of cleanups for http://www.dartbug.com/15922
+- Address warnings about 64-bit to 32-bit conversions.
+R=ajohnsen@google.com, asiva@google.com
+Review URL: https://codereview.chromium.org//169893003
+
+
+r32819 | iposva@google.com | 2014-02-20 05:50:48 +0900 (木, 20  2月 2014) | 4 lines
+Fix build:
+- Remove unused stack_lower_.
+Review URL: https://codereview.chromium.org//172523003
+
+
+r32809 | johnmccutchan@google.com | 2014-02-20 04:15:16 +0900 (木, 20  2月 2014) | 9 lines
+Switch from linear search for code region to binary search.
+Add a SampleVisitor for iterating over SampleBuffer.
+Move stack walking class out of header into source file.
+
+Processing 6.5 million stack frames went from 28 seconds to 741 millis.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//151143003
+
+
+r32773 | turnidge@google.com | 2014-02-19 10:02:09 +0900 (水, 19  2月 2014) | 5 lines
+Don't forget to subtract materialization instructions when computing
+the offset of the frame pointer after deoptimization.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//171513003
+
+
+r32769 | johnmccutchan@google.com | 2014-02-19 07:38:11 +0900 (水, 19  2月 2014) | 6 lines
+Allow for embedder provided service request handlers
+R=turnidge@google.com
+Review URL: https://codereview.chromium.org//170943003
+
+
+r32760 | turnidge@google.com | 2014-02-19 04:45:36 +0900 (水, 19  2月 2014) | 7 lines
+Improved how closures are displayed by <instance-ref>.
+Make <optimized out> look a bit nicer.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//167713002
+
+
+r32756 | regis@google.com | 2014-02-19 04:30:03 +0900 (水, 19  2月 2014) | 4 lines
+Simplify type argument instantiation cache lookup by introducing an array of 1 zero Smi.
+Review URL: https://codereview.chromium.org//169223005
+
+
+r32751 | johnmccutchan@google.com | 2014-02-19 02:50:26 +0900 (水, 19  2月 2014) | 6 lines
+Trace VM service requests
+R=turnidge@google.com
+Review URL: https://codereview.chromium.org//164503002
+
+
+r32749 | johnmccutchan@google.com | 2014-02-19 02:41:11 +0900 (水, 19  2月 2014) | 5 lines
+Enable polymorphic inlining of StringBase [] and StringBase codeUnitAt.
+R=fschneider@google.com
+Review URL: https://codereview.chromium.org//161853002
+
+
+r32735 | fschneider@google.com | 2014-02-18 19:10:06 +0900 (火, 18  2月 2014) | 10 lines
+MIPS: Fix bug in allocation stub's slow path.
+
+The CL r32697 that changed the argument count of the AllocateObject
+runtime function from 3 to 2 did not correctly adjust SP before
+the runtime call.
+BUG=dartbug.com/16873
+R=regis@google.com
+Review URL: https://codereview.chromium.org//167893006
+
+
+r32708 | turnidge@google.com | 2014-02-15 03:04:42 +0900 (土, 15  2月 2014) | 8 lines
+Handle contexts which have been optimized out.
+Expand list of expected object types seen on the stack.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//163433003
+
+
+r32707 | turnidge@google.com | 2014-02-15 02:48:25 +0900 (土, 15  2月 2014) | 3 lines
+Add expandable instances and lists to the vm service.
+Review URL: https://codereview.chromium.org//164183003
+
+
+r32706 | regis@google.com | 2014-02-15 02:43:11 +0900 (土, 15  2月 2014) | 5 lines
+Avoid repeated resolution of types by marking them as resolved.
+R=hausner@google.com
+Review URL: https://codereview.chromium.org//165523002
+
+
+r32697 | fschneider@google.com | 2014-02-14 22:03:35 +0900 (金, 14  2月 2014) | 23 lines
+Simplify generated code for object allocation with type arguments.
+
+The motivation for the change is to make allocation sinking more
+general when type arguments are in play. As a result I cleaned up the code
+dealing with constructor type arguments as follows:
+
+* Remove ExtractConstructorTypeArguments and ExtractConstructorInstantiator
+  from the intermediate language.
+
+* The allocation stub takes now 1 argument (instead of 2) for parameterized
+  classes.
+
+* The allocation stub always get an instantiated type arguments object
+  as input. It does not need to do a lookup in the instantiations array anymore.
+
+* The code for looking up cached instantiated type arguments is moved
+  to the InstantiateTypeArguments instruction. This instruction is now also
+  used for object allocation. I'm not sure how relevant the cache lookup is
+  performance-wise. dart2js compilation did not show any regression without it.
+
+R=regis@google.com
+Review URL: https://codereview.chromium.org//163683006
+
+
+r32672 | johnmccutchan@google.com | 2014-02-14 05:53:35 +0900 (金, 14  2月 2014) | 5 lines
+Only inline Int32/Uint32 list view stores if we can unbox integers.
+Review URL: https://codereview.chromium.org//164133003
+
+
+r32656 | johnmccutchan@google.com | 2014-02-14 00:54:33 +0900 (金, 14  2月 2014) | 5 lines
+Inline polymorphic typed array view stores
+R=fschneider@google.com
+Review URL: https://codereview.chromium.org//160613002
+
+
+r32647 | fschneider@google.com | 2014-02-13 20:59:22 +0900 (木, 13  2月 2014) | 10 lines
+Fix crash bug in free list when allocating write protected memory.
+Re-enable write protection of code pages.
+I added cc tests that cover two corner conditions that caused the old code to crash.
+
+TEST=vm/FreeList
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//150563007
+
+
+r32636 | regis@google.com | 2014-02-13 09:14:36 +0900 (木, 13  2月 2014) | 6 lines
+Make cycle checking of super interfaces linear instead of quadratic by marking
+classes as checked (issue 16343).
+
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//162163002
+
+
+r32624 | regis@google.com | 2014-02-13 06:18:59 +0900 (木, 13  2月 2014) | 7 lines
+Do not resolve type arguments when only a resolved type class is needed to
+calculate number of type arguments during type finalization (issue 16640).
+Add regression test.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//160753004
+
+
+r32605 | turnidge@google.com | 2014-02-13 02:13:02 +0900 (木, 13  2月 2014) | 3 lines
+Fix assertion failure encountered in vm service.
+Review URL: https://codereview.chromium.org//148523018
+
+
+r32584 | asiva@google.com | 2014-02-12 09:29:28 +0900 (水, 12  2月 2014) | 5 lines
+Use passed in isolate when creating handles in the snapshot reader object.
+R=johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//160153002
+
+
+r32577 | rmacnak@google.com | 2014-02-12 05:41:32 +0900 (水, 12  2月 2014) | 7 lines
+Add TypeMirror.isSubtypeOf, TypeMirror.isAssignableTo, ClassMirror.isSubclassOf to the API,
+the VM runtime mirrors and the source mirrors.
+BUG=http://dartbug.com/12439
+BUG=http://dartbug.com/13856
+R=gbracha@google.com, johnniwinther@google.com, regis@google.com
+Review URL: https://codereview.chromium.org//126823004
+
+
+r32565 | asiva@google.com | 2014-02-12 03:12:08 +0900 (水, 12  2月 2014) | 6 lines
+Fix compilation error.
+../../dart/runtime/vm/freelist.cc:126:32:
+warning: converting to non-pointer type ‘uword {aka long unsigned int}’ from NULL [-Wconversion-null]
+
+R=zra@google.com
+Review URL: https://codereview.chromium.org//150863006
+
+
+r32560 | zra@google.com | 2014-02-12 01:05:43 +0900 (水, 12  2月 2014) | 6 lines
+Reverts refactoring of CPU feature detection for assertion failure in Dartium.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//142663004
+
+
+r32549 | fschneider@google.com | 2014-02-11 19:17:03 +0900 (火, 11  2月 2014) | 5 lines
+Fix flag to switch write protection of code pages on/off.
+TBR=iposva@google.com
+Review URL: https://codereview.chromium.org//138913016
+
+
+
+r32547 | ricow@google.com | 2014-02-11 18:38:10 +0900 (火, 11  2月 2014) | 3 lines
+Disable write protect mode temporarily until we have a fix for the random crashes
+Review URL: https://codereview.chromium.org//156423004
+
+
+r32524 | regis@google.com | 2014-02-11 08:37:06 +0900 (火, 11  2月 2014) | 5 lines
+Write the type arguments instantiations field to full snapshots only.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//151773006
+
+
+r32522 | hausner@google.com | 2014-02-11 07:28:07 +0900 (火, 11  2月 2014) | 5 lines
+Small cleanup: move all library private key code to Library class
+R=regis@google.com
+Review URL: https://codereview.chromium.org//149643007
+
+
+r32510 | iposva@google.com | 2014-02-11 03:40:20 +0900 (火, 11  2月 2014) | 7 lines
+- Zap the allocated object when allocating uninitialized memory in debug.
+- Do not run any smart code when recreating type arguments from a snapshot.
+- Adjust assertions.
+R=asiva@google.com, regis@google.com
+Review URL: https://codereview.chromium.org//157053007
+
+
+r32493 | fschneider@google.com | 2014-02-10 21:18:06 +0900 (月, 10  2月 2014) | 20 lines
+Landing: Write protect executable pages in the VM.
+Change executable pages to be read/execute but not writable by default.
+
+All pages are made temporarily writable just before a full GC, because both
+the mark and sweep phases write to the pages. When allocating in a page and
+when patching code, the pages are made temporarily writable.
+
+The order of allocation of Code and Instructions objects is changed so that
+a GC will not occur after Instructions is allocated. (A full GC would
+render the Instructions unwritable.) A scoped object is used to make memory
+protection simpler.
+
+Original CL: https://codereview.chromium.org/106593002/
+I added a cc test that is expected to crash.
+R=srdjan@google.com
+
+
+r32547 | ricow@google.com | 2014-02-11 18:38:10 +0900 (火, 11  2月 2014) | 3 lines
+Disable write protect mode temporarily until we have a fix for the random crashes
+Review URL: https://codereview.chromium.org//156423004
+
+
+r32524 | regis@google.com | 2014-02-11 08:37:06 +0900 (火, 11  2月 2014) | 5 lines
+Write the type arguments instantiations field to full snapshots only.
+R=asiva@google.com
+Review URL: https://codereview.chromium.org//151773006
+
+
+r32522 | hausner@google.com | 2014-02-11 07:28:07 +0900 (火, 11  2月 2014) | 5 lines
+Small cleanup: move all library private key code to Library class
+R=regis@google.com
+Review URL: https://codereview.chromium.org//149643007
+
+
+r32510 | iposva@google.com | 2014-02-11 03:40:20 +0900 (火, 11  2月 2014) | 7 lines
+- Zap the allocated object when allocating uninitialized memory in debug.
+- Do not run any smart code when recreating type arguments from a snapshot.
+- Adjust assertions.
+R=asiva@google.com, regis@google.com
+Review URL: https://codereview.chromium.org//157053007
+
+
+r32493 | fschneider@google.com | 2014-02-10 21:18:06 +0900 (月, 10  2月 2014) | 20 lines
+Landing: Write protect executable pages in the VM.
+Change executable pages to be read/execute but not writable by default.
+
+All pages are made temporarily writable just before a full GC, because both
+the mark and sweep phases write to the pages. When allocating in a page and
+when patching code, the pages are made temporarily writable.
+
+The order of allocation of Code and Instructions objects is changed so that
+a GC will not occur after Instructions is allocated. (A full GC would
+render the Instructions unwritable.) A scoped object is used to make memory
+protection simpler.
+
+Original CL: https://codereview.chromium.org/106593002/
+I added a cc test that is expected to crash.
+R=srdjan@google.com
+
+
+
+r32489 | fschneider@google.com | 2014-02-10 19:30:07 +0900 (月, 10  2月 2014) | 13 lines
+Improve constant propagation for type arguments.
+
+The instruction to extract type arguments are now fully supported in constant propagation.
+I also added cid-information to non-instance constants (like e.g.
+type arguments).  This will enable more opportunities
+for allocation sinking because it requires the type arguments to be known constant.
+R=srdjan@google.com
+Review URL: https://codereview.chromium.org//157593003
+
+
+r32468 | zra@google.com | 2014-02-09 07:27:27 +0900 (日, 09  2月 2014) | 7 lines
+Refactors some CPU feature detection into new class CpuInfo, and uses new information in VM service.
+This change rewrites the code from the ARM assembler for parsing /proc/cpuinfo on Linux and Android,
+and collects it into a CpuInfo class that can be used for other architectures as well.
+This code is in cpuinfo_*.cc. /proc/cpuinfo equivalents are used for Mac and Windows.
+CpuInfo is used by the VM service to report on the hardware dart is running on.
+In the future CpuInfo can also be used here to provide more information.
+
+R=iposva@google.com, johnmccutchan@google.com
+Review URL: https://codereview.chromium.org//120723003
+
+
+
 r32461 | rmacnak@google.com | 2014-02-08 10:18:18 +0900 (土, 08  2月 2014) | 7 lines
 Avoid printing the full token stream and doing line/column position calculations
 when extracting the source of a function where we don't have the original source.
@@ -22510,6 +23785,21 @@ double型のfieldのload/storeの高速化を行っているっぽい。
 fieldをmutableに操作する処理を追加。
 fieldのoffsetから、対象のdouble値を直接書き換える。
 通常はboxing double / unboxing doubleが間にはいる。
+
+
+2014/01
+
+dart 1.1 release
+
+service関連をdart/runtime/vm/serviceに移動し、
+そこにservice関連のdartのコードを置いている。
+runtime/bin/vmservice/clientにclient用のコードを新規追加。
+
+serviceに以下を追加
+code
+profile
+allocationprofile
+coverage
 
 
 

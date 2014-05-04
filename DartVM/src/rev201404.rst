@@ -1,0 +1,878 @@
+------------------------------------------------------------------------
+r34806 | iposva@google.com | 2014-04-08 09:34:14 +0900 (火, 08  4月 2014) | 5 lines
+
+- Ensure the Null class is recognized when writing snapshots.
+
+R=asiva@google.com
+
+Review URL: https://codereview.chromium.org//225023033
+------------------------------------------------------------------------
+r34798 | hausner@google.com | 2014-04-08 06:30:54 +0900 (火, 08  4月 2014) | 7 lines
+
+Add const static field optimization that got lost in last checkin
+
+My last change list accidentally got rid of an optimization where the parser replaces const static field references with the value of the field. This causes many more compile-time “execute once” calls. This change adds back the special case.
+
+R=srdjan@google.com
+
+Review URL: https://codereview.chromium.org//227863002
+------------------------------------------------------------------------
+r34793 | koda@google.com | 2014-04-08 03:40:45 +0900 (火, 08  4月 2014) | 16 lines
+
+Reset growth control state after isolate initialization.
+
+(a) When enabling the growth control, e.g. after isolate
+initialization, the current usage should be the new basis for
+growth control. This is consistent with the behavior before
+r34747.
+
+(b) Advise GC only when the number of allowed pages has been
+(strictly) exceeded, rather than met. This is consistent with
+the behavior before r34747.
+
+Part (a) fixes the Havlak performance regression (3%).
+
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//227683004
+------------------------------------------------------------------------
+r34787 | zra@google.com | 2014-04-08 02:56:59 +0900 (火, 08  4月 2014) | 5 lines
+
+Removes stub from arm64 to fix build.
+
+R=srdjan@google.com
+
+Review URL: https://codereview.chromium.org//227563003
+------------------------------------------------------------------------
+r34785 | hausner@google.com | 2014-04-08 02:31:32 +0900 (火, 08  4月 2014) | 11 lines
+
+Implement deferred constant support
+
+Compile time constants lose their const-ness if they are referred
+to through a deferred prefix. This CL adds a flag to some ast node
+types that remembers whether a field or closure was referred to
+via a deferred prefix. If so, the compile-time const analysis flags
+the value as non-const.
+
+R=srdjan@google.com
+
+Review URL: https://codereview.chromium.org//226953002
+------------------------------------------------------------------------
+r34777 | fschneider@google.com | 2014-04-07 20:47:13 +0900 (月, 07  4月 2014) | 8 lines
+
+Fix bug in closure call stub.
+
+Since closure calls and method calls both use the same lazy-compile stub,
+we need a GC-safe value in the IC data register also at closure calls.
+
+TBR=srdjan@google.com
+
+Review URL: https://codereview.chromium.org//224723017
+------------------------------------------------------------------------
+r34774 | fschneider@google.com | 2014-04-07 18:27:43 +0900 (月, 07  4月 2014) | 15 lines
+
+Simplify and improve handling of IC and megamorphic cache miss handling.
+
+Instead of going back and forth from stub code to C++, perform
+only the lookup in C++ and call target functions only from
+stub code.
+
+noSuchMethod and implicit closure invocations are now also work with
+the megamorphic cache. Before they would go slow-case in the megamorphic case.
+
+This CL eliminates the InstanceFunctionLookup stub that was previously
+used to handle noSuchMethod and implicit closure invocations.
+
+R=srdjan@google.com
+
+Review URL: https://codereview.chromium.org//221173011
+------------------------------------------------------------------------
+r34749 | koda@google.com | 2014-04-05 07:13:59 +0900 (土, 05  4月 2014) | 5 lines
+
+Extend Timer to track longest contiguous interval, and add GC timer.
+
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//215893006
+------------------------------------------------------------------------
+r34747 | koda@google.com | 2014-04-05 06:04:48 +0900 (土, 05  4月 2014) | 17 lines
+
+Corrected resubmssion of r34736.
+Fix: Division by page size in NeedsGarbageCollection.
+Original description:
+
+Generalize the interface of page space controller.
+
+Gather used/capacity/external into SpaceUsage object,
+and use it for testing whether GC is needed before or
+after an allocation.
+
+This refactor does not affect policy, but prepares for:
+1. Replacing promotion failure check/tracking.
+2. Better growth control for external allocation.
+
+TBR=iposva@google.com
+
+Review URL: https://codereview.chromium.org//225303006
+------------------------------------------------------------------------
+r34741 | koda@google.com | 2014-04-05 03:39:10 +0900 (土, 05  4月 2014) | 5 lines
+
+Revert r34736 due to slowdown.
+
+TBR=sra@google.com
+
+Review URL: https://codereview.chromium.org//225023011
+------------------------------------------------------------------------
+r34739 | regis@google.com | 2014-04-05 03:27:53 +0900 (土, 05  4月 2014) | 8 lines
+
+Simplify and fix instantiation of recursive types.
+Add tests for non-contractive types.
+Cleanup language tests status file.
+Enhance tracing of type finalization.
+
+R=hausner@google.com, srdjan@google.com
+
+Review URL: https://codereview.chromium.org//224793002
+------------------------------------------------------------------------
+r34737 | turnidge@google.com | 2014-04-05 03:05:37 +0900 (土, 05  4月 2014) | 8 lines
+
+Begin implementing flag  --deoptimize-filter=FUNC for ia32.
+
+Currently not functional - committing so that srdjan can investigate
+why it doesn't work.
+
+R=srdjan@google.com
+
+Review URL: https://codereview.chromium.org//226303002
+------------------------------------------------------------------------
+r34736 | koda@google.com | 2014-04-05 02:46:15 +0900 (土, 05  4月 2014) | 13 lines
+
+Generalize the interface of page space controller.
+
+Gather used/capacity/external into SpaceUsage object,
+and use it for testing whether GC is needed before or
+after an allocation.
+
+This refactor does not affect policy, but prepares for:
+1. Replacing promotion failure check/tracking.
+2. Better growth control for external allocation.
+
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//220723010
+------------------------------------------------------------------------
+r34717 | srdjan@google.com | 2014-04-04 04:44:18 +0900 (金, 04  4月 2014) | 5 lines
+
+Add optimization for pow(base, 0.5) to the other architectures as well.
+
+R=zra@google.com
+
+Review URL: https://codereview.chromium.org//220723017
+------------------------------------------------------------------------
+r34715 | zra@google.com | 2014-04-04 03:26:11 +0900 (金, 04  4月 2014) | 7 lines
+
+Adds subract, move wide immediate instructions to ARM64.
+
+Also adds tests for move, add shift, add extended.
+
+R=regis@google.com
+
+Review URL: https://codereview.chromium.org//214233006
+------------------------------------------------------------------------
+r34681 | iposva@google.com | 2014-04-03 09:58:14 +0900 (木, 03  4月 2014) | 6 lines
+
+- Handle doubles transferred in message snapshots specially.
+- Do not encode doubles using integer compression.
+
+R=asiva@google.com
+
+Review URL: https://codereview.chromium.org//221973004
+------------------------------------------------------------------------
+r34661 | johnmccutchan@google.com | 2014-04-03 03:30:01 +0900 (木, 03  4月 2014) | 23 lines
+
+Miscellaneous Observatory UI improvements
+
+Update cursor over expander in profiler
+
+Ressurect json-view
+
+Show arrow in profiler tree
+
+Clicking on <code-ref> link in profiler doesn't expand tree
+
+<code-ref> only shows a link for Dart code
+
+Port script-view to use script-inset
+
+Add function source to function view
+
+Add counters to isolate view
+
+Add counters to isolate summary
+
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//221263002
+------------------------------------------------------------------------
+r34657 | srdjan@google.com | 2014-04-03 03:03:37 +0900 (木, 03  4月 2014) | 5 lines
+
+Add flag --inlining-callee-size-threshold (80), that prevents inlining too large functions. 'Accidentally' restores performance of NBody. Improves compilation speed (dart analyzer and stress6 test)
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//222553002
+------------------------------------------------------------------------
+r34654 | zra@google.com | 2014-04-03 02:39:32 +0900 (木, 03  4月 2014) | 11 lines
+
+Begins work on ARM64, first assembler test.
+
+Most new code is in constants_arm64.h and
+{assembler,disassembler,simulator}_arm64.{h,cc}
+
+The rest of the CL just #def's out tests, modifies status files,
+and adds UNIMPLEMENTED functions, etc.
+
+R=regis@google.com
+
+Review URL: https://codereview.chromium.org//221133002
+------------------------------------------------------------------------
+r34649 | ajohnsen@google.com | 2014-04-03 00:53:23 +0900 (木, 03  4月 2014) | 6 lines
+
+Speed up snapshots of *int8lists, by using memmove.
+
+BUG=https://code.google.com/p/dart/issues/detail?id=17951
+R=asiva@google.com, sgjesse@google.com
+
+Review URL: https://codereview.chromium.org//221943002
+------------------------------------------------------------------------
+r34647 | ajohnsen@google.com | 2014-04-02 23:24:53 +0900 (水, 02  4月 2014) | 6 lines
+
+Trigger old-space GC when scavange made the external heap of old-space larger than max old-space size.
+
+BUG=
+R=koda@google.com
+
+Review URL: https://codereview.chromium.org//220113004
+------------------------------------------------------------------------
+r34643 | fschneider@google.com | 2014-04-02 21:37:48 +0900 (水, 02  4月 2014) | 15 lines
+
+Introduce a lazy-compile stub for functions.
+
+The function's code pointer is either a lazy-compile stub
+or the compiled code. The function is compiled on invocation.
+
+There is no need to check for null when invoking a function. This means
+one check less when invoking functions via a stub. For this I added a  LazyCompile
+stub.
+
+Additional cleanup in Stackmap and PcDescriptors (remove unused code pointer,
+and changed smi-lengh into a raw integer).
+
+R=zra@google.com
+
+Review URL: https://codereview.chromium.org//203523011
+------------------------------------------------------------------------
+r34625 | srdjan@google.com | 2014-04-02 08:39:56 +0900 (水, 02  4月 2014) | 3 lines
+
+Fix builds for finicky compilers.
+
+Review URL: https://codereview.chromium.org//221623002
+------------------------------------------------------------------------
+r34624 | srdjan@google.com | 2014-04-02 08:25:06 +0900 (水, 02  4月 2014) | 5 lines
+
+Optimize pow(x, 0.5) to use sqrt instead.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//221433002
+------------------------------------------------------------------------
+r34620 | johnmccutchan@google.com | 2014-04-02 07:05:39 +0900 (水, 02  4月 2014) | 6 lines
+
+Redo allocationprofile options
+
+BUG=
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//217323006
+------------------------------------------------------------------------
+r34612 | turnidge@google.com | 2014-04-02 04:45:57 +0900 (水, 02  4月 2014) | 17 lines
+
+Change how we provide value previews in the vm service.
+
+Rename the 'preview' property to 'valueAsString'.
+
+Rework printing so that we only add 'valueAsString' when we need it
+(num, String, etc.).
+
+Change ToUserCString to be a String-only method.  Drop ToUserCString
+for lists -- it was hokey and unused.  Max string length is now 1024
+instead of 40.
+
+Update tests.
+
+BUG=
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//219333011
+------------------------------------------------------------------------
+r34606 | turnidge@google.com | 2014-04-02 03:16:27 +0900 (水, 02  4月 2014) | 7 lines
+
+Fix line number table generation for multiline strings with interpolation.
+
+Share the line number table generation code between debugger and vm service.
+
+R=hausner@google.com
+
+Review URL: https://codereview.chromium.org//219993004
+------------------------------------------------------------------------
+r34601 | hausner@google.com | 2014-04-02 01:11:28 +0900 (水, 02  4月 2014) | 8 lines
+
+Deferred prefix support in metadata
+
+Deferred prefixes are never ok in metadata, since metadata is required
+to be compile time constant.
+
+R=rmacnak@google.com
+
+Review URL: https://codereview.chromium.org//219473007
+------------------------------------------------------------------------
+r34545 | hausner@google.com | 2014-03-29 09:25:16 +0900 (土, 29  3月 2014) | 3 lines
+
+Fix code invalidation for deferred code
+
+Review URL: https://codereview.chromium.org//217483008
+------------------------------------------------------------------------
+r34542 | iposva@google.com | 2014-03-29 08:39:36 +0900 (土, 29  3月 2014) | 7 lines
+
+- Make ports be less predictable.
+- Limit the range of port numbers to 30-bits.
+- Parse the ports as 64-bit values when reading from the wire in the debugger protocol.
+
+R=hausner@google.com
+
+Review URL: https://codereview.chromium.org//217693002
+------------------------------------------------------------------------
+r34537 | rmacnak@google.com | 2014-03-29 07:38:32 +0900 (土, 29  3月 2014) | 6 lines
+
+VM: Evaluate metadata on a class in the scope of its library not the scope of the class.
+
+BUG=http://dartbug.com/17795
+R=gbracha@google.com, hausner@google.com
+
+Review URL: https://codereview.chromium.org//217543004
+------------------------------------------------------------------------
+r34528 | turnidge@google.com | 2014-03-29 06:24:24 +0900 (土, 29  3月 2014) | 13 lines
+
+Use tokenPos instead of line/col in the vm service.
+
+Add line number information to the Script response.
+
+Parse line number information in the observatory.
+
+Update <script-ref> to take a pos argument
+
+Add a new <script-inset> element which shows a code snippet.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//216883008
+------------------------------------------------------------------------
+r34520 | turnidge@google.com | 2014-03-29 05:21:09 +0900 (土, 29  3月 2014) | 13 lines
+
+Rework the <field-view> page.
+
+Give fields/functions a consistent notion of ownership.
+
+Add field's script to the JSON.
+
+Make page reload work again.
+
+Fixup closure printing a bit.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//215213003
+------------------------------------------------------------------------
+r34494 | rmacnak@google.com | 2014-03-28 10:22:03 +0900 (金, 28  3月 2014) | 6 lines
+
+Handle creating ParameterMirrors for the parameters of forwarding constructors.
+
+BUG=http://dartbug.com/17823
+R=hausner@google.com, regis@google.com
+
+Review URL: https://codereview.chromium.org//212883009
+------------------------------------------------------------------------
+r34488 | asiva@google.com | 2014-03-28 08:05:57 +0900 (金, 28  3月 2014) | 5 lines
+
+Use ASSERT instead of CHECK_ISOLATE in cases where we derive the isolate from the native Arguments structure.
+
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//215293002
+------------------------------------------------------------------------
+r34485 | koda@google.com | 2014-03-28 07:11:39 +0900 (金, 28  3月 2014) | 10 lines
+
+Reduce GC from external allocation.
+
+Before, external allocs artificially reduced new space capacity.
+Now, we separately limit on total external size in new space.
+
+Makes scavenges less frequent, while still limiting total footprint.
+
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//211593004
+------------------------------------------------------------------------
+r34481 | hausner@google.com | 2014-03-28 06:20:47 +0900 (金, 28  3月 2014) | 14 lines
+
+Support deferred library prefix syntax
+
+First step towards deferred library support:
+- Parse the “deferred as” import clause.
+- Implement p.loadLibrary() which returns a future that
+  completes when the library is loaded.
+- Treat type annotations of deferred types as malformed.
+- Throw NoSuchMethodError when calling functions from
+  unloaded libraries.
+- Libraries are still read synchronously, but items in the
+  library won’t be visible through the deferred prefix until
+  the future returned by loadLibrary() completes.
+
+Review URL: https://codereview.chromium.org//208323015
+------------------------------------------------------------------------
+r34475 | srdjan@google.com | 2014-03-28 01:43:40 +0900 (金, 28  3月 2014) | 5 lines
+
+Fix bug in divpd x64.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//213193009
+------------------------------------------------------------------------
+r34460 | regis@google.com | 2014-03-27 08:38:18 +0900 (木, 27  3月 2014) | 8 lines
+
+Detect and reject illegal recursive types (non-contractive types).
+Fixed instantiation and equality of recursive types.
+Added many asserts to detect issues with recursive types.
+Disabled bad tests. They declare illegal types and will be fixed in a later cl.
+
+R=hausner@google.com, srdjan@google.com
+
+Review URL: https://codereview.chromium.org//211963003
+------------------------------------------------------------------------
+r34455 | srdjan@google.com | 2014-03-27 07:45:22 +0900 (木, 27  3月 2014) | 3 lines
+
+Fix dartium build.
+
+Review URL: https://codereview.chromium.org//213733002
+------------------------------------------------------------------------
+r34451 | srdjan@google.com | 2014-03-27 06:24:35 +0900 (木, 27  3月 2014) | 5 lines
+
+Incremental tuning/cleanup of inlining: --print-inline-tree changed to --print-inlining-tree; print also methods that were not inlined.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//211873003
+------------------------------------------------------------------------
+r34438 | iposva@google.com | 2014-03-27 02:30:39 +0900 (木, 27  3月 2014) | 6 lines
+
+- First step in refactoring ports with the goal of moving
+  them closer into the VM implementation.
+
+R=asiva@google.com
+
+Review URL: https://codereview.chromium.org//196443009
+------------------------------------------------------------------------
+r34435 | turnidge@google.com | 2014-03-27 02:13:03 +0900 (木, 27  3月 2014) | 13 lines
+
+Support Types in instance-ref/instance-view.
+
+Refactor JSON printing for all instances to share more code.  This allows Types to act like Instances in Observatory.
+
+Update the look and feel for the function-view page.
+
+Add script info for functions.
+
+Update tests.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//211283004
+------------------------------------------------------------------------
+r34420 | kasperl@google.com | 2014-03-26 20:38:30 +0900 (水, 26  3月 2014) | 9 lines
+
+Revert "- Make ports be less predictable."
+
+This reverts r34209 which is causing the x64 VM to hang when
+running command-line applications from within the editor.
+
+R=ricow@google.com, iposva@google.com
+BUG=http://dartbug.com/17806
+
+Review URL: https://codereview.chromium.org//212723002
+------------------------------------------------------------------------
+r34400 | rmacnak@google.com | 2014-03-26 09:44:54 +0900 (水, 26  3月 2014) | 5 lines
+
+Implement MethodMirror.location in the VM.
+
+R=gbracha@google.com, hausner@google.com
+
+Review URL: https://codereview.chromium.org//211243009
+------------------------------------------------------------------------
+r34391 | zra@google.com | 2014-03-26 06:30:51 +0900 (水, 26  3月 2014) | 7 lines
+
+Avoids MIPS32r2 instructions on MIPS32.
+
+Adds necessary feature detection to tell the difference.
+
+R=regis@google.com
+
+Review URL: https://codereview.chromium.org//211363007
+------------------------------------------------------------------------
+r34390 | johnmccutchan@google.com | 2014-03-26 06:28:44 +0900 (水, 26  3月 2014) | 6 lines
+
+Add fullgc subcommand to allocationprofile
+
+BUG=
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//211373005
+------------------------------------------------------------------------
+r34377 | johnmccutchan@google.com | 2014-03-26 03:09:02 +0900 (水, 26  3月 2014) | 8 lines
+
+Add isolate tag-profile model and UI.
+Distinction between a Dart Error and a ServiceError/ServiceException.
+Better Observatory behaviour when a ServiceError/ServiceExceptions occurs.
+Display isolate's sticky error.
+
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//205713004
+------------------------------------------------------------------------
+r34338 | johnmccutchan@google.com | 2014-03-25 06:58:45 +0900 (火, 25  3月 2014) | 6 lines
+
+Fix PrintToJSONStream for oddball functions
+
+BUG=
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//196173022
+------------------------------------------------------------------------
+r34333 | turnidge@google.com | 2014-03-25 06:42:26 +0900 (火, 25  3月 2014) | 21 lines
+
+Rework how ServiceObjects are created and cached in Observatory.
+
+We now use a single cache, rather than per-type caches which simplifies the get() logic and makes it easier to add more model-types in the future.
+
+Rework how isolates are created/stored/retrieved.  IsolateList is gone.
+
+Add canCache and immutable to ServiceObjects and use them to inform when an object should be cached or reloaded.
+
+Remove cache.dart, service.dart.
+
+Add a notion of a ServiceObjectOwner.
+
+Cleanups.
+
+Etc.
+
+Etc.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//204983008
+------------------------------------------------------------------------
+r34320 | ajohnsen@google.com | 2014-03-25 03:56:36 +0900 (火, 25  3月 2014) | 9 lines
+
+Fix memory-issue String::fromCharCodes, where a GC could invalidate an address.
+
+The constructions is now reordered, so the address is not extracted
+until after allocation of the new string.
+
+BUG=https://code.google.com/p/dart/issues/detail?id=17602
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//209003009
+------------------------------------------------------------------------
+r34315 | koda@google.com | 2014-03-25 01:57:53 +0900 (火, 25  3月 2014) | 7 lines
+
+Make all objects print at least their type in PrintToJSONStream.
+
+Also check this in the unit test.
+
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//209093002
+------------------------------------------------------------------------
+r34312 | zra@google.com | 2014-03-25 00:59:48 +0900 (火, 25  3月 2014) | 9 lines
+
+Use more fpu multi-load/store instructions on ARM.
+
+Addressing some TODOs in the ARM code. This appears
+to be a slight performance win, and makes things a
+bit cleaner.
+
+R=regis@google.com
+
+Review URL: https://codereview.chromium.org//208423006
+------------------------------------------------------------------------
+r34271 | koda@google.com | 2014-03-22 06:12:38 +0900 (土, 22  3月 2014) | 5 lines
+
+Ensure PrintToJSONStream can be called on all heap objects without crashing.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//206003005
+------------------------------------------------------------------------
+r34259 | srdjan@google.com | 2014-03-22 02:32:59 +0900 (土, 22  3月 2014) | 5 lines
+
+When deoptimizing use the code stored in the deopt information instead of current unoptimized code (could be different once deferred loading comes in).
+
+R=hausner@google.com
+
+Review URL: https://codereview.chromium.org//208533004
+------------------------------------------------------------------------
+r34258 | asiva@google.com | 2014-03-22 02:23:33 +0900 (土, 22  3月 2014) | 5 lines
+
+Use a bit in the handle structure to indicate if it is a prologue weak handle instead of the tagging the address.
+
+R=koda@google.com
+
+Review URL: https://codereview.chromium.org//208443002
+------------------------------------------------------------------------
+r34257 | koda@google.com | 2014-03-22 01:31:32 +0900 (土, 22  3月 2014) | 7 lines
+
+Assert that FreeListElement is never wrapped in a handle.
+
+Previously, this just crashed with a segfault (since its vtable entry is 0).
+
+R=asiva@google.com
+
+Review URL: https://codereview.chromium.org//207153003
+------------------------------------------------------------------------
+r34256 | zra@google.com | 2014-03-22 01:26:21 +0900 (土, 22  3月 2014) | 5 lines
+
+Implements unboxed Mints on ARM.
+
+R=johnmccutchan@google.com, regis@google.com
+
+Review URL: https://codereview.chromium.org//206503005
+------------------------------------------------------------------------
+r34251 | koda@google.com | 2014-03-22 00:01:51 +0900 (土, 22  3月 2014) | 3 lines
+
+R=floitsch@google.com
+
+Review URL: https://codereview.chromium.org//207303002
+------------------------------------------------------------------------
+r34250 | johnmccutchan@google.com | 2014-03-21 23:40:30 +0900 (金, 21  3月 2014) | 5 lines
+
+Refactor to support multiple outputs in location summary
+
+R=srdjan@google.com
+
+Review URL: https://codereview.chromium.org//207063002
+------------------------------------------------------------------------
+r34216 | srdjan@google.com | 2014-03-21 08:53:58 +0900 (金, 21  3月 2014) | 5 lines
+
+Print inlined tree using --print_inline_tree. Also added Function::ToQualifiedCString which prints only the class and function name.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//206503007
+------------------------------------------------------------------------
+r34209 | iposva@google.com | 2014-03-21 06:48:35 +0900 (金, 21  3月 2014) | 5 lines
+
+- Make ports be less predictable.
+
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//198463007
+------------------------------------------------------------------------
+r34208 | asiva@google.com | 2014-03-21 06:45:43 +0900 (金, 21  3月 2014) | 5 lines
+
+Auto delete persistent weak handles during finalization after invoking the callback associated with the weak handle.
+
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//205153002
+------------------------------------------------------------------------
+r34206 | koda@google.com | 2014-03-21 06:08:24 +0900 (金, 21  3月 2014) | 7 lines
+
+Add 'address' vm service message that finds heap objects.
+
+Will be used to navigate from heap map to individual objects.
+
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//206583003
+------------------------------------------------------------------------
+r34204 | turnidge@google.com | 2014-03-21 06:00:10 +0900 (金, 21  3月 2014) | 22 lines
+
+Add a VM page to the observatory.
+
+Make the VM a ServiceObject.  Some refactoring in the ServiceObject
+implementation.
+
+IsolateList is no longer a ServiceObject.  It should eventually become more like our caches.
+
+Support the /vm request in the vm.  Remove isolate list request.
+
+Improvements to Isolate::PrintToJSONStream: always provide a
+reasonable name.  Use the same code to produce isolate refs and
+non-refs.
+
+Improve isolate status message when the isolate is paused at
+start/exit.  Add a resume link to the isolate view.
+
+Add a navbar to the error page so that dartium users are less likely
+to get stuck.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//206213004
+------------------------------------------------------------------------
+r34195 | koda@google.com | 2014-03-21 03:56:45 +0900 (金, 21  3月 2014) | 9 lines
+
+Add class and address information to heap map; display on hover.
+
+Display a string like "String @ 0xe97c3328" while hovering over the map.
+
+Also add page separators (black).
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//204103009
+------------------------------------------------------------------------
+r34184 | asiva@google.com | 2014-03-21 02:07:45 +0900 (金, 21  3月 2014) | 5 lines
+
+Fix an incorrect usage of reusable handles in Dart_Allocate.
+
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//206633002
+------------------------------------------------------------------------
+r34181 | regis@google.com | 2014-03-21 01:41:59 +0900 (金, 21  3月 2014) | 12 lines
+
+Support displaying of types in the observatory (back-end only for now):
+- canonical type arguments cached in the global hash table
+- subset of the above, but with cached instantiations
+- canonical types cached by the type class
+
+And of course, it should now be possible to display any type, e.g.
+field types, function signature types, classes super types, interface types,
+etc...
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//184653003
+------------------------------------------------------------------------
+r34128 | regis@google.com | 2014-03-20 03:48:57 +0900 (木, 20  3月 2014) | 8 lines
+
+Fix canonicalization of types.
+Add functions retrieving canonical types by their index or vice versa (used by
+a future cl supporting types in vm service).
+Add getters for type argument instantiations (used by future cl).
+
+R=hausner@google.com
+
+Review URL: https://codereview.chromium.org//203443012
+------------------------------------------------------------------------
+r34108 | ajohnsen@google.com | 2014-03-19 17:54:06 +0900 (水, 19  3月 2014) | 6 lines
+
+Add SerializeNull and SerializeSmi benchmark for benchmarking serialization of the messages used inside of dart:io.
+
+BUG=
+R=asiva@google.com
+
+Review URL: https://codereview.chromium.org//159723003
+------------------------------------------------------------------------
+r34079 | johnmccutchan@google.com | 2014-03-19 08:32:36 +0900 (水, 19  3月 2014) | 5 lines
+
+Support wedging isolates before startup or before exit.
+
+R=turnidge@google.com
+
+Review URL: https://codereview.chromium.org//204003002
+------------------------------------------------------------------------
+r34065 | johnmccutchan@google.com | 2014-03-19 06:26:07 +0900 (水, 19  3月 2014) | 5 lines
+
+Set VMTag from stubs when transitioning between Dart and Native
+
+R=asiva@google.com, zra@google.com
+
+Review URL: https://codereview.chromium.org//200693002
+------------------------------------------------------------------------
+r34064 | johnmccutchan@google.com | 2014-03-19 06:20:41 +0900 (水, 19  3月 2014) | 5 lines
+
+Use VM tag in profile and add stack trace trie
+
+R=asiva@google.com, turnidge@google.com
+
+Review URL: https://codereview.chromium.org//201213004
+------------------------------------------------------------------------
+r34035 | iposva@google.com | 2014-03-19 02:55:10 +0900 (水, 19  3月 2014) | 7 lines
+
+Fix http://dartbug.com/17555
+- Do not try to finalize VM internal classes.
+- Do not try to print the script of VM internal class.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//202853007
+------------------------------------------------------------------------
+r33790 | rmacnak@google.com | 2014-03-18 08:43:32 +0900 (火, 18  3月 2014) | 5 lines
+
+Clean up ClosureMirror.invoke(#call, ...).
+
+R=asiva@google.com, gbracha@google.com
+
+Review URL: https://codereview.chromium.org//196513004
+------------------------------------------------------------------------
+r33778 | iposva@google.com | 2014-03-18 06:27:24 +0900 (火, 18  3月 2014) | 5 lines
+
+- Avoid exposing the 64-bit state of the PRNG to Dart code.
+
+R=asiva@google.com
+
+Review URL: https://codereview.chromium.org//199263005
+------------------------------------------------------------------------
+r33767 | srdjan@google.com | 2014-03-18 05:05:11 +0900 (火, 18  3月 2014) | 3 lines
+
+Fix broken buil don Linux X64
+
+Review URL: https://codereview.chromium.org//197283027
+------------------------------------------------------------------------
+r33766 | srdjan@google.com | 2014-03-18 04:55:13 +0900 (火, 18  3月 2014) | 5 lines
+
+x64 code improvements and cleanups.
+
+R=zra@google.com
+
+Review URL: https://codereview.chromium.org//201013002
+------------------------------------------------------------------------
+r33755 | turnidge@google.com | 2014-03-18 02:43:07 +0900 (火, 18  3月 2014) | 7 lines
+
+Rework library and class view pages.
+
+Add expression evaluation support for libraries and classes.
+
+R=johnmccutchan@google.com
+
+Review URL: https://codereview.chromium.org//199363002
+------------------------------------------------------------------------
+r33736 | fschneider@google.com | 2014-03-17 19:31:33 +0900 (月, 17  3月 2014) | 14 lines
+
+Alternative fix for .call invocation of closures.
+
+This also covers "closurization" of the .call method.
+This relies on the fact that f.call === f if f is a closure.
+This means that adding a simple getter to _FunctionImpl that
+ returns this is enough. No need for a separate dispatch.
+
+This CL reverts the previous fix for issue 12602 (modulo the
+additional tests).
+
+BUG=dartbug.com/17473, dartbug.com/12602
+R=iposva@google.com
+
+Review URL: https://codereview.chromium.org//200193002
+------------------------------------------------------------------------

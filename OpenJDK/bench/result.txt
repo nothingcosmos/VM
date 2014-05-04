@@ -1,0 +1,23 @@
+seed: 1700461846
+size: 10000000 bytes
+loop: 1000 times
+
+-- ByteBuffer heap
+  12.81 msec/loop
+  744.59 MB/s
+-- ByteBuffer direct
+  8.99 msec/loop
+  1061.29 MB/s
+-- Unsafe heap
+  6.41 msec/loop
+  1488.95 MB/s
+-- Unsafe direct
+  6.44 msec/loop
+  1481.55 MB/s
+
+-- C load
+  5.91 msec/loop
+  1614.67 MB/s
+-- C shift
+  6.95 msec/loop
+  1371.69 MB/s
