@@ -1,2 +1,40 @@
+Unsafe周りの調査
+###
+
+デシリアライズ速度の比較 ByteBuffer vs DirectBuffer vs Unsafe vs C
+http://frsyuki.hatenablog.com/entry/2014/03/12/155231
+
 frsyuki
 https://gist.github.com/frsyuki/9502028
+
+Unsafeがこんな速いのか気になったので調査
+
+Unsafeの実装
+===
+
+unsafe系は
+hotspot/src/share/vm/classfile/vmSymbol.hpp
+でvmIntrinsicsに登録されている。
+これはログからも確認できる。
+
+vmIntrinsicsは、各JITコンパイラが個別に命令列に展開する。
+C2コンパイラであるoptoの対応箇所は以下
+hotspot/src/share/vm/opto/library_call.cpp
+case vmIntrinsics::_getLong:                  return inline_unsafe_access(!is_native_ptr, !is_store, T_LONG,    !is_volatile);
+
+optoの中間表現はidealという名前で、Nodeクラスがグラフ構造でつながっている。
+intrinsicsはそのNodeにlibrary_callで置換され、
+そのNodeに対応したアセンブラを生成する。
+
+そのため特定のsymbolへの関数呼び出しに置換されるわけではない。
+
+inline_unsafe_accessは、その後make_load()関数により、
+IdealのNodeであるLoad Nodeに置換される。
+
+
+注意点
+===
+
+OpenJDK8だとUnsafe + DirectだとSEGVする。Oracle JDKだと大丈夫。
+原因は調査してない。
+
