@@ -1,0 +1,98 @@
+    123    1    b        java.lang.String::hashCode (55 bytes)
+seed: 1700461846
+size: 10000000 bytes
+loop: 100 times
+    184    2 %  b        java.util.Random::nextBytes @ 25 (56 bytes)
+                            @ 11   java.util.Random::nextInt (7 bytes)   inline (hot)
+                            @ 20   java.lang.Math::min (11 bytes)   (intrinsic)
+    194    3    b        java.util.concurrent.atomic.AtomicLong::get (5 bytes)
+    195    4    b        java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)
+                            @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+    196    5     n       sun.misc.Unsafe::compareAndSwapLong (native)   
+    196    6    b        java.util.Random::next (47 bytes)
+                            @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                            @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                              @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+                            @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                            @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                              @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+    255    7    b        java.nio.DirectByteBuffer::ix (10 bytes)
+    259    8    b        java.nio.Buffer::checkIndex (22 bytes)
+    260    9     n       sun.misc.Unsafe::getByte (native)   
+    260   10    b        java.nio.DirectByteBuffer::get (16 bytes)
+                            @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                            @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                            @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+    261   11    b        java.nio.Buffer::checkIndex (24 bytes)
+    264   12 %  b        DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
+                            @ 23   java.nio.DirectByteBuffer::get (16 bytes)   inline (hot)
+                             \-> TypeProfile (11264/11264 counts) = java/nio/DirectByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                            @ 40   java.nio.DirectByteBuffer::getInt (15 bytes)   inline (hot)
+                             \-> TypeProfile (5724/5724 counts) = java/nio/DirectByteBuffer
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   inline (hot)
+                                @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                                @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                  @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+                            @ 58   java.nio.DirectByteBuffer::getLong (16 bytes)   inline (hot)
+                             \-> TypeProfile (5540/5540 counts) = java/nio/DirectByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   inline (hot)
+                                @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+                                @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                  @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+    284   13    b        DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+                            @ 4   java.nio.Buffer::limit (5 bytes)   accessor
+                            @ 23   java.nio.DirectByteBuffer::get (16 bytes)   inline (hot)
+                             \-> TypeProfile (11264/11264 counts) = java/nio/DirectByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                            @ 40   java.nio.DirectByteBuffer::getInt (15 bytes)   inline (hot)
+                             \-> TypeProfile (5724/5724 counts) = java/nio/DirectByteBuffer
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   inline (hot)
+                                @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                                @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                  @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+                            @ 58   java.nio.DirectByteBuffer::getLong (16 bytes)   inline (hot)
+                             \-> TypeProfile (5540/5540 counts) = java/nio/DirectByteBuffer
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   inline (hot)
+                                @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+                                @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                  @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+-- ByteBuffer direct
+  6.81 msec/loop
+  1400.40 MB/s
+-- ByteBuffer direct
+  6.83 msec/loop
+  1396.30 MB/s
+-- ByteBuffer direct
+  6.87 msec/loop
+  1388.17 MB/s
+-- ByteBuffer direct
+  6.82 msec/loop
+  1398.35 MB/s
+-- ByteBuffer direct
+  6.85 msec/loop
+  1392.23 MB/s
+-- ByteBuffer direct
+  6.82 msec/loop
+  1398.35 MB/s
+-- ByteBuffer direct
+  6.80 msec/loop
+  1402.46 MB/s
+-- ByteBuffer direct
+  6.83 msec/loop
+  1396.30 MB/s
+writing data to random.data file
+  11232   14    b        java.lang.String::indexOf (70 bytes)
+                            @ 66   java.lang.String::indexOfSupplementary (71 bytes)   too big
