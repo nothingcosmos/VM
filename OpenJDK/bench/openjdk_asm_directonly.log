@@ -1,0 +1,2849 @@
+    144    1    b  3       java.lang.String::equals (81 bytes)
+    149    2    b  3       java.lang.Math::min (11 bytes)
+    149    3    b  3       java.lang.String::charAt (29 bytes)
+                              @ 18  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
+    152    4    b  3       java.lang.String::indexOf (70 bytes)
+                              @ 66   java.lang.String::indexOfSupplementary (71 bytes)   callee is too large
+    157    5    b  3       java.lang.String::length (6 bytes)
+    158    6     n 0       java.lang.System::arraycopy (native)   (static)
+    163    7    b  3       java.lang.Object::<init> (1 bytes)
+    172    8    b  3       java.io.BufferedInputStream::getBufIfOpen (21 bytes)
+                              @ 15  java/io/IOException::<init> (not loaded)   not inlineable
+    174    9  s b  3       java.io.BufferedInputStream::read (49 bytes)
+                              @ 12   java.io.BufferedInputStream::fill (233 bytes)   callee is too large
+                              @ 29   java.io.BufferedInputStream::getBufIfOpen (21 bytes)
+                                @ 15  java/io/IOException::<init> (not loaded)   not inlineable
+    178   10    b  3       java.io.DataInputStream::readUTF (501 bytes)
+                              @ 1   java.io.DataInputStream::readUnsignedShort (39 bytes)   callee is too large
+                              @ 87   java.io.DataInputStream::readFully (63 bytes)   callee is too large
+                              @ 259  java/io/UTFDataFormatException::<init> (not loaded)   not inlineable
+                              @ 291   java.lang.StringBuilder::<init> (7 bytes)
+                                @ 3   java.lang.AbstractStringBuilder::<init> (12 bytes)
+                                  @ 1   java.lang.Object::<init> (1 bytes)
+                              @ 296   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (50 bytes)   callee is too large
+                              @ 301   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (62 bytes)   callee is too large
+                              @ 304   java.lang.StringBuilder::toString (17 bytes)
+                                @ 13   java.lang.String::<init> (62 bytes)   callee is too large
+                              @ 307  java/io/UTFDataFormatException::<init> (not loaded)   not inlineable
+                              @ 351  java/io/UTFDataFormatException::<init> (not loaded)   not inlineable
+                              @ 403   java.lang.StringBuilder::<init> (7 bytes)
+                                @ 3   java.lang.AbstractStringBuilder::<init> (12 bytes)
+                                  @ 1   java.lang.Object::<init> (1 bytes)
+                              @ 408   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (50 bytes)   callee is too large
+                              @ 415   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (62 bytes)   callee is too large
+                              @ 418   java.lang.StringBuilder::toString (17 bytes)
+                                @ 13   java.lang.String::<init> (62 bytes)   callee is too large
+                              @ 421  java/io/UTFDataFormatException::<init> (not loaded)   not inlineable
+                              @ 469   java.lang.StringBuilder::<init> (7 bytes)
+                                @ 3   java.lang.AbstractStringBuilder::<init> (12 bytes)
+                                  @ 1   java.lang.Object::<init> (1 bytes)
+                              @ 474   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (50 bytes)   callee is too large
+                              @ 479   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (62 bytes)   callee is too large
+                              @ 482   java.lang.StringBuilder::toString (17 bytes)
+                                @ 13   java.lang.String::<init> (62 bytes)   callee is too large
+                              @ 485  java/io/UTFDataFormatException::<init> (not loaded)   not inlineable
+                              @ 497   java.lang.String::<init> (62 bytes)   callee is too large
+    202   11    b  3       java.util.Arrays::copyOfRange (63 bytes)
+                              @ 16   java.lang.StringBuilder::<init> (7 bytes)
+                                @ 3   java.lang.AbstractStringBuilder::<init> (12 bytes)
+                                  @ 1   java.lang.Object::<init> (1 bytes)
+                              @ 20   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (62 bytes)   callee is too large
+                              @ 25   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (50 bytes)   callee is too large
+                              @ 29   java.lang.StringBuilder::append (8 bytes)
+                                @ 2   java.lang.AbstractStringBuilder::append (62 bytes)   callee is too large
+                              @ 32   java.lang.StringBuilder::toString (17 bytes)
+                                @ 13   java.lang.String::<init> (62 bytes)   callee is too large
+                              @ 35   java.lang.IllegalArgumentException::<init> (6 bytes)   don't inline Throwable constructors
+                              @ 54   java.lang.Math::min (11 bytes)
+                              @ 57   java.lang.System::arraycopy (0 bytes)   intrinsic
+    206   12    b  3       java.lang.String::<init> (62 bytes)
+                              @ 1   java.lang.Object::<init> (1 bytes)
+                              @ 13  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 26  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 45  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 55   java.util.Arrays::copyOfRange (63 bytes)   callee is too large
+    208   13    b  3       java.io.DataInputStream::readUnsignedShort (39 bytes)
+                              @ 4   java.io.InputStream::read (0 bytes)   no static binding
+                              @ 12   java.io.InputStream::read (0 bytes)   no static binding
+                              @ 26  java/io/EOFException::<init> (not loaded)   not inlineable
+    209   14    b  3       java.io.DataInputStream::readFully (63 bytes)
+                              @ 8  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
+               !              @ 34   java.io.InputStream::read (109 bytes)   no static binding
+                              @ 48  java/io/EOFException::<init> (not loaded)   not inlineable
+    211   15    b  3       java.io.DataInputStream::readUTF (5 bytes)
+                              @ 1   java.io.DataInputStream::readUTF (501 bytes)   callee is too large
+    212   16  s b  3       java.io.BufferedInputStream::read (113 bytes)
+                              @ 1   java.io.BufferedInputStream::getBufIfOpen (21 bytes)
+                                @ 15  java/io/IOException::<init> (not loaded)   not inlineable
+                              @ 26  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 49   java.io.BufferedInputStream::read1 (108 bytes)   callee is too large
+                              @ 101   java.io.InputStream::available (2 bytes)   no static binding
+    216   17    b  3       java.io.BufferedInputStream::read1 (108 bytes)
+                              @ 18   java.io.BufferedInputStream::getBufIfOpen (21 bytes)
+                                @ 15  java/io/IOException::<init> (not loaded)   not inlineable
+                              @ 33   java.io.BufferedInputStream::getInIfOpen (21 bytes)
+                                @ 15  java/io/IOException::<init> (not loaded)   not inlineable
+               !              @ 39   java.io.InputStream::read (109 bytes)   no static binding
+                              @ 44   java.io.BufferedInputStream::fill (233 bytes)   callee is too large
+                              @ 80   java.io.BufferedInputStream::getBufIfOpen (21 bytes)
+                                @ 15  java/io/IOException::<init> (not loaded)   not inlineable
+                              @ 91   java.lang.System::arraycopy (0 bytes)   intrinsic
+    222   18    b  3       java.io.DataInputStream::readShort (40 bytes)
+                              @ 4   java.io.InputStream::read (0 bytes)   no static binding
+                              @ 12   java.io.InputStream::read (0 bytes)   no static binding
+                              @ 26  java/io/EOFException::<init> (not loaded)   not inlineable
+    224   19    b  3       java.io.DataInputStream::readFully (9 bytes)
+                              @ 5   java.io.DataInputStream::readFully (63 bytes)   callee is too large
+    231   20    b  3       java.lang.String::hashCode (55 bytes)
+    402   21    b  3       java.util.HashMap::hash (20 bytes)
+                              @ 9   java.lang.Object::hashCode (0 bytes)   no static binding
+    407   22    b  3       java.util.HashMap::put (13 bytes)
+                              @ 2   java.util.HashMap::hash (20 bytes)
+                                @ 9   java.lang.Object::hashCode (0 bytes)   no static binding
+                              @ 9   java.util.HashMap::putVal (300 bytes)   callee is too large
+    409   23    b  1       java.lang.ref.Reference::get (5 bytes)
+    410   24    b  1       java.lang.ThreadLocal::access$400 (5 bytes)
+    411   25    b  1       java.lang.Object::<init> (1 bytes)
+    412    7       3       java.lang.Object::<init> (1 bytes)   made not entrant
+    413   26    b  3       java.lang.System::getSecurityManager (4 bytes)
+    414   27    b  3       java.lang.AbstractStringBuilder::ensureCapacityInternal (16 bytes)
+                              @ 12   java.lang.AbstractStringBuilder::expandCapacity (50 bytes)   callee is too large
+    416   28    b  4       java.lang.String::charAt (29 bytes)
+{method}
+ - this oop:          0x00007f1dc052b808
+ - method holder:     'java/lang/String'
+ - constants:         0x00007f1dc0528100 constant pool [678] {0x00007f1dc0528100} for 'java/lang/String' cache=0x00007f1dc05d8478
+ - access:            0x81000001  public 
+ - name:              'charAt'
+ - signature:         '(I)C'
+ - max stack:         4
+ - max locals:        2
+ - size of params:    2
+ - method size:       12
+ - highest level:     3
+ - vtable index:      -2
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
+ - compiled entry     0x00007f1dad1fc480
+ - code size:         29
+ - code start:        0x00007f1dc052b7c8
+ - code end (excl):   0x00007f1dc052b7e5
+ - method data:       0x00007f1dc06d08d0
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc052b7e5
+ - localvar length:   2
+ - localvar start:    0x00007f1dc052b7ee
+ - compiled code: nmethod    418    3       3       java.lang.String::charAt (29 bytes)
+#
+#  char ( java/lang/String:NotNull:exact *, int )
+#
+#r018 rsi:rsi   : parm 0: java/lang/String:NotNull:exact *
+#r016 rdx   : parm 1: int
+# -- Old rsp -- Framesize: 48 --
+#r191 rsp+44: in_preserve
+#r190 rsp+40: return address
+#r189 rsp+36: in_preserve
+#r188 rsp+32: saved fp register
+#r187 rsp+28: pad2, stack alignment
+#r186 rsp+24: pad2, stack alignment
+#r185 rsp+20: Fixed slot 1
+#r184 rsp+16: Fixed slot 0
+#r195 rsp+12: spill
+#r194 rsp+ 8: spill
+#r193 rsp+ 4: spill
+#r192 rsp+ 0: spill
+#
+000   N68: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B7 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #32	# Create frame
+
+02c   	testl   RDX, RDX
+02e   	jl,s   B7  P=0.000000 C=5631.000000
+02e
+030   B2: #	B8 B3 <- B1  Freq: 1
+030   	movl    RBP, [RSI + #12 (8-bit)]	# compressed ptr ! Field: java/lang/String.value
+033   	movl    R10, [RBP + #12 (8-bit)]	# range
+037   	NullCheck RBP
+037
+037   B3: #	B7 B4 <- B2  Freq: 0.999999
+037   	cmpl    RDX, R10
+03a   	jge,s   B7  P=0.000000 C=5631.000000
+03a
+03c   B4: #	B6 B5 <- B3  Freq: 0.999998
+03c   	cmpl    RDX, R10	# unsigned
+03f   	jnb,us  B6  P=0.000001 C=-1.000000
+03f
+041   B5: #	N68 <- B4  Freq: 0.999997
+041   	movzwl  RAX, [RBP + #16 + RDX << #1]	# ushort/char
+046   	addq    rsp, 32	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+051   	ret
+051
+052   B6: #	N68 <- B4  Freq: 1.01328e-06
+052   	movl    RSI, #-28	# int
+057   	movl    [rsp + #0], RDX	# spill
+      	nop 	# 1 bytes pad for loops and calls
+05b   	call,static  wrapper for: uncommon_trap(reason='range_check' action='make_not_entrant')
+        # java.lang.String::charAt @ bci:27  L[0]=_ L[1]=_ STK[0]=RBP STK[1]=rsp + #0
+        # OopMap{rbp=NarrowOop off=96}
+060   	int3	# ShouldNotReachHere
+060
+065   B7: #	N68 <- B3 B1  Freq: 9.76836e-07
+065   	movl    RSI, #5	# int
+06a   	movl    RBP, RDX	# spill
+      	nop 	# 3 bytes pad for loops and calls
+06f   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='5')
+        # java.lang.String::charAt @ bci:13  L[0]=_ L[1]=RBP
+        # OopMap{off=116}
+074   	int3	# ShouldNotReachHere
+074
+079   B8: #	N68 <- B2  Freq: 1.01328e-06
+079   	movl    RSI, #-10	# int
+      	nop 	# 1 bytes pad for loops and calls
+07f   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # java.lang.String::charAt @ bci:9  L[0]=_ L[1]=_ STK[0]=_ STK[1]=#NULL
+        # OopMap{off=132}
+084   	int3	# ShouldNotReachHere
+084
+
+    430    3       3       java.lang.String::charAt (29 bytes)   made not entrant
+    431   29    b  3       java.lang.String::indexOf (7 bytes)
+                              @ 3   java.lang.String::indexOf (70 bytes)   callee is too large
+    432   30    b  3       java.lang.AbstractStringBuilder::append (50 bytes)
+                              @ 5   java.lang.AbstractStringBuilder::appendNull (56 bytes)   callee is too large
+                              @ 10   java.lang.String::length (6 bytes)
+                              @ 21   java.lang.AbstractStringBuilder::ensureCapacityInternal (16 bytes)
+                                @ 12   java.lang.AbstractStringBuilder::expandCapacity (50 bytes)   callee is too large
+                              @ 35   java.lang.String::getChars (62 bytes)   callee is too large
+    437   31    b  3       java.util.HashMap$Node::<init> (26 bytes)
+                              @ 1   java.lang.Object::<init> (1 bytes)
+    439   32    b  3       java.lang.String::lastIndexOf (52 bytes)
+                              @ 16   java.lang.Math::min (11 bytes)
+                              @ 48   java.lang.String::lastIndexOfSupplementary (70 bytes)   callee is too large
+    448   33    b  3       sun.util.locale.LocaleUtils::isUpper (18 bytes)
+    453   34    b  3       java.lang.StringBuilder::append (8 bytes)
+                              @ 2   java.lang.AbstractStringBuilder::append (50 bytes)   callee is too large
+    462   35    b  3       java.util.concurrent.ConcurrentHashMap::tabAt (21 bytes)
+                              @ 14   sun.misc.Unsafe::getObjectVolatile (0 bytes)   intrinsic
+    464   36     n 0       sun.misc.Unsafe::getObjectVolatile (native)   
+    468   37    b  3       sun.nio.cs.UTF_8$Encoder::encode (359 bytes)
+                              @ 14   java.lang.Math::min (11 bytes)
+                              @ 139   java.lang.Character::isSurrogate (18 bytes)
+                              @ 157  sun/nio/cs/Surrogate$Parser::<init> (not loaded)   not inlineable
+                              @ 175  sun/nio/cs/Surrogate$Parser::parse (not loaded)   not inlineable
+                              @ 186   java.nio.charset.CharsetEncoder::malformedInputAction (5 bytes)
+    479   38  s b  4       java.io.BufferedInputStream::read (49 bytes)
+                              @ 12   java.io.BufferedInputStream::fill (233 bytes)   too big
+                              @ 29   java.io.BufferedInputStream::getBufIfOpen (21 bytes)   inline (hot)
+{method}
+ - this oop:          0x00007f1dc06781f8
+ - method holder:     'java/io/BufferedInputStream'
+ - constants:         0x00007f1dc0677630 constant pool [155] {0x00007f1dc0677630} for 'java/io/BufferedInputStream' cache=0x00007f1dc06796e8
+ - access:            0x81000021  public synchronized 
+ - name:              'read'
+ - signature:         '()I'
+ - max stack:         6
+ - max locals:        1
+ - size of params:    1
+ - method size:       12
+ - highest level:     3
+ - vtable index:      7
+ - i2i entry:         0x00007f1dad01f060
+ - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
+ - compiled entry     0x00007f1dad1ffc20
+ - code size:         49
+ - code start:        0x00007f1dc06781a8
+ - code end (excl):   0x00007f1dc06781d9
+ - method data:       0x00007f1dc078d7f0
+ - checked ex length: 1
+ - checked ex start:  0x00007f1dc06781f4
+ - linenumber start:  0x00007f1dc06781d9
+ - localvar length:   1
+ - localvar start:    0x00007f1dc06781e6
+ - compiled code: nmethod    487    9  s    3       java.io.BufferedInputStream::read (49 bytes)
+#
+#  int ( java/io/BufferedInputStream:NotNull * )
+#
+#r018 rsi:rsi   : parm 0: java/io/BufferedInputStream:NotNull *
+# -- Old rsp -- Framesize: 48 --
+#r191 rsp+44: in_preserve
+#r190 rsp+40: return address
+#r189 rsp+36: in_preserve
+#r188 rsp+32: saved fp register
+#r187 rsp+28: Fixed slot 3
+#r186 rsp+24: Fixed slot 2
+#r185 rsp+20: Fixed slot 1
+#r184 rsp+16: Fixed slot 0
+#r195 rsp+12: spill
+#r194 rsp+ 8: spill
+#r193 rsp+ 4: spill
+#r192 rsp+ 0: spill
+#
+000   N336: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B14 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #32	# Create frame
+
+02c   	movq    [rsp + #0], RSI	# spill
+030   	movq    RAX, [RSI]	# long
+033   	movq    R10, RAX	# spill
+036   	andq    R10, #7	# long
+03a   	cmpq    R10, #5
+03e   	jne     B14  P=0.000001 C=-1.000000
+03e
+044   B2: #	B16 B3 <- B1  Freq: 0.999999
+044   	# TLS is in R15
+044   	movl    R11, narrowklass: precise klass java/io/BufferedInputStream: 0x00007f1d5c09ce58:Constant:exact *	# compressed klass ptr
+04a   	decode_klass_not_null R10,R11
+058   	movq    R10, [R10 + #176 (32-bit)]	# long
+05f   	movq    R11, R10	# spill
+062   	orq     R11, R15	# long
+065   	movq    R8, R11	# spill
+068   	xorq    R8, RAX	# long
+06b   	testq   R8, #-121	# long
+072   	jne     B16  P=0.000001 C=-1.000000
+072
+078   B3: #	B8 B4 <- B15 B14 B2 B20  Freq: 1
+078   	MEMBAR-acquire (prior CMPXCHG in FastLock so empty encoding)
+078   	movq    R10, [rsp + #0]	# spill
+07c   	movl    R10, [R10 + #20 (8-bit)]	# int ! Field: java/io/BufferedInputStream.pos
+080   	movq    R11, [rsp + #0]	# spill
+084   	movl    R8, [R11 + #16 (8-bit)]	# int ! Field: java/io/BufferedInputStream.count
+088   	cmpl    R10, R8
+08b   	jge,s   B8  P=0.000186 C=5375.000000
+08b
+08d   B4: #	B25 B5 <- B9 B3  Freq: 0.999907
+08d   	movq    R10, [rsp + #0]	# spill
+091   	movl    R11, [R10 + #32 (8-bit)]	# compressed ptr ! Field: volatile java/io/BufferedInputStream.buf
+095   	MEMBAR-acquire ! (empty encoding)
+095   	movl    R10, [R11 + #12 (8-bit)]	# range
+099   	NullCheck R11
+099
+099   B5: #	B12 B6 <- B4  Freq: 0.999906
+099   	movq    R8, [rsp + #0]	# spill
+09d   	movl    RBP, [R8 + #20 (8-bit)]	# int ! Field: java/io/BufferedInputStream.pos
+0a1   	movl    R9, RBP	# spill
+0a4   	incl    R9	# int
+0a7   	movl    [R8 + #20 (8-bit)], R9	# int ! Field: java/io/BufferedInputStream.pos
+0ab   	cmpl    RBP, R10	# unsigned
+0ae   	jnb,us  B12  P=0.000001 C=-1.000000
+0ae
+0b0   B6: #	B21 B7 <- B5  Freq: 0.999905
+0b0   	movslq  R10, RBP	# i2l
+0b3   	movzbl  RBX, [R11 + #16 + R10]	# ubyte
+0b9   	MEMBAR-release (a FastUnlock follows so empty encoding)
+0b9   	movl    R10, #7	# long (unsigned 32-bit)
+0bf   	andq    R10, [R8]	# long
+0c2   	cmpq    R10, #5
+0c6   	jne     B21  P=0.000001 C=-1.000000
+0c6
+0cc   B7: #	N336 <- B11 B22 B21 B6  Freq: 0.999998
+0cc   	movl    RAX, RBX	# spill
+0ce   	addq    rsp, 32	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+0d9   	ret
+0d9
+0da   B8: #	B26 B9 <- B3  Freq: 0.000186026
+0da   	movq    RSI, R11	# spill
+0dd   	movq    RBP, RSI	# spill
+      	nop 	# 3 bytes pad for loops and calls
+0e3   	call,static  java.io.BufferedInputStream::fill
+        # java.io.BufferedInputStream::read @ bci:12  L[0]=RBP MON-BOX0=rsp+16 MON-OBJ[0]=RBP
+        # OopMap{rbp=Oop [0]=Oop off=232}
+0e8
+0e8   B9: #	B4 B10 <- B8  Freq: 0.000186022
+        # Block is sole successor of call
+0e8   	movl    R11, [RBP + #16 (8-bit)]	# int ! Field: java/io/BufferedInputStream.count
+0ec   	movl    R10, [RBP + #20 (8-bit)]	# int ! Field: java/io/BufferedInputStream.pos
+0f0   	cmpl    R10, R11
+0f3   	jl,s   B4  P=0.500000 C=-1.000000
+0f3
+0f5   B10: #	B23 B11 <- B9  Freq: 9.30112e-05
+0f5   	MEMBAR-release (a FastUnlock follows so empty encoding)
+0f5   	movl    R10, #7	# long (unsigned 32-bit)
+0fb   	andq    R10, [RBP]	# long
+0ff   	cmpq    R10, #5
+103   	jne     B23  P=0.000001 C=-1.000000
+103
+109   B11: #	B7 <- B24 B23 B10  Freq: 9.30112e-05
+109   	movl    RBX, #-1	# int
+10e   	jmp,s   B7
+10e
+110   B12: #	N336 <- B5  Freq: 1.01318e-06
+110   	movl    RSI, #-28	# int
+115   	movl    [rsp + #8], R11	# spill
+      	nop 	# 1 bytes pad for loops and calls
+11b   	call,static  wrapper for: uncommon_trap(reason='range_check' action='make_not_entrant')
+        # java.io.BufferedInputStream::read @ bci:43  L[0]=_ STK[0]=rsp + #8 STK[1]=RBP MON-BOX0=rsp+16 MON-OBJ[0]=rsp + #0
+        # OopMap{[0]=Oop [8]=NarrowOop off=288}
+120   	int3	# ShouldNotReachHere
+120
+125   B13: #	B14 <- B16  Freq: 9.99999e-13
+125   	cmpxchgq [RSI], R10	# If rax == [RSI] then store R10 into [RSI]
+12a
+12a   B14: #	B3 B15 <- B1 B13  Freq: 1e-06
+12a   	leaq    RBX, [rsp + #16]	# box lock
+12f   	fastlock RSI,RBX	! kills RBX,RAX,R10
+17e   	je     B3  P=0.999999 C=-1.000000
+17e
+184   B15: #	B3 <- B19 B14  Freq: 2e-12
+184   	leaq    RDX, [rsp + #16]	# box lock
+189   	movq    RBP, RSI	# spill
+      	nop 	# 3 bytes pad for loops and calls
+18f   	call,static  wrapper for: _complete_monitor_locking_Java
+        # java.io.BufferedInputStream::read @ bci:-1  L[0]=RBP MON-BOX0=rsp+16 MON-OBJ[0]=RBP
+        # OopMap{rbp=Oop [0]=Oop off=404}
+194   	jmp     B3
+194
+199   B16: #	B13 B17 <- B2  Freq: 9.99999e-07
+199   	testq   R8, #7	# long
+1a0   	jne     B13  P=0.000001 C=-1.000000
+1a0
+1a6   B17: #	B19 B18 <- B16  Freq: 9.99998e-07
+1a6   	testq   R8, #768	# long
+1ad   	jne,s   B19  P=0.000001 C=-1.000000
+1ad
+1af   B18: #	B19 <- B17  Freq: 9.99997e-07
+1af   	andq    RAX, #895	# long
+1b6   	movq    R11, RAX	# spill
+1b9   	orq     R11, R15	# long
+1bc
+1bc   B19: #	B15 B20 <- B18 B17  Freq: 9.99998e-07
+1bc   	cmpxchgq [RSI], R11	# If rax == [RSI] then store R11 into [RSI]
+1c1   	jne,us  B15  P=0.000001 C=-1.000000
+1c1
+1c3   B20: #	B3 <- B19  Freq: 9.99997e-07
+1c3   	jmp     B3
+1c3
+1c8   B21: #	B7 B22 <- B6  Freq: 9.99905e-07
+1c8   	leaq    RAX, [rsp + #16]	# box lock
+1cd   	fastunlock R8,RAX	! kills RAX,R10
+26f   	je     B7  P=0.999999 C=-1.000000
+26f
+275   B22: #	B7 <- B21  Freq: 9.99905e-13
+275   	movq    RDI, R8	# spill
+278   	leaq    RSI, [rsp + #16]	# box lock
+27d   	call_leaf,runtime  complete_monitor_unlocking_C
+        No JVM State Info
+        # 
+28a   	jmp     B7
+28a
+28f   B23: #	B11 B24 <- B10  Freq: 9.30112e-11
+28f   	leaq    RAX, [rsp + #16]	# box lock
+294   	fastunlock RBP,RAX	! kills RAX,R10
+338   	je     B11  P=0.999999 C=-1.000000
+338
+33e   B24: #	B11 <- B23  Freq: 9.30112e-17
+33e   	movq    RDI, RBP	# spill
+341   	leaq    RSI, [rsp + #16]	# box lock
+346   	call_leaf,runtime  complete_monitor_unlocking_C
+        No JVM State Info
+        # 
+353   	jmp     B11
+353
+358   B25: #	N336 <- B4  Freq: 4.76793e-07
+358   	movl    RSI, #-83	# int
+35d   	movq    RBP, [rsp + #0]	# spill
+361   	movl    [rsp + #12], R11	# spill
+      	nop 	# 1 bytes pad for loops and calls
+367   	call,static  wrapper for: uncommon_trap(reason='unreached' action='reinterpret')
+        # java.io.BufferedInputStream::getBufIfOpen @ bci:6  L[0]=_ L[1]=rsp + #12 STK[0]=rsp + #12
+        # java.io.BufferedInputStream::read @ bci:29  L[0]=RBP MON-BOX0=rsp+16 MON-OBJ[0]=RBP
+        # OopMap{rbp=Oop [12]=NarrowOop off=876}
+36c   	int3	# ShouldNotReachHere
+36c
+371   B26: #	B28 B27 <- B8  Freq: 1.86026e-09
+371   	# exception oop is in rax; no code emitted
+371   	movq    RBX, RAX	# spill
+374   	MEMBAR-release (a FastUnlock follows so empty encoding)
+374   	movl    R10, #7	# long (unsigned 32-bit)
+37a   	andq    R10, [RBP]	# long
+37e   	cmpq    R10, #5
+382   	jne,s   B28  P=0.000001 C=-1.000000
+382
+384   B27: #	N336 <- B29 B28 B26  Freq: 1.86026e-09
+384   	movq    RSI, RBX	# spill
+387   	addq    rsp, 32	# Destroy frame
+	popq   rbp
+
+38c   	jmp     rethrow_stub
+38c
+391   B28: #	B27 B29 <- B26  Freq: 1.86026e-15
+391   	leaq    RAX, [rsp + #16]	# box lock
+396   	fastunlock RBP,RAX	! kills RAX,R10
+43a   	je     B27  P=0.999999 C=-1.000000
+43a
+440   B29: #	B27 <- B28  Freq: 1.86026e-21
+440   	movq    RDI, RBP	# spill
+443   	leaq    RSI, [rsp + #16]	# box lock
+448   	call_leaf,runtime  complete_monitor_unlocking_C
+        No JVM State Info
+        # 
+455   	jmp     B27
+455
+
+    504    9  s    3       java.io.BufferedInputStream::read (49 bytes)   made not entrant
+    505   39    b  3       java.io.DataInputStream::readInt (72 bytes)
+                              @ 4   java.io.InputStream::read (0 bytes)   no static binding
+                              @ 12   java.io.InputStream::read (0 bytes)   no static binding
+                              @ 20   java.io.InputStream::read (0 bytes)   no static binding
+                              @ 28   java.io.InputStream::read (0 bytes)   no static binding
+                              @ 48  java/io/EOFException::<init> (not loaded)   not inlineable
+seed: 1700461846
+size: 10000000 bytes
+loop: 100 times
+    541   40     n 0       sun.misc.Unsafe::compareAndSwapLong (native)   
+    542   41    b  3       java.util.Random::nextInt (7 bytes)
+                              @ 3   java.util.Random::next (47 bytes)   callee is too large
+    543   42    b  3       java.util.concurrent.atomic.AtomicLong::get (5 bytes)
+    544   43    b  3       java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)
+                              @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   intrinsic
+    545   44    b  3       java.util.Random::next (47 bytes)
+                              @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)
+                              @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)
+                                @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   intrinsic
+    549   45    b  4       java.lang.Math::min (11 bytes)
+{method}
+ - this oop:          0x00007f1dc0604078
+ - method holder:     'java/lang/Math'
+ - constants:         0x00007f1dc0600e80 constant pool [324] {0x00007f1dc0600e80} for 'java/lang/Math' cache=0x00007f1dc06058e0
+ - access:            0x81000009  public static 
+ - name:              'min'
+ - signature:         '(II)I'
+ - max stack:         3
+ - max locals:        2
+ - size of params:    2
+ - method size:       12
+ - intrinsic id:      14 _min
+ - highest level:     3
+ - vtable index:      -2
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b9470: 0xaa000000 i2c: 0x00007f1dad127660 c2i: 0x00007f1dad12779c c2iUV: 0x00007f1dad12776f
+ - compiled entry     0x00007f1dad1cd0a0
+ - code size:         11
+ - code start:        0x00007f1dc0604048
+ - code end (excl):   0x00007f1dc0604053
+ - method data:       0x00007f1dc0746610
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc0604053
+ - localvar length:   2
+ - localvar start:    0x00007f1dc060405e
+ - compiled code: nmethod    550    2       3       java.lang.Math::min (11 bytes)
+#
+#  int ( int, int )
+#
+#r018 rsi   : parm 0: int
+#r016 rdx   : parm 1: int
+# -- Old rsp -- Framesize: 32 --
+#r191 rsp+28: in_preserve
+#r190 rsp+24: return address
+#r189 rsp+20: in_preserve
+#r188 rsp+16: saved fp register
+#r187 rsp+12: pad2, stack alignment
+#r186 rsp+ 8: pad2, stack alignment
+#r185 rsp+ 4: Fixed slot 1
+#r184 rsp+ 0: Fixed slot 0
+#
+abababab   N1: #	B1 <- B3  Freq: 1
+abababab
+000   B1: #	B4 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	subq    rsp, #24	# Create frame
+	movq    [rsp + #16], rbp	# Save rbp
+
+00c   	cmpl    RSI, RDX
+00e   	jle,s   B4  P=0.086884 C=5375.000000
+00e
+010   B2: #	B3 <- B1  Freq: 0.913116
+010   	movl    RAX, RDX	# spill
+010
+012   B3: #	N1 <- B2 B4  Freq: 1
+012   	addq    rsp, 16	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+01d   	ret
+01d
+01e   B4: #	B3 <- B1  Freq: 0.0868837
+01e   	movl    RAX, RSI	# spill
+020   	jmp,s   B3
+020
+
+    551    2       3       java.lang.Math::min (11 bytes)   made not entrant
+    552   46    b  4       java.util.Random::next (47 bytes)
+                              @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                              @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                                @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+                              @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                              @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                                @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc08581c0
+ - method holder:     'java/util/Random'
+ - constants:         0x00007f1dc0856ef8 constant pool [383] {0x00007f1dc0856ef8} for 'java/util/Random' cache=0x00007f1dc0859b60
+ - access:            0xc1000004  protected 
+ - name:              'next'
+ - signature:         '(I)I'
+ - max stack:         6
+ - max locals:        7
+ - size of params:    2
+ - method size:       12
+ - highest level:     3
+ - vtable index:      20
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
+ - compiled entry     0x00007f1dad21ac40
+ - code size:         47
+ - code start:        0x00007f1dc0858148
+ - code end (excl):   0x00007f1dc0858177
+ - method data:       0x00007f1dc085c118
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc0858177
+ - localvar length:   5
+ - localvar start:    0x00007f1dc0858182
+ - compiled code: nmethod    556   44       3       java.util.Random::next (47 bytes)
+#
+#  int ( java/util/Random:NotNull *, int )
+#
+#r018 rsi:rsi   : parm 0: java/util/Random:NotNull *
+#r016 rdx   : parm 1: int
+# -- Old rsp -- Framesize: 32 --
+#r191 rsp+28: in_preserve
+#r190 rsp+24: return address
+#r189 rsp+20: in_preserve
+#r188 rsp+16: saved fp register
+#r187 rsp+12: pad2, stack alignment
+#r186 rsp+ 8: pad2, stack alignment
+#r185 rsp+ 4: Fixed slot 1
+#r184 rsp+ 0: Fixed slot 0
+#
+000   N121: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B6 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #16	# Create frame
+
+02c   	movl    R8, [RSI + #24 (8-bit)]	# compressed ptr ! Field: java/util/Random.seed
+030   	movq    RAX, [R8 + #16 (8-bit)]	# long ! Field: volatile java/util/concurrent/atomic/AtomicLong.value
+034   	NullCheck R8
+034
+034   B2: #	B4 B3 <- B1  Freq: 0.999999
+034   	MEMBAR-acquire ! (empty encoding)
+034   	MEMBAR-release ! (empty encoding)
+034   	
+034   	movq    R11, #281474976710655	# long
+03e   	movq    R9, #25214903917	# long
+048   	movq    RBX, RAX	# spill
+04b   	imulq   RBX, R9	# long
+04f   	addq    RBX, #11	# long
+053   	andq    RBX, R11	# long
+056   	cmpxchgq [R8 + #16 (8-bit)],RBX	# If rax == [R8 + #16 (8-bit)] then store RBX into [R8 + #16 (8-bit)]
+	sete    RCX
+	movzbl  RCX, RCX
+062   	
+062   	MEMBAR-acquire ! (empty encoding)
+062   	testl   RCX, RCX
+064   	je,s   B4  P=0.000000 C=5374.000000
+064
+066   B3: #	N121 <- B5 B2  Freq: 0.999999
+066   	movl    RCX, #48	# int
+06b   	subl    RCX, RDX	# int
+06d   	shrq    RBX, RCX
+070   	movl    RAX, RBX	# l2i
+072   	addq    rsp, 16	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+07d   	ret
+      	nop 	# 2 bytes pad for loops and calls
+
+080   B4: #	B4 B5 <- B2 B4 	Loop: B4-B4 inner  Freq: 4.76837e-07
+080   	movq    RAX, [R8 + #16 (8-bit)]	# long ! Field: volatile java/util/concurrent/atomic/AtomicLong.value
+084   	MEMBAR-acquire ! (empty encoding)
+084   	MEMBAR-release ! (empty encoding)
+084   	
+084   	movq    RBX, RAX	# spill
+087   	imulq   RBX, R9	# long
+08b   	addq    RBX, #11	# long
+08f   	andq    RBX, R11	# long
+092   	cmpxchgq [R8 + #16 (8-bit)],RBX	# If rax == [R8 + #16 (8-bit)] then store RBX into [R8 + #16 (8-bit)]
+	sete    RCX
+	movzbl  RCX, RCX
+09e   	
+09e   	MEMBAR-acquire ! (empty encoding)
+09e   	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC        # java.util.Random::next @ bci:35  L[0]=_ L[1]=RDX L[2]=_ L[3]=_ L[4]=RBX L[5]=_ L[6]=R8 STK[0]=RCX
+        # OopMap{r8=NarrowOop off=158}
+0a4   	testl   RCX, RCX
+0a6   	je,s   B4  P=0.000000 C=5374.000000
+0a6
+0a8   B5: #	B3 <- B4  Freq: 4.76837e-07
+0a8   	jmp,s   B3
+0a8
+0aa   B6: #	N121 <- B1  Freq: 1.01328e-06
+0aa   	movl    RSI, #-10	# int
+0af   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # java.util.Random::next @ bci:8  L[0]=_ L[1]=_ L[2]=_ L[3]=_ L[4]=_ L[5]=_ L[6]=_ STK[0]=#NULL
+        # OopMap{off=180}
+0b4   	int3	# ShouldNotReachHere
+0b4
+
+    559   44       3       java.util.Random::next (47 bytes)   made not entrant
+    559   47    b  4       java.util.Random::nextInt (7 bytes)
+                              @ 3   java.util.Random::next (47 bytes)   inline (hot)
+                                @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                                @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                                  @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+                                @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                                @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                                  @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc0858710
+ - method holder:     'java/util/Random'
+ - constants:         0x00007f1dc0856ef8 constant pool [383] {0x00007f1dc0856ef8} for 'java/util/Random' cache=0x00007f1dc0859b60
+ - access:            0x81000001  public 
+ - name:              'nextInt'
+ - signature:         '()I'
+ - max stack:         3
+ - max locals:        1
+ - size of params:    1
+ - method size:       12
+ - highest level:     3
+ - vtable index:      25
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
+ - compiled entry     0x00007f1dad21a4a0
+ - code size:         7
+ - code start:        0x00007f1dc08586f0
+ - code end (excl):   0x00007f1dc08586f7
+ - method data:       0x00007f1dc085c038
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc08586f7
+ - localvar length:   1
+ - localvar start:    0x00007f1dc0858702
+ - compiled code: nmethod    563   41       3       java.util.Random::nextInt (7 bytes)
+#
+#  int ( java/util/Random:NotNull * )
+#
+#r018 rsi:rsi   : parm 0: java/util/Random:NotNull *
+# -- Old rsp -- Framesize: 32 --
+#r191 rsp+28: in_preserve
+#r190 rsp+24: return address
+#r189 rsp+20: in_preserve
+#r188 rsp+16: saved fp register
+#r187 rsp+12: pad2, stack alignment
+#r186 rsp+ 8: pad2, stack alignment
+#r185 rsp+ 4: Fixed slot 1
+#r184 rsp+ 0: Fixed slot 0
+#
+000   N118: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B6 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #16	# Create frame
+
+02c   	movl    R10, [RSI + #24 (8-bit)]	# compressed ptr ! Field: java/util/Random.seed
+030   	movq    RAX, [R10 + #16 (8-bit)]	# long ! Field: volatile java/util/concurrent/atomic/AtomicLong.value
+034   	NullCheck R10
+034
+034   B2: #	B4 B3 <- B1  Freq: 0.999999
+034   	MEMBAR-acquire ! (empty encoding)
+034   	MEMBAR-release ! (empty encoding)
+034   	
+034   	movq    R8, #281474976710655	# long
+03e   	movq    R9, #25214903917	# long
+048   	movq    RCX, RAX	# spill
+04b   	imulq   RCX, R9	# long
+04f   	addq    RCX, #11	# long
+053   	andq    RCX, R8	# long
+056   	cmpxchgq [R10 + #16 (8-bit)],RCX	# If rax == [R10 + #16 (8-bit)] then store RCX into [R10 + #16 (8-bit)]
+	sete    R11
+	movzbl  R11, R11
+064   	
+064   	MEMBAR-acquire ! (empty encoding)
+064   	testl   R11, R11
+067   	je,s   B4  P=0.000000 C=5375.000000
+067
+069   B3: #	N118 <- B5 B2  Freq: 0.999999
+069   	shrq    RCX, #16
+06d   	movl    RAX, RCX	# l2i
+06f   	addq    rsp, 16	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+07a   	ret
+      	nop 	# 5 bytes pad for loops and calls
+
+080   B4: #	B4 B5 <- B2 B4 	Loop: B4-B4 inner  Freq: 4.76837e-07
+080   	movq    RAX, [R10 + #16 (8-bit)]	# long ! Field: volatile java/util/concurrent/atomic/AtomicLong.value
+084   	MEMBAR-acquire ! (empty encoding)
+084   	MEMBAR-release ! (empty encoding)
+084   	
+084   	movq    RCX, RAX	# spill
+087   	imulq   RCX, R9	# long
+08b   	addq    RCX, #11	# long
+08f   	andq    RCX, R8	# long
+092   	cmpxchgq [R10 + #16 (8-bit)],RCX	# If rax == [R10 + #16 (8-bit)] then store RCX into [R10 + #16 (8-bit)]
+	sete    R11
+	movzbl  R11, R11
+0a0   	
+0a0   	MEMBAR-acquire ! (empty encoding)
+0a0   	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC        # java.util.Random::next @ bci:35  L[0]=_ L[1]=#32 L[2]=_ L[3]=_ L[4]=RCX L[5]=_ L[6]=R10 STK[0]=R11
+        # java.util.Random::nextInt @ bci:3  L[0]=_
+        # OopMap{r10=NarrowOop off=160}
+0a6   	testl   R11, R11
+0a9   	je,s   B4  P=0.000000 C=5375.000000
+0a9
+0ab   B5: #	B3 <- B4  Freq: 4.76837e-07
+0ab   	jmp,s   B3
+0ab
+0ad   B6: #	N118 <- B1  Freq: 1.01328e-06
+0ad   	movl    RSI, #-10	# int
+      	nop 	# 1 bytes pad for loops and calls
+0b3   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # java.util.Random::next @ bci:8  L[0]=_ L[1]=_ L[2]=_ L[3]=_ L[4]=_ L[5]=_ L[6]=_ STK[0]=#NULL
+        # java.util.Random::nextInt @ bci:3  L[0]=_
+        # OopMap{off=184}
+0b8   	int3	# ShouldNotReachHere
+0b8
+
+    566   41       3       java.util.Random::nextInt (7 bytes)   made not entrant
+    568   48 %  b  3       java.util.Random::nextBytes @ 25 (56 bytes)
+                              @ 11   java.util.Random::nextInt (7 bytes)
+                                @ 3   java.util.Random::next (47 bytes)   callee is too large
+                              @ 20   java.lang.Math::min (11 bytes)
+    573   49    b  3       java.util.Random::nextBytes (56 bytes)
+                              @ 11   java.util.Random::nextInt (7 bytes)
+                                @ 3   java.util.Random::next (47 bytes)   callee is too large
+                              @ 20   java.lang.Math::min (11 bytes)
+    575   50 %  b  4       java.util.Random::nextBytes @ 25 (56 bytes)
+                              @ 11   java.util.Random::nextInt (7 bytes)   inline (hot)
+                                @ 3   java.util.Random::next (47 bytes)   inline (hot)
+                                  @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                                  @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                                    @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+                                  @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
+                                  @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
+                                    @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
+                              @ 20   java.lang.Math::min (11 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc08582e0
+ - method holder:     'java/util/Random'
+ - constants:         0x00007f1dc0856ef8 constant pool [383] {0x00007f1dc0856ef8} for 'java/util/Random' cache=0x00007f1dc0859b60
+ - access:            0xc1000001  public 
+ - name:              'nextBytes'
+ - signature:         '([B)V'
+ - max stack:         4
+ - max locals:        6
+ - size of params:    2
+ - method size:       12
+ - highest level:     3
+ - vtable index:      19
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b7fd0: 0xbb000000 i2c: 0x00007f1dad106520 c2i: 0x00007f1dad106638 c2iUV: 0x00007f1dad10660b
+ - compiled entry     0x00007f1dad21d720
+ - code size:         56
+ - code start:        0x00007f1dc0858250
+ - code end (excl):   0x00007f1dc0858288
+ - method data:       0x00007f1dc085c400
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc0858288
+ - localvar length:   6
+ - localvar start:    0x00007f1dc0858296
+ - compiled code: nmethod    589   49       3       java.util.Random::nextBytes (56 bytes)
+#
+#  void ( rawptr:BotPTR )
+#
+#r018 rsi:rsi   : parm 0: rawptr:BotPTR
+# -- Old rsp -- Framesize: 80 --
+#r191 rsp+76: in_preserve
+#r190 rsp+72: return address
+#r189 rsp+68: in_preserve
+#r188 rsp+64: saved fp register
+#r187 rsp+60: pad2, stack alignment
+#r186 rsp+56: pad2, stack alignment
+#r185 rsp+52: Fixed slot 1
+#r184 rsp+48: Fixed slot 0
+#r203 rsp+44: spill
+#r202 rsp+40: spill
+#r201 rsp+36: spill
+#r200 rsp+32: spill
+#r199 rsp+28: spill
+#r198 rsp+24: spill
+#r197 rsp+20: spill
+#r196 rsp+16: spill
+#r195 rsp+12: spill
+#r194 rsp+ 8: spill
+#r193 rsp+ 4: spill
+#r192 rsp+ 0: spill
+#
+000   N498: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	# breakpoint
+      	nop 	# 11 bytes pad for loops and calls
+
+010   B1: #	B36 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+010   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #64	# Create frame
+
+01c   	movl    R14, [RSI]	# int
+01f   	movl    R13, [RSI + #8 (8-bit)]	# int
+023   	movq    RBP, [RSI + #40 (8-bit)]	# ptr
+027   	movq    R10, [RSI + #32 (8-bit)]	# ptr
+02b   	movq    [rsp + #0], R10	# spill
+02f   	movl    R10, [RSI + #16 (8-bit)]	# int
+033   	movl    [rsp + #16], R10	# spill
+038   	movl    RBX, [RSI + #24 (8-bit)]	# int
+03b   	movq    RDI, RSI	# spill
+03e   	call_leaf,runtime  OSR_migration_end
+        No JVM State Info
+        # 
+04b   	testq   RBP, RBP	# ptr
+04e   	je     B36  P=0.001000 C=-1.000000
+04e
+054   B2: #	B38 B3 <- B1  Freq: 0.999
+054   	movl    R10, [RBP + #8 (8-bit)]	# compressed klass ptr
+058   	cmpl    R10, narrowklass: precise klass java/util/Random: 0x00007f1d5c037468:Constant:exact *	# compressed klass ptr
+05f   	jne,u  B38  P=0.000001 C=-1.000000
+05f
+065   B3: #	B4 <- B2  Freq: 0.998999
+065   	movq    R9, RBP	# spill
+068   	# checkcastPP of R9
+068
+068   B4: #	B37 B5 <- B3 B36  Freq: 0.999999
+068   	movq    R11, [rsp + #0]	# spill
+06c   	testq   R11, R11	# ptr
+06f   	je     B37  P=0.001000 C=-1.000000
+06f
+075   B5: #	B39 B6 <- B4  Freq: 0.998999
+075   	movl    R8, [R11 + #8 (8-bit)]	# compressed klass ptr
+079   	cmpl    R8, narrowklass: precise klass [B: 0x00007f1dbc12e218:Constant:exact *	# compressed klass ptr
+080   	jne,u  B39  P=0.000001 C=-1.000000
+080
+086   B6: #	B7 <- B5  Freq: 0.998998
+086   	# checkcastPP of R11
+086   	movq    RDX, R11	# spill
+089   	addq    RDX, #12	# ptr
+08d
+08d   B7: #	B15 <- B6 B37  Freq: 0.999998
+08d   	xorl    RSI, RSI	# int
+08f   	movq    RBP, #25214903917	# long
+099   	jmp,s   B15
+099
+09b   B8: #	B9 <- B26  top-of-loop Freq: 61007.8
+09b   	incl    RBX	# int
+09d
+09d   B9: #	B10 <- B8 B24  top-of-loop Freq: 122016
+09d   	movq    R11, RAX	# spill
+09d
+0a0   B10: #	B33 B11 <- B15 B9  Freq: 152520
+0a0   	cmpl    RBX, [RSP + #16 (32-bit)]
+0a4   	jge     B33  P=0.000000 C=8192.000000
+0a4
+0aa   B11: #	B40 B12 <- B10  Freq: 152520
+0aa   	movl    R8, [R9 + #24 (8-bit)]	# compressed ptr ! Field: java/util/Random.seed
+0ae   	NullCheck R9
+0ae
+0ae   B12: #	B41 B13 <- B11  Freq: 152520
+0ae   	movq    RAX, [R8 + #16 (8-bit)]	# long ! Field: volatile java/util/concurrent/atomic/AtomicLong.value
+0b2   	NullCheck R8
+0b2
+0b2   B13: #	B34 B14 <- B12  Freq: 152519
+0b2   	MEMBAR-acquire ! (empty encoding)
+0b2   	MEMBAR-release ! (empty encoding)
+0b2   	
+0b2   	movq    RDI, RAX	# spill
+0b5   	imulq   RDI, RBP	# long
+0b9   	addq    RDI, #11	# long
+0bd   	movq    R10, #281474976710655	# long
+0c7   	andq    RDI, R10	# long
+0ca   	cmpxchgq [R8 + #16 (8-bit)],RDI	# If rax == [R8 + #16 (8-bit)] then store RDI into [R8 + #16 (8-bit)]
+	sete    R10
+	movzbl  R10, R10
+0d8   	
+0d8   	MEMBAR-acquire ! (empty encoding)
+0d8   	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC        # java.util.Random::next @ bci:35  L[0]=_ L[1]=#32 L[2]=_ L[3]=_ L[4]=RDI L[5]=_ L[6]=R8 STK[0]=R10
+        # java.util.Random::nextInt @ bci:3  L[0]=_
+        # java.util.Random::nextBytes @ bci:11  L[0]=R9 L[1]=R11 L[2]=RBX L[3]=rsp + #16 L[4]=_ L[5]=_
+        # OopMap{r11=Oop r8=NarrowOop r9=Oop rdx=Derived_oop_r11 off=216}
+0de   	testl   R10, R10
+0e1   	je     B34  P=0.000000 C=5375.000000
+0e1
+0e7   B14: #	B15 <- B35 B13  Freq: 152519
+0e7   	movl    R14, [rsp + #16]	# spill
+0ec   	subl    R14, RBX	# int
+0ef   	shrq    RDI, #16
+0f3   	cmpl    R14, #4
+0f7   	movl    R10, #4	# int
+0fd   	cmovlge R14, R10	# signed, int
+101   	movl    R13, RDI	# l2i
+101
+104   B15: #	B10 B16 <- B7 B14 	Loop: B15-B14  Freq: 152520
+104   	testl   R14, R14
+107   	jle,s   B10  P=0.200000 C=40960.000000
+107
+109   B16: #	B17 <- B15  Freq: 122016
+109   	movq    RAX, R11	# spill
+10c   	movl    R10, RBX	# spill
+10f   	addl    R10, R14	# int
+112   	movsbl  RCX, R13	# i2b
+116   	movl    R11, R14	# spill
+119   	decl    R11	# int
+11c   	cmpl    R11, R10
+11f   	cmovlgt R11, R10	# min
+123   	cmpl    R11, RSI
+126   	cmovllt R11, RSI	# max
+126
+12a   B17: #	B28 B18 <- B16 B20 	Loop: B17-B20 inner pre of N561 Freq: 244032
+12a   	testq   RAX, RAX	# ptr
+12d   	je     B28  P=0.000001 C=-1.000000
+12d
+133   B18: #	B29 B19 <- B17  Freq: 244032
+133   	movl    R8, [RDX]	# range
+136   	movl    RDI, R14	# spill
+139   	decl    RDI	# int
+13b   	cmpl    RBX, R8	# unsigned
+13e   	jnb,u  B29  P=0.000001 C=-1.000000
+13e
+144   B19: #	B21 B20 <- B18  Freq: 244032
+144   	movslq  RCX, RBX	# i2l
+147   	movb    [RAX + #16 + RCX], R13	# byte
+14c   	sarl    R13, #8
+150   	movsbl  RCX, R13	# i2b
+154   	cmpl    RDI, R11
+157   	jle,s   B21	# loop end  P=0.500000 C=40960.000000
+157
+159   B20: #	B17 <- B19  Freq: 122016
+159   	movl    RBX, R10	# spill
+15c   	incl    RBX	# int
+15e   	subl    RBX, R14	# int
+161   	movl    R14, RDI	# spill
+164   	jmp,s   B17
+164
+166   B21: #	B32 B22 <- B19  Freq: 122016
+166   	movl    R14, R10	# spill
+169   	subl    R14, R8	# int
+16c   	cmpl    R14, RSI
+16f   	cmovllt R14, RSI	# max
+173   	movl    R11, R14	# spill
+176   	addl    R11, #3	# int
+17a   	cmpl    R14, R11
+17d   	movl    R14, #2147483647	# int
+183   	cmovlg R11, R14	# signed, int
+187   	cmpl    RDI, R11
+18a   	jle     B32  P=0.000001 C=-1.000000
+18a
+190   B22: #	B22 B23 <- B21 B22 	Loop: B22-B22 inner main of N173 Freq: 610079
+190   	movl    RBX, R10	# spill
+193   	subl    RBX, RDI	# int
+195   	movl    R14, R13	# spill
+198   	sarl    R14, #8
+19c   	movslq  RCX, RBX	# i2l
+19f   	movb    [RAX + #16 + RCX], R13	# byte
+1a4   	movl    R13, R14	# spill
+1a7   	sarl    R13, #8
+1ab   	movslq  RCX, RBX	# i2l
+1ae   	movb    [RAX + #17 + RCX], R14	# byte
+1b3   	movb    [RAX + #18 + RCX], R13	# byte
+1b8   	sarl    R13, #8
+1bc   	movb    [RAX + #19 + RCX], R13	# byte
+1c1   	sarl    R13, #8
+1c5   	addl    RDI, #-4	# int
+1c8   	cmpl    RDI, R11
+1cb   	jg,s   B22	# loop end  P=0.800000 C=40960.000000
+1cb
+1cd   B23: #	B24 <- B22  Freq: 122016
+1cd   	addl    RBX, #4	# int
+1d0   	movl    RCX, R13	# spill
+1d0
+1d3   B24: #	B9 B25 <- B32 B23  Freq: 122016
+1d3   	testl   RDI, RDI
+1d5   	jle     B9  P=0.500000 C=-1.000000
+      	nop 	# 1 bytes pad for loops and calls
+
+1dc   B25: #	B30 B26 <- B24 B27 	Loop: B25-B27 inner post of N561 Freq: 122016
+1dc   	movl    RBX, R10	# spill
+1df   	subl    RBX, RDI	# int
+1e1   	decl    RDI	# int
+1e3   	cmpl    RBX, R8	# unsigned
+1e6   	jnb,us  B30  P=0.000001 C=-1.000000
+1e6
+1e8   B26: #	B8 B27 <- B25  Freq: 122016
+1e8   	movslq  R11, RBX	# i2l
+1eb   	movb    [RAX + #16 + R11], R13	# byte
+1f0   	testl   RDI, RDI
+1f2   	jle     B8	# loop end  P=0.500000 C=40960.000000
+1f2
+1f8   B27: #	B25 <- B26  Freq: 61007.8
+1f8   	sarl    R13, #8
+1fc   	movsbl  RCX, R13	# i2b
+200   	jmp,s   B25
+200
+202   B28: #	N498 <- B17  Freq: 0.247273
+202   	movl    RSI, #-10	# int
+207   	movl    RBP, RBX	# spill
+209   	movl    [rsp + #0], RCX	# spill
+      	nop 	# 3 bytes pad for loops and calls
+20f   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # java.util.Random::nextBytes @ bci:41  L[0]=_ L[1]=_ L[2]=_ L[3]=_ L[4]=_ L[5]=_ STK[0]=#NULL STK[1]=RBP STK[2]=rsp + #0
+        # OopMap{off=532}
+214   	int3	# ShouldNotReachHere
+214
+219   B29: #	B31 <- B18  Freq: 0.247272
+219   	movl    RBP, RBX	# spill
+21b   	incl    RBP	# int
+21d   	jmp,s   B31
+21d
+21f   B30: #	B31 <- B25  Freq: 0.123636
+21f   	movl    RBP, RBX	# spill
+221   	incl    RBP	# int
+223
+223   B31: #	N498 <- B30 B29  Freq: 0.370908
+223   	movl    RSI, #-28	# int
+228   	movq    [rsp + #0], R9	# spill
+22c   	movl    [rsp + #20], R13	# spill
+231   	movl    [rsp + #24], RDI	# spill
+235   	movq    [rsp + #32], RAX	# spill
+23a   	movl    [rsp + #28], RBX	# spill
+23e   	movl    [rsp + #40], RCX	# spill
+      	nop 	# 1 bytes pad for loops and calls
+243   	call,static  wrapper for: uncommon_trap(reason='range_check' action='make_not_entrant')
+        # java.util.Random::nextBytes @ bci:41  L[0]=rsp + #0 L[1]=rsp + #32 L[2]=RBP L[3]=rsp + #16 L[4]=rsp + #20 L[5]=rsp + #24 STK[0]=rsp + #32 STK[1]=rsp + #28 STK[2]=rsp + #40
+        # OopMap{[0]=Oop [32]=Oop off=584}
+248   	int3	# ShouldNotReachHere
+248
+24d   B32: #	B24 <- B21  Freq: 0.123636
+24d   	incl    RBX	# int
+24f   	jmp     B24
+24f
+254   B33: #	N498 <- B10  Freq: 0.0727271
+254   	addq    rsp, 64	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+25f   	ret
+25f
+260   B34: #	B34 B35 <- B13 B34 	Loop: B34-B34 inner  Freq: 0.072727
+260   	movq    RAX, [R8 + #16 (8-bit)]	# long ! Field: volatile java/util/concurrent/atomic/AtomicLong.value
+264   	MEMBAR-acquire ! (empty encoding)
+264   	MEMBAR-release ! (empty encoding)
+264   	
+264   	movq    RDI, RAX	# spill
+267   	imulq   RDI, RBP	# long
+26b   	addq    RDI, #11	# long
+26f   	movq    R10, #281474976710655	# long
+279   	andq    RDI, R10	# long
+27c   	cmpxchgq [R8 + #16 (8-bit)],RDI	# If rax == [R8 + #16 (8-bit)] then store RDI into [R8 + #16 (8-bit)]
+	sete    RCX
+	movzbl  RCX, RCX
+288   	
+288   	MEMBAR-acquire ! (empty encoding)
+288   	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC        # java.util.Random::next @ bci:35  L[0]=_ L[1]=#32 L[2]=_ L[3]=_ L[4]=RDI L[5]=_ L[6]=R8 STK[0]=RCX
+        # java.util.Random::nextInt @ bci:3  L[0]=_
+        # java.util.Random::nextBytes @ bci:11  L[0]=R9 L[1]=R11 L[2]=RBX L[3]=rsp + #16 L[4]=_ L[5]=_
+        # OopMap{r11=Oop r8=NarrowOop r9=Oop rdx=Derived_oop_r11 off=648}
+28e   	testl   RCX, RCX
+290   	je,s   B34  P=0.000000 C=5375.000000
+290
+292   B35: #	B14 <- B34  Freq: 0.0727269
+292   	jmp     B14
+292
+297   B36: #	B4 <- B1  Freq: 0.000999987
+297   	xorl    R9, R9	# ptr
+29a   	jmp     B4
+29a
+29f   B37: #	B7 <- B4  Freq: 0.000999986
+29f   	movl    RDX, NULL+12	# ptr (positive 32-bit)
+2a4   	xorl    R11, R11	# ptr
+2a7   	jmp     B7
+2a7
+2ac   B38: #	B39 <- B2  Freq: 9.99e-07
+2ac   	movq    R11, [rsp + #0]	# spill
+2ac
+2b0   B39: #	N498 <- B38 B5  Freq: 1.998e-06
+2b0   	movl    RSI, #-99	# int
+2b5   	movq    [rsp + #0], R11	# spill
+2b9   	movl    [rsp + #8], RBX	# spill
+2bd   	movq    [rsp - #8], rax	# 32-bit mem-mem spill
+	movl    rax, [rsp + #16]
+	movl    [rsp + #12], rax
+	movq    rax, [rsp - #8]
+2cf   	movl    [rsp + #16], R13	# spill
+2d4   	movl    [rsp + #20], R14	# spill
+      	nop 	# 2 bytes pad for loops and calls
+2db   	call,static  wrapper for: uncommon_trap(reason='constraint' action='reinterpret')
+        # java.util.Random::nextBytes @ bci:25  L[0]=RBP L[1]=rsp + #0 L[2]=rsp + #8 L[3]=rsp + #12 L[4]=rsp + #16 L[5]=rsp + #20
+        # OopMap{rbp=Oop [0]=Oop off=736}
+2e0   	int3	# ShouldNotReachHere
+2e0
+2e5   B40: #	N498 <- B11  Freq: 0.154545
+2e5   	movl    RSI, #-10	# int
+      	nop 	# 1 bytes pad for loops and calls
+2eb   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # java.util.Random::nextBytes @ bci:11  L[0]=_ L[1]=_ L[2]=_ L[3]=_ L[4]=_ L[5]=_ STK[0]=#NULL
+        # OopMap{off=752}
+2f0   	int3	# ShouldNotReachHere
+2f0
+2f5   B41: #	N498 <- B12  Freq: 0.154545
+2f5   	movl    RSI, #-10	# int
+      	nop 	# 1 bytes pad for loops and calls
+2fb   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # java.util.Random::next @ bci:8  L[0]=_ L[1]=_ L[2]=_ L[3]=_ L[4]=_ L[5]=_ L[6]=_ STK[0]=#NULL
+        # java.util.Random::nextInt @ bci:3  L[0]=_
+        # java.util.Random::nextBytes @ bci:11  L[0]=_ L[1]=_ L[2]=_ L[3]=_ L[4]=_ L[5]=_
+        # OopMap{off=768}
+300   	int3	# ShouldNotReachHere
+300
+
+    592   48 %     3       java.util.Random::nextBytes @ -2 (56 bytes)   made not entrant
+    630   51    b  3       java.util.concurrent.ConcurrentHashMap::spread (10 bytes)
+    654   52    b  3       java.nio.DirectByteBuffer::ix (10 bytes)
+    655   53    b  3       java.nio.Buffer::checkIndex (22 bytes)
+                              @ 16  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
+    656   54     n 0       sun.misc.Unsafe::getByte (native)   
+    656   55    b  3       java.nio.DirectByteBuffer::get (16 bytes)
+                              @ 6   java.nio.Buffer::checkIndex (22 bytes)   intrinsic
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)
+                              @ 12   sun.misc.Unsafe::getByte (0 bytes)   intrinsic
+    657   56    b  3       java.nio.Buffer::checkIndex (24 bytes)
+                              @ 18  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
+    659   57    b  3       java.nio.DirectByteBuffer::getInt (15 bytes)
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)
+                                @ 18  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 8   java.nio.DirectByteBuffer::ix (10 bytes)
+                              @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   callee is too large
+    662   58     n 0       sun.misc.Unsafe::getInt (native)   
+    663   59    b  3       java.nio.Bits::swap (5 bytes)
+                              @ 1   java.lang.Integer::reverseBytes (26 bytes)
+    664   60     n 0       sun.misc.Unsafe::getLong (native)   
+    664   61    b  3       java.nio.DirectByteBuffer::getLong (16 bytes)
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)
+                                @ 18  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)
+                              @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   callee is too large
+    667   62    b  3       java.nio.Bits::swap (5 bytes)
+                              @ 1   java.lang.Long::reverseBytes (46 bytes)   callee is too large
+    669   63    b  3       java.nio.DirectByteBuffer::getInt (39 bytes)
+                              @ 10   sun.misc.Unsafe::getInt (0 bytes)   intrinsic
+                              @ 26   java.nio.Bits::swap (5 bytes)
+                                @ 1   java.lang.Integer::reverseBytes (26 bytes)
+    671   64    b  3       java.nio.DirectByteBuffer::getLong (39 bytes)
+                              @ 10   sun.misc.Unsafe::getLong (0 bytes)   intrinsic
+                              @ 26   java.nio.Bits::swap (5 bytes)
+                                @ 1   java.lang.Long::reverseBytes (46 bytes)   callee is too large
+    673   65    b  3       java.lang.Long::reverseBytes (46 bytes)
+    675   66    b  4       java.lang.Long::reverseBytes (46 bytes)
+{method}
+ - this oop:          0x00007f1dc05d3e70
+ - method holder:     'java/lang/Long'
+ - constants:         0x00007f1dc05d0088 constant pool [414] {0x00007f1dc05d0088} for 'java/lang/Long' cache=0x00007f1dc06dc508
+ - access:            0x81000009  public static 
+ - name:              'reverseBytes'
+ - signature:         '(J)J'
+ - max stack:         7
+ - max locals:        2
+ - size of params:    2
+ - method size:       12
+ - intrinsic id:      41 _reverseBytes_l
+ - highest level:     3
+ - vtable index:      -2
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b8d90: 0xbe000000 i2c: 0x00007f1dad11b1e0 c2i: 0x00007f1dad11b31a c2iUV: 0x00007f1dad11b2ed
+ - compiled entry     0x00007f1dad21e2e0
+ - code size:         46
+ - code start:        0x00007f1dc05d3e28
+ - code end (excl):   0x00007f1dc05d3e56
+ - method data:       0x00007f1dc085e190
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc05d3e56
+ - localvar length:   1
+ - localvar start:    0x00007f1dc05d3e62
+ - compiled code: nmethod    675   65       3       java.lang.Long::reverseBytes (46 bytes)
+#
+#  long/half ( long, half )
+#
+#r018 rsi:rsi   : parm 0: long
+# -- Old rsp -- Framesize: 32 --
+#r191 rsp+28: in_preserve
+#r190 rsp+24: return address
+#r189 rsp+20: in_preserve
+#r188 rsp+16: saved fp register
+#r187 rsp+12: pad2, stack alignment
+#r186 rsp+ 8: pad2, stack alignment
+#r185 rsp+ 4: Fixed slot 1
+#r184 rsp+ 0: Fixed slot 0
+#
+abababab   N1: #	B1 <- B1  Freq: 1
+abababab
+000   B1: #	N1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	subq    rsp, #24	# Create frame
+	movq    [rsp + #16], rbp	# Save rbp
+
+00c   	movq    R10, RSI	# spill
+00f   	shrq    R10, #8
+013   	movq    R11, #71777214294589695	# long
+01d   	andq    RSI, R11	# long
+020   	andq    R10, R11	# long
+023   	salq    RSI, #8
+027   	orq     RSI, R10	# long
+02a   	movq    R10, RSI	# spill
+02d   	shrq    R10, #48
+031   	movq    R11, RSI	# spill
+034   	shrq    R11, #16
+038   	movq    RAX, RSI	# spill
+03b   	salq    RAX, #48
+03f   	movl    R8, #4294901760	# long (unsigned 32-bit)
+045   	andq    RSI, R8	# long
+048   	andq    R11, R8	# long
+04b   	salq    RSI, #16
+04f   	orq     RAX, RSI	# long
+052   	orq     RAX, R11	# long
+055   	orq     RAX, R10	# long
+058   	addq    rsp, 16	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+063   	ret
+063
+
+    676   65       3       java.lang.Long::reverseBytes (46 bytes)   made not entrant
+    677   67    b  4       java.nio.DirectByteBuffer::get (16 bytes)
+                              @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc075db18
+ - method holder:     'java/nio/DirectByteBuffer'
+ - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - access:            0x81000001  public 
+ - name:              'get'
+ - signature:         '(I)B'
+ - max stack:         5
+ - max locals:        2
+ - size of params:    2
+ - method size:       12
+ - highest level:     3
+ - vtable index:      10
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
+ - compiled entry     0x00007f1dad21fb40
+ - code size:         16
+ - code start:        0x00007f1dc075dae8
+ - code end (excl):   0x00007f1dc075daf8
+ - method data:       0x00007f1dc085d840
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc075daf8
+ - localvar length:   2
+ - localvar start:    0x00007f1dc075dafe
+ - compiled code: nmethod    679   55       3       java.nio.DirectByteBuffer::get (16 bytes)
+#
+#  byte ( java/nio/DirectByteBuffer:NotNull *, int )
+#
+#r018 rsi:rsi   : parm 0: java/nio/DirectByteBuffer:NotNull *
+#r016 rdx   : parm 1: int
+# -- Old rsp -- Framesize: 32 --
+#r191 rsp+28: in_preserve
+#r190 rsp+24: return address
+#r189 rsp+20: in_preserve
+#r188 rsp+16: saved fp register
+#r187 rsp+12: pad2, stack alignment
+#r186 rsp+ 8: pad2, stack alignment
+#r185 rsp+ 4: Fixed slot 1
+#r184 rsp+ 0: Fixed slot 0
+#
+000   N45: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B4 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #16	# Create frame
+
+02c   	testl   RDX, RDX
+02e   	jl,s   B4  P=0.000001 C=-1.000000
+02e
+030   B2: #	B4 B3 <- B1  Freq: 0.999999
+030   	movl    R11, [RSI + #28 (8-bit)]	# int ! Field: java/nio/Buffer.limit
+034   	cmpl    RDX, R11
+037   	jge,s   B4  P=0.000001 C=-1.000000
+037
+039   B3: #	N45 <- B2  Freq: 0.999998
+039   	movq    R10, [RSI + #16 (8-bit)]	# long ! Field: java/nio/Buffer.address
+03d   	movslq  R11, RDX	# i2l
+040   	movq    R10, R10	# long->ptr
+040   	movsbl  RAX, [R10 + R11]	# byte
+045   	addq    rsp, 16	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+050   	ret
+050
+051   B4: #	N45 <- B2 B1  Freq: 2.01328e-06
+051   	movq    RBP, RSI	# spill
+054   	movl    RSI, #26	# int
+      	nop 	# 2 bytes pad for loops and calls
+05b   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:12  L[0]=_ L[1]=_
+        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f1d700632b8 STK[1]=RBP
+        # OopMap{rbp=Oop off=96}
+060   	int3	# ShouldNotReachHere
+060
+
+    680   55       3       java.nio.DirectByteBuffer::get (16 bytes)   made not entrant
+    682   68    b  4       java.nio.DirectByteBuffer::getInt (39 bytes)
+                              @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                              @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc075f3c0
+ - method holder:     'java/nio/DirectByteBuffer'
+ - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - access:            0x81000002  private 
+ - name:              'getInt'
+ - signature:         '(J)I'
+ - max stack:         4
+ - max locals:        4
+ - size of params:    3
+ - method size:       12
+ - highest level:     3
+ - vtable index:      69
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b8028: 0xbbe00000 i2c: 0x00007f1dad10e260 c2i: 0x00007f1dad10e378 c2iUV: 0x00007f1dad10e34b
+ - compiled entry     0x00007f1dad2224a0
+ - code size:         39
+ - code start:        0x00007f1dc075f368
+ - code end (excl):   0x00007f1dc075f38f
+ - method data:       0x00007f1dc085db80
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc075f38f
+ - localvar length:   3
+ - localvar start:    0x00007f1dc075f39a
+ - compiled code: nmethod    684   63       3       java.nio.DirectByteBuffer::getInt (39 bytes)
+#
+#  int ( java/nio/DirectByteBuffer:NotNull *, long, half )
+#
+#r018 rsi:rsi   : parm 0: java/nio/DirectByteBuffer:NotNull *
+#r016 rdx:rdx   : parm 1: long
+# -- Old rsp -- Framesize: 32 --
+#r191 rsp+28: in_preserve
+#r190 rsp+24: return address
+#r189 rsp+20: in_preserve
+#r188 rsp+16: saved fp register
+#r187 rsp+12: pad2, stack alignment
+#r186 rsp+ 8: pad2, stack alignment
+#r185 rsp+ 4: Fixed slot 1
+#r184 rsp+ 0: Fixed slot 0
+#
+000   N30: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B3 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	subq    rsp, #24	# Create frame
+	movq    [rsp + #16], rbp	# Save rbp
+
+02c   	movzbl  R11, [RSI + #42 (8-bit)]	# ubyte ! Field: java/nio/ByteBuffer.nativeByteOrder
+031   	movq    R10, RDX	# long->ptr
+034   	movl    RAX, [R10]	# int
+037   	testl   R11, R11
+03a   	jne,s   B3  P=0.000000 C=5374.000000
+03a
+03c   B2: #	B3 <- B1  Freq: 1
+03c   	bswapl  RAX
+03c
+03e   B3: #	N30 <- B2 B1  Freq: 1
+03e   	addq    rsp, 16	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+049   	ret
+049
+
+    684   63       3       java.nio.DirectByteBuffer::getInt (39 bytes)   made not entrant
+    685   69    b  4       java.nio.DirectByteBuffer::getInt (15 bytes)
+                              @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 8   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   inline (hot)
+                                @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                                @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                  @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc075f538
+ - method holder:     'java/nio/DirectByteBuffer'
+ - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - access:            0x81000001  public 
+ - name:              'getInt'
+ - signature:         '(I)I'
+ - max stack:         6
+ - max locals:        2
+ - size of params:    2
+ - method size:       12
+ - highest level:     3
+ - vtable index:      29
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
+ - compiled entry     0x00007f1dad21ee80
+ - code size:         15
+ - code start:        0x00007f1dc075f508
+ - code end (excl):   0x00007f1dc075f517
+ - method data:       0x00007f1dc085da78
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc075f517
+ - localvar length:   2
+ - localvar start:    0x00007f1dc075f51e
+ - compiled code: nmethod    688   57       3       java.nio.DirectByteBuffer::getInt (15 bytes)
+#
+#  int ( java/nio/DirectByteBuffer:NotNull *, int )
+#
+#r018 rsi:rsi   : parm 0: java/nio/DirectByteBuffer:NotNull *
+#r016 rdx   : parm 1: int
+# -- Old rsp -- Framesize: 48 --
+#r191 rsp+44: in_preserve
+#r190 rsp+40: return address
+#r189 rsp+36: in_preserve
+#r188 rsp+32: saved fp register
+#r187 rsp+28: pad2, stack alignment
+#r186 rsp+24: pad2, stack alignment
+#r185 rsp+20: Fixed slot 1
+#r184 rsp+16: Fixed slot 0
+#r195 rsp+12: spill
+#r194 rsp+ 8: spill
+#r193 rsp+ 4: spill
+#r192 rsp+ 0: spill
+#
+000   N59: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B6 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #32	# Create frame
+
+02c   	testl   RDX, RDX
+02e   	jl,s   B6  P=0.000000 C=10656.000000
+02e
+030   B2: #	B6 B3 <- B1  Freq: 1
+030   	movl    R10, [RSI + #28 (8-bit)]	# int ! Field: java/nio/Buffer.limit
+034   	subl    R10, RDX	# int
+037   	cmpl    R10, #4
+03b   	jl,s   B6  P=0.000000 C=10656.000000
+03b
+03d   B3: #	B5 B4 <- B2  Freq: 0.999999
+03d   	movq    R10, [RSI + #16 (8-bit)]	# long ! Field: java/nio/Buffer.address
+041   	movzbl  R8, [RSI + #42 (8-bit)]	# ubyte ! Field: java/nio/ByteBuffer.nativeByteOrder
+046   	movslq  R11, RDX	# i2l
+049   	movq    R10, R10	# long->ptr
+049   	movl    RAX, [R10 + R11]	# int
+04d   	testl   R8, R8
+050   	jne,s   B5  P=0.000000 C=5375.000000
+050
+052   B4: #	B5 <- B3  Freq: 0.999999
+052   	bswapl  RAX
+052
+054   B5: #	N59 <- B4 B3  Freq: 0.999999
+054   	addq    rsp, 32	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+05f   	ret
+05f
+060   B6: #	N59 <- B2 B1  Freq: 9.76837e-07
+060   	movq    [rsp + #0], RSI	# spill
+064   	movl    RSI, #26	# int
+      	nop 	# 2 bytes pad for loops and calls
+06b   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:14  L[0]=_ L[1]=_ L[2]=_
+        # java.nio.DirectByteBuffer::getInt @ bci:5  L[0]=_ L[1]=_ STK[0]=rsp + #0 STK[1]=rsp + #0
+        # OopMap{[0]=Oop off=112}
+070   	int3	# ShouldNotReachHere
+070
+
+    689   57       3       java.nio.DirectByteBuffer::getInt (15 bytes)   made not entrant
+    690   70    b  4       java.nio.DirectByteBuffer::getLong (39 bytes)
+                              @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+                              @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc075fa30
+ - method holder:     'java/nio/DirectByteBuffer'
+ - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - access:            0x81000002  private 
+ - name:              'getLong'
+ - signature:         '(J)J'
+ - max stack:         4
+ - max locals:        5
+ - size of params:    3
+ - method size:       12
+ - highest level:     3
+ - vtable index:      71
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b8028: 0xbbe00000 i2c: 0x00007f1dad10e260 c2i: 0x00007f1dad10e378 c2iUV: 0x00007f1dad10e34b
+ - compiled entry     0x00007f1dad222a20
+ - code size:         39
+ - code start:        0x00007f1dc075f9d8
+ - code end (excl):   0x00007f1dc075f9ff
+ - method data:       0x00007f1dc085df60
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc075f9ff
+ - localvar length:   3
+ - localvar start:    0x00007f1dc075fa0a
+ - compiled code: nmethod    691   64       3       java.nio.DirectByteBuffer::getLong (39 bytes)
+#
+#  long/half ( java/nio/DirectByteBuffer:NotNull *, long, half )
+#
+#r018 rsi:rsi   : parm 0: java/nio/DirectByteBuffer:NotNull *
+#r016 rdx:rdx   : parm 1: long
+# -- Old rsp -- Framesize: 32 --
+#r191 rsp+28: in_preserve
+#r190 rsp+24: return address
+#r189 rsp+20: in_preserve
+#r188 rsp+16: saved fp register
+#r187 rsp+12: pad2, stack alignment
+#r186 rsp+ 8: pad2, stack alignment
+#r185 rsp+ 4: Fixed slot 1
+#r184 rsp+ 0: Fixed slot 0
+#
+000   N30: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B3 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	subq    rsp, #24	# Create frame
+	movq    [rsp + #16], rbp	# Save rbp
+
+02c   	movzbl  R11, [RSI + #42 (8-bit)]	# ubyte ! Field: java/nio/ByteBuffer.nativeByteOrder
+031   	movq    R10, RDX	# long->ptr
+034   	movq    RAX, [R10]	# long
+037   	testl   R11, R11
+03a   	jne,s   B3  P=0.000000 C=5374.000000
+03a
+03c   B2: #	B3 <- B1  Freq: 1
+03c   	bswapq  RAX
+03c
+03f   B3: #	N30 <- B2 B1  Freq: 1
+03f   	addq    rsp, 16	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+04a   	ret
+04a
+
+    692   64       3       java.nio.DirectByteBuffer::getLong (39 bytes)   made not entrant
+    692   71    b  4       java.nio.DirectByteBuffer::getLong (16 bytes)
+                              @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                              @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                              @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   inline (hot)
+                                @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+                                @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                  @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc075fba8
+ - method holder:     'java/nio/DirectByteBuffer'
+ - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - access:            0x81000001  public 
+ - name:              'getLong'
+ - signature:         '(I)J'
+ - max stack:         6
+ - max locals:        2
+ - size of params:    2
+ - method size:       12
+ - highest level:     3
+ - vtable index:      32
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
+ - compiled entry     0x00007f1dad221980
+ - code size:         16
+ - code start:        0x00007f1dc075fb78
+ - code end (excl):   0x00007f1dc075fb88
+ - method data:       0x00007f1dc085de58
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc075fb88
+ - localvar length:   2
+ - localvar start:    0x00007f1dc075fb8e
+ - compiled code: nmethod    695   61       3       java.nio.DirectByteBuffer::getLong (16 bytes)
+#
+#  long/half ( java/nio/DirectByteBuffer:NotNull *, int )
+#
+#r018 rsi:rsi   : parm 0: java/nio/DirectByteBuffer:NotNull *
+#r016 rdx   : parm 1: int
+# -- Old rsp -- Framesize: 48 --
+#r191 rsp+44: in_preserve
+#r190 rsp+40: return address
+#r189 rsp+36: in_preserve
+#r188 rsp+32: saved fp register
+#r187 rsp+28: pad2, stack alignment
+#r186 rsp+24: pad2, stack alignment
+#r185 rsp+20: Fixed slot 1
+#r184 rsp+16: Fixed slot 0
+#r195 rsp+12: spill
+#r194 rsp+ 8: spill
+#r193 rsp+ 4: spill
+#r192 rsp+ 0: spill
+#
+000   N59: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B6 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #32	# Create frame
+
+02c   	testl   RDX, RDX
+02e   	jl,s   B6  P=0.000000 C=10751.000000
+02e
+030   B2: #	B6 B3 <- B1  Freq: 1
+030   	movl    R11, [RSI + #28 (8-bit)]	# int ! Field: java/nio/Buffer.limit
+034   	subl    R11, RDX	# int
+037   	cmpl    R11, #8
+03b   	jl,s   B6  P=0.000000 C=10751.000000
+03b
+03d   B3: #	B5 B4 <- B2  Freq: 0.999999
+03d   	movq    R10, [RSI + #16 (8-bit)]	# long ! Field: java/nio/Buffer.address
+041   	movzbl  R11, [RSI + #42 (8-bit)]	# ubyte ! Field: java/nio/ByteBuffer.nativeByteOrder
+046   	movslq  R8, RDX	# i2l
+049   	movq    R10, R10	# long->ptr
+049   	movq    RAX, [R10 + R8]	# long
+04d   	testl   R11, R11
+050   	jne,s   B5  P=0.000000 C=5375.000000
+050
+052   B4: #	B5 <- B3  Freq: 0.999999
+052   	bswapq  RAX
+052
+055   B5: #	N59 <- B4 B3  Freq: 0.999999
+055   	addq    rsp, 32	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+060   	ret
+060
+061   B6: #	N59 <- B2 B1  Freq: 9.76837e-07
+061   	movq    [rsp + #0], RSI	# spill
+065   	movl    RSI, #26	# int
+      	nop 	# 1 bytes pad for loops and calls
+06b   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:14  L[0]=_ L[1]=_ L[2]=_
+        # java.nio.DirectByteBuffer::getLong @ bci:6  L[0]=_ L[1]=_ STK[0]=rsp + #0 STK[1]=rsp + #0
+        # OopMap{[0]=Oop off=112}
+070   	int3	# ShouldNotReachHere
+070
+
+    697   61       3       java.nio.DirectByteBuffer::getLong (16 bytes)   made not entrant
+    705   72 %  b  3       DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
+                              @ 4   java.nio.Buffer::limit (5 bytes)
+                              @ 23   java.nio.ByteBuffer::get (0 bytes)   no static binding
+                              @ 40   java.nio.ByteBuffer::getInt (0 bytes)   no static binding
+                              @ 58   java.nio.ByteBuffer::getLong (0 bytes)   no static binding
+    710   73    b  3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+                              @ 4   java.nio.Buffer::limit (5 bytes)
+                              @ 23   java.nio.ByteBuffer::get (0 bytes)   no static binding
+                              @ 40   java.nio.ByteBuffer::getInt (0 bytes)   no static binding
+                              @ 58   java.nio.ByteBuffer::getLong (0 bytes)   no static binding
+    714   74 %  b  4       DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
+                              @ 23   java.nio.DirectByteBuffer::get (16 bytes)   inline (hot)
+                               \-> TypeProfile (40960/40960 counts) = java/nio/DirectByteBuffer
+                                @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                                @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                                @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                              @ 40   java.nio.DirectByteBuffer::getInt (15 bytes)   inline (hot)
+                               \-> TypeProfile (20500/20500 counts) = java/nio/DirectByteBuffer
+                                @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                                @ 8   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                                @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   inline (hot)
+                                  @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                                  @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                    @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+                              @ 58   java.nio.DirectByteBuffer::getLong (16 bytes)   inline (hot)
+                               \-> TypeProfile (20460/20460 counts) = java/nio/DirectByteBuffer
+                                @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                                @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                                @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   inline (hot)
+                                  @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+                                  @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                    @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc09283f8
+ - method holder:     'DeserBenchmark$ByteBufferRunnable'
+ - constants:         0x00007f1dc0928070 constant pool [52] {0x00007f1dc0928070} for 'DeserBenchmark$ByteBufferRunnable' cache=0x00007f1dc0928488
+ - access:            0xc1000001  public 
+ - name:              'run'
+ - signature:         '()V'
+ - max stack:         4
+ - max locals:        4
+ - size of params:    1
+ - method size:       12
+ - highest level:     3
+ - vtable index:      5
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
+ - compiled entry     0x00007f1dad223dc0
+ - code size:         74
+ - code start:        0x00007f1dc0928398
+ - code end (excl):   0x00007f1dc09283e2
+ - method data:       0x00007f1dc09285f8
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc09283e2
+ - localvar length:   0
+ - compiled code: nmethod    731   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+#
+#  void ( rawptr:BotPTR )
+#
+#r018 rsi:rsi   : parm 0: rawptr:BotPTR
+# -- Old rsp -- Framesize: 64 --
+#r191 rsp+60: in_preserve
+#r190 rsp+56: return address
+#r189 rsp+52: in_preserve
+#r188 rsp+48: saved fp register
+#r187 rsp+44: pad2, stack alignment
+#r186 rsp+40: pad2, stack alignment
+#r185 rsp+36: Fixed slot 1
+#r184 rsp+32: Fixed slot 0
+#r199 rsp+28: spill
+#r198 rsp+24: spill
+#r197 rsp+20: spill
+#r196 rsp+16: spill
+#r195 rsp+12: spill
+#r194 rsp+ 8: spill
+#r193 rsp+ 4: spill
+#r192 rsp+ 0: spill
+#
+000   N561: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	# breakpoint
+      	nop 	# 11 bytes pad for loops and calls
+
+010   B1: #	B57 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+010   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #48	# Create frame
+
+01c   	movl    R13, [RSI + #8 (8-bit)]	# int
+020   	movq    R14, [RSI + #24 (8-bit)]	# ptr
+024   	movl    RBX, [RSI + #16 (8-bit)]	# int
+027   	movq    RDI, RSI	# spill
+02a   	call_leaf,runtime  OSR_migration_end
+        No JVM State Info
+        # 
+037   	testq   R14, R14	# ptr
+03a   	je     B57  P=0.001000 C=-1.000000
+03a
+040   B2: #	B60 B3 <- B1  Freq: 0.999
+040   	movl    R10, [R14 + #8 (8-bit)]	# compressed klass ptr
+044   	cmpl    R10, narrowklass: precise klass DeserBenchmark$ByteBufferRunnable: 0x00007f1d5c04f4c8:Constant:exact *	# compressed klass ptr
+04b   	jne,u  B60  P=0.000001 C=-1.000000
+04b
+051   B3: #	B4 <- B2  Freq: 0.998999
+051   	# checkcastPP of R14
+051
+051   B4: #	B54 B5 <- B3 B57  Freq: 0.999999
+051   	cmpl    R13, RBX
+054   	jge     B54  P=0.000000 C=40960.000000
+054
+05a   B5: #	B61 B6 <- B4  Freq: 0.999999
+05a   	movl    RBP, [R14 + #24 (8-bit)]	# compressed ptr ! Field: DeserBenchmark$ByteBufferRunnable.src
+05e   	NullCheck R14
+05e
+05e   B6: #	B62 B7 <- B5  Freq: 0.999997
+05e   	movl    R11, [RBP + #8 (8-bit)]	# compressed klass ptr
+062   	NullCheck RBP
+062
+062   B7: #	B58 B8 <- B6  Freq: 0.999996
+062   	cmpl    R11, narrowklass: precise klass java/nio/DirectByteBuffer: 0x00007f1d5c04f8b8:Constant:exact *	# compressed klass ptr
+069   	jne,u  B58  P=0.000001 C=-1.000000
+069
+06f   B8: #	B53 B9 <- B7  Freq: 0.999995
+06f   	decode_heap_oop_not_null RBP,RBP
+06f   	# checkcastPP of RBP
+06f   	testl   R13, R13
+072   	jl     B53  P=0.000001 C=-1.000000
+072
+078   B9: #	B53 B10 <- B8  Freq: 0.999994
+078   	movl    RCX, [RBP + #28 (8-bit)]	# int ! Field: java/nio/Buffer.limit
+07b   	cmpl    R13, RCX
+07e   	jge     B53  P=0.000001 C=-1.000000
+07e
+084   B10: #	B16 B11 <- B9  Freq: 0.999993
+084   	movzbl  R8, [RBP + #42 (8-bit)]	# ubyte ! Field: java/nio/ByteBuffer.nativeByteOrder
+089   	movq    R10, [RBP + #16 (8-bit)]	# long ! Field: java/nio/Buffer.address
+08d   	movl    R11, RCX	# spill
+090   	subl    R11, R13	# int
+093   	movl    R9, R13	# spill
+096   	incl    R9	# int
+099   	decl    R11	# int
+09c   	movslq  RDI, R9	# i2l
+09f   	movq    RDX, R10	# long->ptr
+0a2   	movq    R10, RDX	# spill
+0a5   	addq    R10, RDI	# ptr
+0a8   	movslq  RDI, R13	# i2l
+0ab   	movsbl  RDI, [RDX + RDI]	# byte
+0af   	testl   RDI, RDI
+0b1   	jl,s   B16  P=0.500488 C=40960.000000
+0b1
+0b3   B11: #	B56 B12 <- B10  Freq: 0.499508
+0b3   	testl   R9, R9
+0b6   	jl     B56  P=0.000000 C=10752.000000
+0b6
+0bc   B12: #	B56 B13 <- B11  Freq: 0.499508
+0bc   	cmpl    R11, #8
+0c0   	jl     B56  P=0.000000 C=10752.000000
+0c0
+0c6   B13: #	B15 B14 <- B12  Freq: 0.499508
+0c6   	movq    R10, [R10]	# long
+0c9   	testl   R8, R8
+0cc   	jne,s   B15  P=0.000000 C=5375.000000
+0cc
+0ce   B14: #	B15 <- B13  Freq: 0.499508
+0ce   	bswapq  R10
+0ce
+0d1   B15: #	B21 <- B14 B13  Freq: 0.499508
+0d1   	movq    [R14 + #16 (8-bit)], R10	# long ! Field: DeserBenchmark$ByteBufferRunnable.v64
+0d5   	addl    R13, #9	# int
+0d9   	jmp,s   B21
+0d9
+0db   B16: #	B55 B17 <- B10  Freq: 0.500485
+0db   	testl   R9, R9
+0de   	jl     B55  P=0.000000 C=10752.000000
+0de
+0e4   B17: #	B55 B18 <- B16  Freq: 0.500485
+0e4   	cmpl    R11, #4
+0e8   	jl     B55  P=0.000000 C=10752.000000
+0e8
+0ee   B18: #	B20 B19 <- B17  Freq: 0.500485
+0ee   	movl    R10, [R10]	# int
+0f1   	testl   R8, R8
+0f4   	jne,s   B20  P=0.000000 C=5375.000000
+0f4
+0f6   B19: #	B20 <- B18  Freq: 0.500484
+0f6   	bswapl  R10
+0f6
+0f9   B20: #	B21 <- B19 B18  Freq: 0.500485
+0f9   	movl    [R14 + #12 (8-bit)], R10	# int ! Field: DeserBenchmark$ByteBufferRunnable.v32
+0fd   	addl    R13, #5	# int
+101
+101   B21: #	B54 B22 <- B15 B20  Freq: 0.999992
+101   	movl    R10, R13	# spill
+104   	incl    R10	# int
+107   	cmpl    R10, RBX
+10a   	jge     B54  P=0.000000 C=40960.000000
+10a
+110   B22: #	B59 B23 <- B21  Freq: 0.999992
+110   	testl   R10, R10
+113   	jl     B59  P=0.000001 C=-1.000000
+113
+119   B23: #	B52 B24 <- B22  Freq: 0.999991
+119   	cmpl    R10, RCX
+11c   	jge     B52  P=0.000001 C=-1.000000
+11c
+122   B24: #	B30 B25 <- B23  Freq: 0.99999
+122   	movl    RDI, RCX	# spill
+124   	subl    RDI, R13	# int
+127   	movl    R9, R13	# spill
+12a   	addl    R9, #2	# int
+12e   	addl    RDI, #-2	# int
+131   	movslq  R11, R9	# i2l
+134   	movq    RSI, RDX	# spill
+137   	addq    RSI, R11	# ptr
+13a   	movslq  R10, R10	# i2l
+13d   	movsbl  R11, [RDX + R10]	# byte
+142   	testl   R11, R11
+145   	jl,s   B30  P=0.500488 C=40960.000000
+145
+147   B25: #	B56 B26 <- B24  Freq: 0.499507
+147   	testl   R9, R9
+14a   	jl     B56  P=0.000000 C=10752.000000
+14a
+150   B26: #	B56 B27 <- B25  Freq: 0.499506
+150   	cmpl    RDI, #8
+153   	jl     B56  P=0.000000 C=10752.000000
+153
+159   B27: #	B29 B28 <- B26  Freq: 0.499506
+159   	movq    R10, [RSI]	# long
+15c   	testl   R8, R8
+15f   	jne,s   B29  P=0.000000 C=5375.000000
+15f
+161   B28: #	B29 <- B27  Freq: 0.499506
+161   	bswapq  R10
+161
+164   B29: #	B35 <- B28 B27  Freq: 0.499506
+164   	movq    [R14 + #16 (8-bit)], R10	# long ! Field: DeserBenchmark$ByteBufferRunnable.v64
+168   	addl    R13, #10	# int
+16c   	jmp,s   B35
+16c
+16e   B30: #	B55 B31 <- B24  Freq: 0.500483
+16e   	testl   R9, R9
+171   	jl     B55  P=0.000000 C=10752.000000
+171
+177   B31: #	B55 B32 <- B30  Freq: 0.500483
+177   	cmpl    RDI, #4
+17a   	jl     B55  P=0.000000 C=10752.000000
+17a
+180   B32: #	B34 B33 <- B31  Freq: 0.500483
+180   	movl    R11, [RSI]	# int
+183   	testl   R8, R8
+186   	jne,s   B34  P=0.000000 C=5375.000000
+186
+188   B33: #	B34 <- B32  Freq: 0.500483
+188   	bswapl  R11
+188
+18b   B34: #	B35 <- B33 B32  Freq: 0.500483
+18b   	movl    [R14 + #12 (8-bit)], R11	# int ! Field: DeserBenchmark$ByteBufferRunnable.v32
+18f   	addl    R13, #6	# int
+193
+193   B35: #	B39 <- B29 B34  Freq: 0.999989
+193   	incl    R13	# int
+196   	jmp,s   B39
+      	nop 	# 8 bytes pad for loops and calls
+
+1a0   B36: #	B37 <- B50  top-of-loop Freq: 144358
+1a0   	bswapl  R10
+1a0
+1a3   B37: #	B38 <- B36 B51  top-of-loop Freq: 144358
+1a3   	movl    [R14 + #12 (8-bit)], R10	# int ! Field: DeserBenchmark$ByteBufferRunnable.v32
+1a7   	addl    R13, #5	# int
+1ab
+1ab   B38: #	B39 <- B47 B37  Freq: 288434
+1ab   	incl    R13	# int
+1ae   	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC        # DeserBenchmark$ByteBufferRunnable::run @ bci:70  L[0]=R14 L[1]=RBX L[2]=R13 L[3]=_
+        # OopMap{rbp=Oop r14=Oop off=430}
+1b4
+1b4   B39: #	B54 B40 <- B35 B38 	Loop: B39-B38 inner  Freq: 288435
+1b4   	cmpl    R13, RBX
+1b7   	jge     B54  P=0.000000 C=40960.000000
+1b7
+1bd   B40: #	B53 B41 <- B39  Freq: 288435
+1bd   	testl   R13, R13
+1c0   	jl,s   B53  P=0.000001 C=-1.000000
+1c0
+1c2   B41: #	B53 B42 <- B40  Freq: 288434
+1c2   	cmpl    R13, RCX
+1c5   	jge,s   B53  P=0.000001 C=-1.000000
+1c5
+1c7   B42: #	B48 B43 <- B41  Freq: 288434
+1c7   	movl    R10, RCX	# spill
+1ca   	subl    R10, R13	# int
+1cd   	movslq  R11, R13	# i2l
+1d0   	movsbl  RDI, [RDX + R11]	# byte
+1d5   	decl    R10	# int
+1d8   	movl    R9, R13	# spill
+1db   	incl    R9	# int
+1de   	movslq  R11, R9	# i2l
+1e1   	movq    RSI, RDX	# spill
+1e4   	addq    RSI, R11	# ptr
+1e7   	testl   RDI, RDI
+1e9   	jl,s   B48  P=0.500488 C=40960.000000
+1e9
+1eb   B43: #	B56 B44 <- B42  Freq: 144076
+1eb   	testl   R9, R9
+1ee   	jl     B56  P=0.000000 C=10752.000000
+1ee
+1f4   B44: #	B56 B45 <- B43  Freq: 144076
+1f4   	cmpl    R10, #8
+1f8   	jl,s   B56  P=0.000000 C=10752.000000
+1f8
+1fa   B45: #	B47 B46 <- B44  Freq: 144076
+1fa   	movq    R10, [RSI]	# long
+1fd   	testl   R8, R8
+200   	jne,s   B47  P=0.000000 C=5375.000000
+200
+202   B46: #	B47 <- B45  Freq: 144076
+202   	bswapq  R10
+202
+205   B47: #	B38 <- B46 B45  Freq: 144076
+205   	movq    [R14 + #16 (8-bit)], R10	# long ! Field: DeserBenchmark$ByteBufferRunnable.v64
+209   	addl    R13, #9	# int
+20d   	jmp,s   B38
+20d
+20f   B48: #	B55 B49 <- B42  Freq: 144358
+20f   	testl   R9, R9
+212   	jl,s   B55  P=0.000000 C=10752.000000
+212
+214   B49: #	B55 B50 <- B48  Freq: 144358
+214   	cmpl    R10, #4
+218   	jl,s   B55  P=0.000000 C=10752.000000
+218
+21a   B50: #	B36 B51 <- B49  Freq: 144358
+21a   	movl    R10, [RSI]	# int
+21d   	testl   R8, R8
+220   	je     B36  P=1.000000 C=5375.000000
+220
+226   B51: #	B37 <- B50  Freq: 0.0688352
+226   	jmp     B37
+226
+22b   B52: #	B53 <- B23  Freq: 1.01327e-06
+22b   	movl    R13, R10	# spill
+22b
+22e   B53: #	N561 <- B9 B52 B41 B8 B59 B40  Freq: 0.580703
+22e   	movl    RSI, #26	# int
+233   	movq    [rsp + #0], R14	# spill
+237   	movl    [rsp + #8], RBX	# spill
+23b   	movl    [rsp + #12], R13	# spill
+      	nop 	# 3 bytes pad for loops and calls
+243   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:12  L[0]=_ L[1]=_
+        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f1d68002e58 STK[1]=RBP
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:23  L[0]=rsp + #0 L[1]=rsp + #8 L[2]=rsp + #12 L[3]=_
+        # OopMap{rbp=Oop [0]=Oop off=584}
+248   	int3	# ShouldNotReachHere
+248
+24d   B54: #	N561 <- B4 B21 B39  Freq: 0.137537
+24d   	addq    rsp, 48	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+258   	ret
+258
+259   B55: #	N561 <- B17 B31 B49 B16 B30 B48  Freq: 0.141015
+259   	movl    RSI, #26	# int
+25e   	movl    [rsp + #8], RBX	# spill
+262   	movl    [rsp + #12], R9	# spill
+267   	movq    [rsp + #16], R14	# spill
+      	nop 	# 3 bytes pad for loops and calls
+26f   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:14  L[0]=_ L[1]=_ L[2]=_
+        # java.nio.DirectByteBuffer::getInt @ bci:5  L[0]=_ L[1]=_ STK[0]=RBP STK[1]=RBP
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:40  L[0]=rsp + #16 L[1]=rsp + #8 L[2]=rsp + #12 L[3]=_ STK[0]=rsp + #16
+        # OopMap{rbp=Oop [16]=Oop off=628}
+274   	int3	# ShouldNotReachHere
+274
+279   B56: #	N561 <- B12 B26 B44 B11 B25 B43  Freq: 0.14074
+279   	movl    RSI, #26	# int
+27e   	movl    [rsp + #8], RBX	# spill
+282   	movl    [rsp + #12], R9	# spill
+287   	movq    [rsp + #16], R14	# spill
+      	nop 	# 3 bytes pad for loops and calls
+28f   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:14  L[0]=_ L[1]=_ L[2]=_
+        # java.nio.DirectByteBuffer::getLong @ bci:6  L[0]=_ L[1]=_ STK[0]=RBP STK[1]=RBP
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:58  L[0]=rsp + #16 L[1]=rsp + #8 L[2]=rsp + #12 L[3]=_ STK[0]=rsp + #16
+        # OopMap{rbp=Oop [16]=Oop off=660}
+294   	int3	# ShouldNotReachHere
+294
+299   B57: #	B4 <- B1  Freq: 0.000999987
+299   	xorl    R14, R14	# ptr
+29c   	jmp     B4
+29c
+2a1   B58: #	N561 <- B7  Freq: 9.99996e-07
+2a1   	movl    RSI, #-34	# int
+2a6   	movq    [rsp + #0], R14	# spill
+2aa   	movl    [rsp + #8], RBX	# spill
+2ae   	movl    [rsp + #16], R13	# spill
+2b3   	call,static  wrapper for: uncommon_trap(reason='class_check' action='maybe_recompile')
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:23  L[0]=rsp + #0 L[1]=rsp + #8 L[2]=rsp + #16 L[3]=_ STK[0]=RBP STK[1]=rsp + #16
+        # OopMap{rbp=NarrowOop [0]=Oop off=696}
+2b8   	int3	# ShouldNotReachHere
+2b8
+2bd   B59: #	B53 <- B22  Freq: 9.99992e-07
+2bd   	movl    R13, R10	# spill
+2c0   	jmp     B53
+2c0
+2c5   B60: #	N561 <- B2  Freq: 9.99e-07
+2c5   	movl    RSI, #-99	# int
+2ca   	movq    RBP, R14	# spill
+2cd   	movl    [rsp + #0], RBX	# spill
+2d0   	movl    [rsp + #4], R13	# spill
+      	nop 	# 2 bytes pad for loops and calls
+2d7   	call,static  wrapper for: uncommon_trap(reason='constraint' action='reinterpret')
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:13  L[0]=RBP L[1]=rsp + #0 L[2]=rsp + #4 L[3]=_
+        # OopMap{rbp=Oop off=732}
+2dc   	int3	# ShouldNotReachHere
+2dc
+2e1   B61: #	N561 <- B5  Freq: 1.01328e-06
+2e1   	movl    RSI, #-10	# int
+      	nop 	# 1 bytes pad for loops and calls
+2e7   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:19  L[0]=_ L[1]=_ L[2]=_ L[3]=_ STK[0]=#NULL
+        # OopMap{off=748}
+2ec   	int3	# ShouldNotReachHere
+2ec
+2f1   B62: #	N561 <- B6  Freq: 1.01328e-06
+2f1   	movl    RSI, #-10	# int
+2f6   	movl    RBP, R13	# spill
+      	nop 	# 2 bytes pad for loops and calls
+2fb   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:23  L[0]=_ L[1]=_ L[2]=_ L[3]=_ STK[0]=#NULL STK[1]=RBP
+        # OopMap{off=768}
+300   	int3	# ShouldNotReachHere
+300
+
+    735   72 %     3       DeserBenchmark$ByteBufferRunnable::run @ -2 (74 bytes)   made not entrant
+    744   75    b  4       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+                              @ 4   java.nio.Buffer::limit (5 bytes)   accessor
+                              @ 23   java.nio.DirectByteBuffer::get (16 bytes)   inline (hot)
+                               \-> TypeProfile (49151/49151 counts) = java/nio/DirectByteBuffer
+                                @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
+                                @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                                @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                              @ 40   java.nio.DirectByteBuffer::getInt (15 bytes)   inline (hot)
+                               \-> TypeProfile (24625/24625 counts) = java/nio/DirectByteBuffer
+                                @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                                @ 8   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                                @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   inline (hot)
+                                  @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                                  @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                    @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
+                              @ 58   java.nio.DirectByteBuffer::getLong (16 bytes)   inline (hot)
+                               \-> TypeProfile (24526/24526 counts) = java/nio/DirectByteBuffer
+                                @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
+                                @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
+                                @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   inline (hot)
+                                  @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+                                  @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
+                                    @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc09283f8
+ - method holder:     'DeserBenchmark$ByteBufferRunnable'
+ - constants:         0x00007f1dc0928070 constant pool [52] {0x00007f1dc0928070} for 'DeserBenchmark$ByteBufferRunnable' cache=0x00007f1dc0928488
+ - access:            0xc1000001  public 
+ - name:              'run'
+ - signature:         '()V'
+ - max stack:         4
+ - max locals:        4
+ - size of params:    1
+ - method size:       12
+ - highest level:     3
+ - vtable index:      5
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
+ - compiled entry     0x00007f1dad223dc0
+ - code size:         74
+ - code start:        0x00007f1dc0928398
+ - code end (excl):   0x00007f1dc09283e2
+ - method data:       0x00007f1dc09285f8
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc09283e2
+ - localvar length:   0
+ - compiled code: nmethod    754   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+#
+#  void ( DeserBenchmark$ByteBufferRunnable:NotNull * )
+#
+#r018 rsi:rsi   : parm 0: DeserBenchmark$ByteBufferRunnable:NotNull *
+# -- Old rsp -- Framesize: 64 --
+#r191 rsp+60: in_preserve
+#r190 rsp+56: return address
+#r189 rsp+52: in_preserve
+#r188 rsp+48: saved fp register
+#r187 rsp+44: pad2, stack alignment
+#r186 rsp+40: pad2, stack alignment
+#r185 rsp+36: Fixed slot 1
+#r184 rsp+32: Fixed slot 0
+#r199 rsp+28: spill
+#r198 rsp+24: spill
+#r197 rsp+20: spill
+#r196 rsp+16: spill
+#r195 rsp+12: spill
+#r194 rsp+ 8: spill
+#r193 rsp+ 4: spill
+#r192 rsp+ 0: spill
+#
+000   N228: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B25 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #48	# Create frame
+
+02c   	movq    RCX, RSI	# spill
+02f   	movl    R10, [RSI + #24 (8-bit)]	# compressed ptr ! Field: DeserBenchmark$ByteBufferRunnable.src
+033   	movl    R8, [R10 + #8 (8-bit)]	# compressed klass ptr
+037   	NullCheck R10
+037
+037   B2: #	B21 B3 <- B1  Freq: 0.999999
+037   	movl    RDX, #-9	# int
+03c   	addl    RDX, [R10 + #28 (8-bit)]	# int
+040   	testl   RDX, RDX
+042   	jle     B21  P=0.000000 C=49151.000000
+042
+048   B3: #	B24 B4 <- B2  Freq: 0.999999
+048   	cmpl    R8, narrowklass: precise klass java/nio/DirectByteBuffer: 0x00007f1d700aa318:Constant:exact *	# compressed klass ptr
+04f   	jne,u  B24  P=0.000001 C=-1.000000
+04f
+055   B4: #	B8 <- B3  Freq: 0.999997
+055   	decode_heap_oop_not_null RBP,R10
+058   	# checkcastPP of RBP
+058   	movzbl  R10, [RBP + #42 (8-bit)]	# ubyte ! Field: java/nio/ByteBuffer.nativeByteOrder
+05d   	movq    R8, [RBP + #16 (8-bit)]	# long ! Field: java/nio/Buffer.address
+061   	movl    R11, [RBP + #28 (8-bit)]	# int ! Field: java/nio/Buffer.limit
+065   	movq    R13, R8	# long->ptr
+068   	xorl    RBX, RBX	# int
+06a   	jmp,s   B8
+      	nop 	# 4 bytes pad for loops and calls
+
+070   B5: #	B6 <- B18  top-of-loop Freq: 144509
+070   	bswapl  R9
+070
+073   B6: #	B7 <- B5 B19  top-of-loop Freq: 144509
+073   	movl    [RCX + #12 (8-bit)], R9	# int ! Field: DeserBenchmark$ByteBufferRunnable.v32
+077   	addl    RBX, #5	# int
+07a
+07a   B7: #	B21 B8 <- B15 B6  Freq: 288436
+07a   	incl    RBX	# int
+07c   	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC        # DeserBenchmark$ByteBufferRunnable::run @ bci:70  L[0]=RCX L[1]=RDX L[2]=RBX L[3]=_
+        # OopMap{rcx=Oop rbp=Oop off=124}
+082   	cmpl    RBX, RDX
+084   	jge     B21  P=0.000000 C=49150.000000
+084
+08a   B8: #	B20 B9 <- B4 B7 	Loop: B8-B7 inner  Freq: 288437
+08a   	testl   RBX, RBX
+08c   	jl,s   B20  P=0.000001 C=-1.000000
+08c
+08e   B9: #	B20 B10 <- B8  Freq: 288437
+08e   	cmpl    RBX, R11
+091   	jge,s   B20  P=0.000001 C=-1.000000
+091
+093   B10: #	B16 B11 <- B9  Freq: 288437
+093   	movl    R9, R11	# spill
+096   	subl    R9, RBX	# int
+099   	movslq  R8, RBX	# i2l
+09c   	movsbl  RSI, [R13 + R8]	# byte
+0a2   	decl    R9	# int
+0a5   	movl    R8, RBX	# spill
+0a8   	incl    R8	# int
+0ab   	movslq  RDI, R8	# i2l
+0ae   	movq    RAX, R13	# spill
+0b1   	addq    RAX, RDI	# ptr
+0b4   	testl   RSI, RSI
+0b6   	jl,s   B16  P=0.501007 C=49151.000000
+0b6
+0b8   B11: #	B23 B12 <- B10  Freq: 143928
+0b8   	testl   R8, R8
+0bb   	jl     B23  P=0.000000 C=10752.000000
+0bb
+0c1   B12: #	B23 B13 <- B11  Freq: 143928
+0c1   	cmpl    R9, #8
+0c5   	jl,s   B23  P=0.000000 C=10752.000000
+0c5
+0c7   B13: #	B15 B14 <- B12  Freq: 143928
+0c7   	movq    R8, [RAX]	# long
+0ca   	testl   R10, R10
+0cd   	jne,s   B15  P=0.000000 C=5375.000000
+0cd
+0cf   B14: #	B15 <- B13  Freq: 143928
+0cf   	bswapq  R8
+0cf
+0d2   B15: #	B7 <- B14 B13  Freq: 143928
+0d2   	movq    [RCX + #16 (8-bit)], R8	# long ! Field: DeserBenchmark$ByteBufferRunnable.v64
+0d6   	addl    RBX, #9	# int
+0d9   	jmp,s   B7
+0d9
+0db   B16: #	B22 B17 <- B10  Freq: 144509
+0db   	testl   R8, R8
+0de   	jl,s   B22  P=0.000000 C=10752.000000
+0de
+0e0   B17: #	B22 B18 <- B16  Freq: 144509
+0e0   	cmpl    R9, #4
+0e4   	jl,s   B22  P=0.000000 C=10752.000000
+0e4
+0e6   B18: #	B5 B19 <- B17  Freq: 144509
+0e6   	movl    R9, [RAX]	# int
+0e9   	testl   R10, R10
+0ec   	je     B5  P=1.000000 C=5375.000000
+0ec
+0f2   B19: #	B6 <- B18  Freq: 0.0689071
+0f2   	jmp     B6
+0f2
+0f7   B20: #	N228 <- B9 B8  Freq: 0.580705
+0f7   	movl    RSI, #26	# int
+0fc   	movq    [rsp + #0], RCX	# spill
+100   	movl    [rsp + #8], RDX	# spill
+104   	movl    [rsp + #12], RBX	# spill
+      	nop 	# 3 bytes pad for loops and calls
+10b   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:12  L[0]=_ L[1]=_
+        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f1d70048428 STK[1]=RBP
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:23  L[0]=rsp + #0 L[1]=rsp + #8 L[2]=rsp + #12 L[3]=_
+        # OopMap{rbp=Oop [0]=Oop off=272}
+110   	int3	# ShouldNotReachHere
+110
+115   B21: #	N228 <- B7 B2  Freq: 0.137538
+115   	addq    rsp, 48	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+120   	ret
+120
+121   B22: #	N228 <- B17 B16  Freq: 0.141162
+121   	movl    RSI, #26	# int
+126   	movl    [rsp + #8], RDX	# spill
+12a   	movl    [rsp + #12], R8	# spill
+12f   	movq    [rsp + #16], RCX	# spill
+      	nop 	# 3 bytes pad for loops and calls
+137   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:14  L[0]=_ L[1]=_ L[2]=_
+        # java.nio.DirectByteBuffer::getInt @ bci:5  L[0]=_ L[1]=_ STK[0]=RBP STK[1]=RBP
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:40  L[0]=rsp + #16 L[1]=rsp + #8 L[2]=rsp + #12 L[3]=_ STK[0]=rsp + #16
+        # OopMap{rbp=Oop [16]=Oop off=316}
+13c   	int3	# ShouldNotReachHere
+13c
+141   B23: #	N228 <- B12 B11  Freq: 0.140594
+141   	movl    RSI, #26	# int
+146   	movl    [rsp + #8], RDX	# spill
+14a   	movl    [rsp + #12], R8	# spill
+14f   	movq    [rsp + #16], RCX	# spill
+      	nop 	# 3 bytes pad for loops and calls
+157   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
+        # java.nio.Buffer::checkIndex @ bci:14  L[0]=_ L[1]=_ L[2]=_
+        # java.nio.DirectByteBuffer::getLong @ bci:6  L[0]=_ L[1]=_ STK[0]=RBP STK[1]=RBP
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:58  L[0]=rsp + #16 L[1]=rsp + #8 L[2]=rsp + #12 L[3]=_ STK[0]=rsp + #16
+        # OopMap{rbp=Oop [16]=Oop off=348}
+15c   	int3	# ShouldNotReachHere
+15c
+161   B24: #	N228 <- B3  Freq: 9.99999e-07
+161   	movl    RSI, #-122	# int
+166   	movq    RBP, RCX	# spill
+169   	movl    [rsp + #0], RDX	# spill
+      	nop 	# 3 bytes pad for loops and calls
+16f   	call,static  wrapper for: uncommon_trap(reason='predicate' action='maybe_recompile')
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:18  L[0]=RBP L[1]=rsp + #0 L[2]=#0 L[3]=_
+        # OopMap{rbp=Oop off=372}
+174   	int3	# ShouldNotReachHere
+174
+179   B25: #	N228 <- B1  Freq: 1.01328e-06
+179   	movl    RSI, #-10	# int
+      	nop 	# 1 bytes pad for loops and calls
+17f   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # DeserBenchmark$ByteBufferRunnable::run @ bci:4  L[0]=_ L[1]=_ L[2]=_ L[3]=_ STK[0]=#NULL
+        # OopMap{off=388}
+184   	int3	# ShouldNotReachHere
+184
+
+    756   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)   made not entrant
+-- ByteBuffer direct
+     2099   76    b  3       sun.misc.FDBigInteger::mult (64 bytes)
+   2102   77    b  3       sun.misc.FDBigInteger::<init> (30 bytes)
+                              @ 1   java.lang.Object::<init> (1 bytes)
+                              @ 26   sun.misc.FDBigInteger::trimLeadingZeros (57 bytes)   not inlineable
+   2103   78    b  3       sun.misc.FDBigInteger::trimLeadingZeros (57 bytes)
+   2106   79    b  3       sun.misc.FDBigInteger::makeImmutable (6 bytes)
+   2107   80    b  3       sun.misc.FDBigInteger::mult (44 bytes)
+                              @ 28   sun.misc.FDBigInteger::mult (64 bytes)   not inlineable
+                              @ 40   sun.misc.FDBigInteger::<init> (30 bytes)   not inlineable
+6.55 msec/loop
+     2110   81    b  1       java.util.Formatter$Flags::valueOf (5 bytes)
+1455.99 MB/s
+   2111   82    b  3       java.lang.String::getChars (62 bytes)
+                              @ 9  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 27  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 43  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
+                              @ 58   java.lang.System::arraycopy (0 bytes)   intrinsic
+   2115   83    b  3       java.util.concurrent.ConcurrentHashMap::setTabAt (19 bytes)
+                              @ 15   sun.misc.Unsafe::putObjectVolatile (0 bytes)   intrinsic
+   2116   84     n 0       sun.misc.Unsafe::putObjectVolatile (native)   
+   2116   85     n 0       sun.misc.Unsafe::compareAndSwapObject (native)   
+   2129   86     n 0       sun.misc.Unsafe::getByte (native)   
+   2129   87     n 0       sun.misc.Unsafe::getInt (native)   
+   2129   88     n 0       sun.misc.Unsafe::getLong (native)   
+   2147   89 %  b  3       DeserBenchmark$UnsafeRunnable::run @ 10 (98 bytes)
+                              @ 29   sun.misc.Unsafe::getByte (0 bytes)   intrinsic
+                              @ 55   sun.misc.Unsafe::getInt (0 bytes)   intrinsic
+                              @ 82   sun.misc.Unsafe::getLong (0 bytes)   intrinsic
+   2150   90    b  3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
+                              @ 29   sun.misc.Unsafe::getByte (0 bytes)   intrinsic
+                              @ 55   sun.misc.Unsafe::getInt (0 bytes)   intrinsic
+                              @ 82   sun.misc.Unsafe::getLong (0 bytes)   intrinsic
+   2153   91 %  b  4       DeserBenchmark$UnsafeRunnable::run @ 10 (98 bytes)
+                              @ 29   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                              @ 55   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                              @ 82   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc0928f48
+ - method holder:     'DeserBenchmark$UnsafeRunnable'
+ - constants:         0x00007f1dc0928a70 constant pool [85] {0x00007f1dc0928a70} for 'DeserBenchmark$UnsafeRunnable' cache=0x00007f1dc0929130
+ - access:            0xc1000001  public 
+ - name:              'run'
+ - signature:         '()V'
+ - max stack:         8
+ - max locals:        4
+ - size of params:    1
+ - method size:       12
+ - highest level:     3
+ - vtable index:      5
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
+ - compiled entry     0x00007f1dad22df00
+ - code size:         98
+ - code start:        0x00007f1dc0928ed0
+ - code end (excl):   0x00007f1dc0928f32
+ - method data:       0x00007f1dc09293e8
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc0928f32
+ - localvar length:   0
+ - compiled code: nmethod   2160   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
+#
+#  void ( rawptr:BotPTR )
+#
+#r018 rsi:rsi   : parm 0: rawptr:BotPTR
+# -- Old rsp -- Framesize: 48 --
+#r191 rsp+44: in_preserve
+#r190 rsp+40: return address
+#r189 rsp+36: in_preserve
+#r188 rsp+32: saved fp register
+#r187 rsp+28: pad2, stack alignment
+#r186 rsp+24: pad2, stack alignment
+#r185 rsp+20: Fixed slot 1
+#r184 rsp+16: Fixed slot 0
+#r195 rsp+12: spill
+#r194 rsp+ 8: spill
+#r193 rsp+ 4: spill
+#r192 rsp+ 0: spill
+#
+000   N220: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	# breakpoint
+      	nop 	# 11 bytes pad for loops and calls
+
+010   B1: #	B16 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+010   	# stack bang
+	pushq   rbp	# Save rbp
+	subq    rsp, #32	# Create frame
+
+01c   	movl    RBX, [RSI + #8 (8-bit)]	# int
+01f   	movq    RBP, [RSI + #24 (8-bit)]	# ptr
+023   	movl    R14, [RSI + #16 (8-bit)]	# int
+027   	movq    RDI, RSI	# spill
+02a   	call_leaf,runtime  OSR_migration_end
+        No JVM State Info
+        # 
+037   	testq   RBP, RBP	# ptr
+03a   	je     B16  P=0.001000 C=-1.000000
+03a
+040   B2: #	B17 B3 <- B1  Freq: 0.999
+040   	movl    R10, [RBP + #8 (8-bit)]	# compressed klass ptr
+044   	decode_klass_not_null R10,R10
+048   	movq    R10, [R10 + #56 (8-bit)]	# class
+04c   	movq    R11, precise klass DeserBenchmark$UnsafeRunnable: 0x00007f1d5c0aed98:Constant:exact *	# ptr
+056   	cmpq    R10, R11	# ptr
+059   	jne,u  B17  P=0.000001 C=-1.000000
+059
+05f   B3: #	B4 <- B2  Freq: 0.998999
+05f   	# checkcastPP of RBP
+05f
+05f   B4: #	B15 B5 <- B3 B16  Freq: 0.999999
+05f   	cmpl    RBX, R14
+062   	jge     B15  P=0.000000 C=40960.000000
+062
+068   B5: #	B18 B6 <- B4  Freq: 0.999999
+068   	movl    R10, [RBP + #36 (8-bit)]	# compressed ptr ! Field: DeserBenchmark$UnsafeRunnable.base
+06c   	NullCheck RBP
+06c
+06c   B6: #	B8 B7 <- B5  Freq: 0.999997
+06c   	movl    R8, RBX	# spill
+06f   	incl    R8	# int
+072   	movslq  R11, RBX	# i2l
+075   	addq    R11, [RBP + #24 (8-bit)]	# long
+079   	
+079   	movsbl  R10, [R10 + R11]	# byte
+07e   	
+07e   	movl    R9, [RBP + #36 (8-bit)]	# compressed ptr ! Field: DeserBenchmark$UnsafeRunnable.base
+082   	movslq  R11, R8	# i2l
+085   	addq    R11, [RBP + #24 (8-bit)]	# long
+089   	decode_heap_oop R8,R9
+114   	addq    R8, R11	# ptr
+117   	testl   R10, R10
+11a   	jl,s   B8  P=0.500488 C=40960.000000
+11a
+11c   B7: #	B9 <- B6  Freq: 0.49951
+11c   	
+11c   	movq    R10, [R8]	# long
+11f   	
+11f   	movq    [RBP + #16 (8-bit)], R10	# long ! Field: DeserBenchmark$UnsafeRunnable.v64
+123   	addl    RBX, #9	# int
+126   	jmp,s   B9
+126
+128   B8: #	B9 <- B6  Freq: 0.500487
+128   	
+128   	movl    R10, [R8]	# int
+12b   	
+12b   	movl    [RBP + #12 (8-bit)], R10	# int ! Field: DeserBenchmark$UnsafeRunnable.v32
+12f   	addl    RBX, #5	# int
+132
+132   B9: #	B12 <- B7 B8  Freq: 0.999997
+132   	incl    RBX	# int
+134   	jmp,s   B12
+      	nop 	# 10 bytes pad for loops and calls
+
+140   B10: #	B11 <- B13  top-of-loop Freq: 500487
+140   	
+140   	movl    R11, [R10]	# int
+143   	
+143   	movl    [RBP + #12 (8-bit)], R11	# int ! Field: DeserBenchmark$UnsafeRunnable.v32
+147   	addl    RBX, #5	# int
+14a
+14a   B11: #	B12 <- B14 B10  top-of-loop Freq: 999997
+14a   	incl    RBX	# int
+14c   	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC        # DeserBenchmark$UnsafeRunnable::run @ bci:94  L[0]=RBP L[1]=R14 L[2]=RBX L[3]=_
+        # OopMap{rbp=Oop off=332}
+152
+152   B12: #	B15 B13 <- B9 B11 	Loop: B12-B11 inner  Freq: 999998
+152   	cmpl    RBX, R14
+155   	jge     B15  P=0.000000 C=40960.000000
+155
+15b   B13: #	B10 B14 <- B12  Freq: 999997
+15b   	movl    R11, [RBP + #36 (8-bit)]	# compressed ptr ! Field: DeserBenchmark$UnsafeRunnable.base
+15f   	movslq  R10, RBX	# i2l
+162   	addq    R10, [RBP + #24 (8-bit)]	# long
+166   	
+166   	movsbl  R11, [R11 + R10]	# byte
+16b   	
+16b   	movl    R10, [RBP + #36 (8-bit)]	# compressed ptr ! Field: DeserBenchmark$UnsafeRunnable.base
+16f   	movl    R9, RBX	# spill
+172   	incl    R9	# int
+175   	decode_heap_oop R10,R10
+1fd   	movslq  R8, R9	# i2l
+200   	addq    R8, [RBP + #24 (8-bit)]	# long
+204   	addq    R10, R8	# ptr
+207   	testl   R11, R11
+20a   	jl     B10  P=0.500488 C=40960.000000
+20a
+210   B14: #	B11 <- B13  Freq: 499510
+210   	
+210   	movq    R10, [R10]	# long
+213   	
+213   	movq    [RBP + #16 (8-bit)], R10	# long ! Field: DeserBenchmark$UnsafeRunnable.v64
+217   	addl    RBX, #9	# int
+21a   	jmp     B11
+21a
+21f   B15: #	N220 <- B4 B12  Freq: 0.999998
+21f   	addq    rsp, 32	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+22a   	ret
+22a
+22b   B16: #	B4 <- B1  Freq: 0.000999987
+22b   	xorl    RBP, RBP	# ptr
+22d   	jmp     B4
+22d
+232   B17: #	N220 <- B2  Freq: 9.99e-07
+232   	movl    RSI, #-99	# int
+237   	movl    [rsp + #0], R14	# spill
+23b   	movl    [rsp + #4], RBX	# spill
+23f   	call,static  wrapper for: uncommon_trap(reason='constraint' action='reinterpret')
+        # DeserBenchmark$UnsafeRunnable::run @ bci:10  L[0]=RBP L[1]=rsp + #0 L[2]=rsp + #4 L[3]=_
+        # OopMap{rbp=Oop off=580}
+244   	int3	# ShouldNotReachHere
+244
+249   B18: #	N220 <- B5  Freq: 1.01328e-06
+249   	movl    RSI, #-10	# int
+      	nop 	# 1 bytes pad for loops and calls
+24f   	call,static  wrapper for: uncommon_trap(reason='null_check' action='maybe_recompile')
+        # DeserBenchmark$UnsafeRunnable::run @ bci:19  L[0]=_ L[1]=_ L[2]=_ L[3]=_ STK[0]=_ STK[1]=#NULL
+        # OopMap{off=596}
+254   	int3	# ShouldNotReachHere
+254
+
+   2164   89 %     3       DeserBenchmark$UnsafeRunnable::run @ -2 (98 bytes)   made not entrant
+   2175   92    b  4       DeserBenchmark$UnsafeRunnable::run (98 bytes)
+                              @ 29   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
+                              @ 55   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
+                              @ 82   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
+{method}
+ - this oop:          0x00007f1dc0928f48
+ - method holder:     'DeserBenchmark$UnsafeRunnable'
+ - constants:         0x00007f1dc0928a70 constant pool [85] {0x00007f1dc0928a70} for 'DeserBenchmark$UnsafeRunnable' cache=0x00007f1dc0929130
+ - access:            0xc1000001  public 
+ - name:              'run'
+ - signature:         '()V'
+ - max stack:         8
+ - max locals:        4
+ - size of params:    1
+ - method size:       12
+ - highest level:     3
+ - vtable index:      5
+ - i2i entry:         0x00007f1dad01e2e0
+ - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
+ - compiled entry     0x00007f1dad22df00
+ - code size:         98
+ - code start:        0x00007f1dc0928ed0
+ - code end (excl):   0x00007f1dc0928f32
+ - method data:       0x00007f1dc09293e8
+ - checked ex length: 0
+ - linenumber start:  0x00007f1dc0928f32
+ - localvar length:   0
+ - compiled code: nmethod   2180   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
+#
+#  void ( DeserBenchmark$UnsafeRunnable:NotNull * )
+#
+#r018 rsi:rsi   : parm 0: DeserBenchmark$UnsafeRunnable:NotNull *
+# -- Old rsp -- Framesize: 32 --
+#r191 rsp+28: in_preserve
+#r190 rsp+24: return address
+#r189 rsp+20: in_preserve
+#r188 rsp+16: saved fp register
+#r187 rsp+12: pad2, stack alignment
+#r186 rsp+ 8: pad2, stack alignment
+#r185 rsp+ 4: Fixed slot 1
+#r184 rsp+ 0: Fixed slot 0
+#
+000   N105: #	B1 <- BLOCK HEAD IS JUNK   Freq: 1
+000   	movl    rscratch1, [j_rarg0 + oopDesc::klass_offset_in_bytes()]	# compressed klass
+	decode_klass_not_null rscratch1, rscratch1
+	cmpq    rax, rscratch1	 # Inline cache check
+	jne     SharedRuntime::_ic_miss_stub
+	nop	# nops to align entry point
+
+      	nop 	# 12 bytes pad for loops and calls
+
+020   B1: #	B7 B2 <- BLOCK HEAD IS JUNK   Freq: 1
+020   	subq    rsp, #24	# Create frame
+	movq    [rsp + #16], rbp	# Save rbp
+
+02c   	movl    R10, #-9	# int
+032   	addl    R10, [RSI + #32 (8-bit)]	# int
+036   	testl   R10, R10
+039   	jle     B7  P=0.000000 C=49151.000000
+039
+03f   B2: #	B5 <- B1  Freq: 1
+03f   	xorl    R8, R8	# int
+042   	jmp,s   B5
+042
+044   B3: #	B4 <- B5  top-of-loop Freq: 500925
+044   	
+044   	movl    R9, [R11]	# int
+047   	
+047   	movl    [RSI + #12 (8-bit)], R9	# int ! Field: DeserBenchmark$UnsafeRunnable.v32
+04b   	addl    R8, #5	# int
+04f
+04f   B4: #	B7 B5 <- B6 B3  top-of-loop Freq: 1e+06
+04f   	incl    R8	# int
+052   	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC        # DeserBenchmark$UnsafeRunnable::run @ bci:94  L[0]=RSI L[1]=R10 L[2]=R8 L[3]=_
+        # OopMap{rsi=Oop off=82}
+058   	cmpl    R8, R10
+05b   	jge     B7  P=0.000000 C=49150.000000
+05b
+061   B5: #	B3 B6 <- B2 B4 	Loop: B5-B4 inner  Freq: 1e+06
+061   	movl    R9, [RSI + #36 (8-bit)]	# compressed ptr ! Field: DeserBenchmark$UnsafeRunnable.base
+065   	movslq  R11, R8	# i2l
+068   	addq    R11, [RSI + #24 (8-bit)]	# long
+06c   	
+06c   	movsbl  R9, [R9 + R11]	# byte
+071   	
+071   	movl    R11, [RSI + #36 (8-bit)]	# compressed ptr ! Field: DeserBenchmark$UnsafeRunnable.base
+075   	movl    RBX, R8	# spill
+078   	incl    RBX	# int
+07a   	decode_heap_oop R11,R11
+102   	movslq  RCX, RBX	# i2l
+105   	addq    RCX, [RSI + #24 (8-bit)]	# long
+109   	addq    R11, RCX	# ptr
+10c   	testl   R9, R9
+10f   	jl     B3  P=0.500926 C=49151.000000
+10f
+115   B6: #	B4 <- B5  Freq: 499074
+115   	
+115   	movq    R11, [R11]	# long
+118   	
+118   	movq    [RSI + #16 (8-bit)], R11	# long ! Field: DeserBenchmark$UnsafeRunnable.v64
+11c   	addl    R8, #9	# int
+120   	jmp     B4
+120
+125   B7: #	N105 <- B4 B1  Freq: 1
+125   	addq    rsp, 16	# Destroy frame
+	popq   rbp
+	testl  rax, [rip + #offset_to_poll_page]	# Safepoint: poll for GC
+
+130   	ret
+130
+
+   2181   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)   made not entrant
+-- Unsafe heap
+  6.75 msec/loop
+     3532   93    b  1       java.nio.Buffer::position (5 bytes)
+1412.85 MB/s
+   3533   94    b  3       java.util.concurrent.ConcurrentHashMap$Node::<init> (26 bytes)
+                              @ 1   java.lang.Object::<init> (1 bytes)
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007f1dad231a64, pid=15546, tid=139765839955712
+#
+# JRE version: OpenJDK Runtime Environment (8.0) (build 1.8.0-internal-fastdebug-elise_2014_04_09_00_03-b00)
+# Java VM: OpenJDK 64-Bit Server VM (25.0-b70-fastdebug mixed mode linux-amd64 compressed oops)
+# Problematic frame:
+# J 92 C2 DeserBenchmark$UnsafeRunnable.run()V (98 bytes) @ 0x00007f1dad231a64 [0x00007f1dad231a20+0x44]
+#
+# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# An error report file with more information is saved as:
+# /home/elise/project/VM/OpenJDK/bench/hs_err_pid15546.log
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#
+Current thread is 139765839955712
+Dumping core ...

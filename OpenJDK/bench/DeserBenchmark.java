@@ -36,7 +36,7 @@ public class DeserBenchmark {
         ByteBuffer direct = ByteBuffer.allocateDirect(size);
         direct.put(bytes);
 
-        measure("ByteBuffer heap", size, loop, new ByteBufferRunnable(heap));
+//        measure("ByteBuffer heap", size, loop, new ByteBufferRunnable(heap));
         measure("ByteBuffer direct", size, loop, new ByteBufferRunnable(direct));
         measure("Unsafe heap", size, loop, new HeapUnsafeRunnable(bytes));
         measure("Unsafe direct", size, loop, new DirectUnsafeRunnable(direct));
