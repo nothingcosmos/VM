@@ -39,7 +39,7 @@ public class DeserBenchmark {
 //        measure("ByteBuffer heap", size, loop, new ByteBufferRunnable(heap));
         measure("ByteBuffer direct", size, loop, new ByteBufferRunnable(direct));
         measure("Unsafe heap", size, loop, new HeapUnsafeRunnable(bytes));
-        measure("Unsafe direct", size, loop, new DirectUnsafeRunnable(direct));
+//        measure("Unsafe direct", size, loop, new DirectUnsafeRunnable(direct));
 
         System.out.println("writing data to random.data file");
         try {

@@ -1,19 +1,22 @@
-    144    1    b  3       java.lang.String::equals (81 bytes)
-    149    2    b  3       java.lang.Math::min (11 bytes)
-    149    3    b  3       java.lang.String::charAt (29 bytes)
+openjdk version "1.8.0-internal-fastdebug"
+OpenJDK Runtime Environment (build 1.8.0-internal-fastdebug-elise_2014_04_09_00_03-b00)
+OpenJDK 64-Bit Server VM (build 25.0-b70-fastdebug, mixed mode)
+    124    1    b  3       java.lang.String::equals (81 bytes)
+    129    2    b  3       java.lang.Math::min (11 bytes)
+    130    3    b  3       java.lang.String::charAt (29 bytes)
                               @ 18  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
-    152    4    b  3       java.lang.String::indexOf (70 bytes)
+    133    4    b  3       java.lang.String::indexOf (70 bytes)
                               @ 66   java.lang.String::indexOfSupplementary (71 bytes)   callee is too large
-    157    5    b  3       java.lang.String::length (6 bytes)
-    158    6     n 0       java.lang.System::arraycopy (native)   (static)
-    163    7    b  3       java.lang.Object::<init> (1 bytes)
-    172    8    b  3       java.io.BufferedInputStream::getBufIfOpen (21 bytes)
+    138    5    b  3       java.lang.String::length (6 bytes)
+    139    6     n 0       java.lang.System::arraycopy (native)   (static)
+    146    7    b  3       java.lang.Object::<init> (1 bytes)
+    159    8    b  3       java.io.BufferedInputStream::getBufIfOpen (21 bytes)
                               @ 15  java/io/IOException::<init> (not loaded)   not inlineable
-    174    9  s b  3       java.io.BufferedInputStream::read (49 bytes)
+    161    9  s b  3       java.io.BufferedInputStream::read (49 bytes)
                               @ 12   java.io.BufferedInputStream::fill (233 bytes)   callee is too large
                               @ 29   java.io.BufferedInputStream::getBufIfOpen (21 bytes)
                                 @ 15  java/io/IOException::<init> (not loaded)   not inlineable
-    178   10    b  3       java.io.DataInputStream::readUTF (501 bytes)
+    165   10    b  3       java.io.DataInputStream::readUTF (501 bytes)
                               @ 1   java.io.DataInputStream::readUnsignedShort (39 bytes)   callee is too large
                               @ 87   java.io.DataInputStream::readFully (63 bytes)   callee is too large
                               @ 259  java/io/UTFDataFormatException::<init> (not loaded)   not inlineable
@@ -49,7 +52,7 @@
                                 @ 13   java.lang.String::<init> (62 bytes)   callee is too large
                               @ 485  java/io/UTFDataFormatException::<init> (not loaded)   not inlineable
                               @ 497   java.lang.String::<init> (62 bytes)   callee is too large
-    202   11    b  3       java.util.Arrays::copyOfRange (63 bytes)
+    188   11    b  3       java.util.Arrays::copyOfRange (63 bytes)
                               @ 16   java.lang.StringBuilder::<init> (7 bytes)
                                 @ 3   java.lang.AbstractStringBuilder::<init> (12 bytes)
                                   @ 1   java.lang.Object::<init> (1 bytes)
@@ -64,29 +67,29 @@
                               @ 35   java.lang.IllegalArgumentException::<init> (6 bytes)   don't inline Throwable constructors
                               @ 54   java.lang.Math::min (11 bytes)
                               @ 57   java.lang.System::arraycopy (0 bytes)   intrinsic
-    206   12    b  3       java.lang.String::<init> (62 bytes)
+    192   12    b  3       java.lang.String::<init> (62 bytes)
                               @ 1   java.lang.Object::<init> (1 bytes)
                               @ 13  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 26  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 45  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 55   java.util.Arrays::copyOfRange (63 bytes)   callee is too large
-    208   13    b  3       java.io.DataInputStream::readUnsignedShort (39 bytes)
+    195   13    b  3       java.io.DataInputStream::readUnsignedShort (39 bytes)
                               @ 4   java.io.InputStream::read (0 bytes)   no static binding
                               @ 12   java.io.InputStream::read (0 bytes)   no static binding
                               @ 26  java/io/EOFException::<init> (not loaded)   not inlineable
-    209   14    b  3       java.io.DataInputStream::readFully (63 bytes)
+    196   14    b  3       java.io.DataInputStream::readFully (63 bytes)
                               @ 8  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
                !              @ 34   java.io.InputStream::read (109 bytes)   no static binding
                               @ 48  java/io/EOFException::<init> (not loaded)   not inlineable
-    211   15    b  3       java.io.DataInputStream::readUTF (5 bytes)
+    199   15    b  3       java.io.DataInputStream::readUTF (5 bytes)
                               @ 1   java.io.DataInputStream::readUTF (501 bytes)   callee is too large
-    212   16  s b  3       java.io.BufferedInputStream::read (113 bytes)
+    200   16  s b  3       java.io.BufferedInputStream::read (113 bytes)
                               @ 1   java.io.BufferedInputStream::getBufIfOpen (21 bytes)
                                 @ 15  java/io/IOException::<init> (not loaded)   not inlineable
                               @ 26  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 49   java.io.BufferedInputStream::read1 (108 bytes)   callee is too large
                               @ 101   java.io.InputStream::available (2 bytes)   no static binding
-    216   17    b  3       java.io.BufferedInputStream::read1 (108 bytes)
+    204   17    b  3       java.io.BufferedInputStream::read1 (108 bytes)
                               @ 18   java.io.BufferedInputStream::getBufIfOpen (21 bytes)
                                 @ 15  java/io/IOException::<init> (not loaded)   not inlineable
                               @ 33   java.io.BufferedInputStream::getInIfOpen (21 bytes)
@@ -96,31 +99,31 @@
                               @ 80   java.io.BufferedInputStream::getBufIfOpen (21 bytes)
                                 @ 15  java/io/IOException::<init> (not loaded)   not inlineable
                               @ 91   java.lang.System::arraycopy (0 bytes)   intrinsic
-    222   18    b  3       java.io.DataInputStream::readShort (40 bytes)
+    210   18    b  3       java.io.DataInputStream::readShort (40 bytes)
                               @ 4   java.io.InputStream::read (0 bytes)   no static binding
                               @ 12   java.io.InputStream::read (0 bytes)   no static binding
                               @ 26  java/io/EOFException::<init> (not loaded)   not inlineable
-    224   19    b  3       java.io.DataInputStream::readFully (9 bytes)
+    212   19    b  3       java.io.DataInputStream::readFully (9 bytes)
                               @ 5   java.io.DataInputStream::readFully (63 bytes)   callee is too large
-    231   20    b  3       java.lang.String::hashCode (55 bytes)
-    402   21    b  3       java.util.HashMap::hash (20 bytes)
+    219   20    b  3       java.lang.String::hashCode (55 bytes)
+    253   21    b  3       java.util.HashMap::hash (20 bytes)
                               @ 9   java.lang.Object::hashCode (0 bytes)   no static binding
-    407   22    b  3       java.util.HashMap::put (13 bytes)
+    258   22    b  3       java.util.HashMap::put (13 bytes)
                               @ 2   java.util.HashMap::hash (20 bytes)
                                 @ 9   java.lang.Object::hashCode (0 bytes)   no static binding
                               @ 9   java.util.HashMap::putVal (300 bytes)   callee is too large
-    409   23    b  1       java.lang.ref.Reference::get (5 bytes)
-    410   24    b  1       java.lang.ThreadLocal::access$400 (5 bytes)
-    411   25    b  1       java.lang.Object::<init> (1 bytes)
-    412    7       3       java.lang.Object::<init> (1 bytes)   made not entrant
-    413   26    b  3       java.lang.System::getSecurityManager (4 bytes)
-    414   27    b  3       java.lang.AbstractStringBuilder::ensureCapacityInternal (16 bytes)
+    261   23    b  1       java.lang.ref.Reference::get (5 bytes)
+    262   24    b  1       java.lang.ThreadLocal::access$400 (5 bytes)
+    264   25    b  1       java.lang.Object::<init> (1 bytes)
+    265    7       3       java.lang.Object::<init> (1 bytes)   made not entrant
+    267   26    b  3       java.lang.System::getSecurityManager (4 bytes)
+    268   27    b  3       java.lang.AbstractStringBuilder::ensureCapacityInternal (16 bytes)
                               @ 12   java.lang.AbstractStringBuilder::expandCapacity (50 bytes)   callee is too large
-    416   28    b  4       java.lang.String::charAt (29 bytes)
+    271   28    b  4       java.lang.String::charAt (29 bytes)
 {method}
- - this oop:          0x00007f1dc052b808
+ - this oop:          0x00007f5ff5225808
  - method holder:     'java/lang/String'
- - constants:         0x00007f1dc0528100 constant pool [678] {0x00007f1dc0528100} for 'java/lang/String' cache=0x00007f1dc05d8478
+ - constants:         0x00007f5ff5222100 constant pool [678] {0x00007f5ff5222100} for 'java/lang/String' cache=0x00007f5ff52d2478
  - access:            0x81000001  public 
  - name:              'charAt'
  - signature:         '(I)C'
@@ -130,18 +133,18 @@
  - method size:       12
  - highest level:     3
  - vtable index:      -2
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
- - compiled entry     0x00007f1dad1fc480
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b80d8: 0xba000000 i2c: 0x00007f5ff8ad8860 c2i: 0x00007f5ff8ad8977 c2iUV: 0x00007f5ff8ad894a
+ - compiled entry     0x00007f5ff8b99bc0
  - code size:         29
- - code start:        0x00007f1dc052b7c8
- - code end (excl):   0x00007f1dc052b7e5
- - method data:       0x00007f1dc06d08d0
+ - code start:        0x00007f5ff52257c8
+ - code end (excl):   0x00007f5ff52257e5
+ - method data:       0x00007f5ff53ca8d0
  - checked ex length: 0
- - linenumber start:  0x00007f1dc052b7e5
+ - linenumber start:  0x00007f5ff52257e5
  - localvar length:   2
- - localvar start:    0x00007f1dc052b7ee
- - compiled code: nmethod    418    3       3       java.lang.String::charAt (29 bytes)
+ - localvar start:    0x00007f5ff52257ee
+ - compiled code: nmethod    273    3       3       java.lang.String::charAt (29 bytes)
 #
 #  char ( java/lang/String:NotNull:exact *, int )
 #
@@ -226,39 +229,39 @@
 084   	int3	# ShouldNotReachHere
 084
 
-    430    3       3       java.lang.String::charAt (29 bytes)   made not entrant
-    431   29    b  3       java.lang.String::indexOf (7 bytes)
+    310    3       3       java.lang.String::charAt (29 bytes)   made not entrant
+    311   29    b  3       java.lang.String::indexOf (7 bytes)
                               @ 3   java.lang.String::indexOf (70 bytes)   callee is too large
-    432   30    b  3       java.lang.AbstractStringBuilder::append (50 bytes)
+    312   30    b  3       java.lang.AbstractStringBuilder::append (50 bytes)
                               @ 5   java.lang.AbstractStringBuilder::appendNull (56 bytes)   callee is too large
                               @ 10   java.lang.String::length (6 bytes)
                               @ 21   java.lang.AbstractStringBuilder::ensureCapacityInternal (16 bytes)
                                 @ 12   java.lang.AbstractStringBuilder::expandCapacity (50 bytes)   callee is too large
                               @ 35   java.lang.String::getChars (62 bytes)   callee is too large
-    437   31    b  3       java.util.HashMap$Node::<init> (26 bytes)
+    318   31    b  3       java.util.HashMap$Node::<init> (26 bytes)
                               @ 1   java.lang.Object::<init> (1 bytes)
-    439   32    b  3       java.lang.String::lastIndexOf (52 bytes)
+    319   32    b  3       java.lang.String::lastIndexOf (52 bytes)
                               @ 16   java.lang.Math::min (11 bytes)
                               @ 48   java.lang.String::lastIndexOfSupplementary (70 bytes)   callee is too large
-    448   33    b  3       sun.util.locale.LocaleUtils::isUpper (18 bytes)
-    453   34    b  3       java.lang.StringBuilder::append (8 bytes)
+    328   33    b  3       sun.util.locale.LocaleUtils::isUpper (18 bytes)
+    334   34    b  3       java.lang.StringBuilder::append (8 bytes)
                               @ 2   java.lang.AbstractStringBuilder::append (50 bytes)   callee is too large
-    462   35    b  3       java.util.concurrent.ConcurrentHashMap::tabAt (21 bytes)
+    343   35    b  3       java.util.concurrent.ConcurrentHashMap::tabAt (21 bytes)
                               @ 14   sun.misc.Unsafe::getObjectVolatile (0 bytes)   intrinsic
-    464   36     n 0       sun.misc.Unsafe::getObjectVolatile (native)   
-    468   37    b  3       sun.nio.cs.UTF_8$Encoder::encode (359 bytes)
+    345   36     n 0       sun.misc.Unsafe::getObjectVolatile (native)   
+    348   37    b  3       sun.nio.cs.UTF_8$Encoder::encode (359 bytes)
                               @ 14   java.lang.Math::min (11 bytes)
                               @ 139   java.lang.Character::isSurrogate (18 bytes)
                               @ 157  sun/nio/cs/Surrogate$Parser::<init> (not loaded)   not inlineable
                               @ 175  sun/nio/cs/Surrogate$Parser::parse (not loaded)   not inlineable
                               @ 186   java.nio.charset.CharsetEncoder::malformedInputAction (5 bytes)
-    479   38  s b  4       java.io.BufferedInputStream::read (49 bytes)
+    358   38  s b  4       java.io.BufferedInputStream::read (49 bytes)
                               @ 12   java.io.BufferedInputStream::fill (233 bytes)   too big
                               @ 29   java.io.BufferedInputStream::getBufIfOpen (21 bytes)   inline (hot)
 {method}
- - this oop:          0x00007f1dc06781f8
+ - this oop:          0x00007f5ff53721f8
  - method holder:     'java/io/BufferedInputStream'
- - constants:         0x00007f1dc0677630 constant pool [155] {0x00007f1dc0677630} for 'java/io/BufferedInputStream' cache=0x00007f1dc06796e8
+ - constants:         0x00007f5ff5371630 constant pool [155] {0x00007f5ff5371630} for 'java/io/BufferedInputStream' cache=0x00007f5ff53736e8
  - access:            0x81000021  public synchronized 
  - name:              'read'
  - signature:         '()I'
@@ -268,19 +271,19 @@
  - method size:       12
  - highest level:     3
  - vtable index:      7
- - i2i entry:         0x00007f1dad01f060
- - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
- - compiled entry     0x00007f1dad1ffc20
+ - i2i entry:         0x00007f5ff89e9060
+ - adapters:          AHE@0x00007f60080b7f20: 0xb0000000 i2c: 0x00007f5ff8ad0ae0 c2i: 0x00007f5ff8ad0bf4 c2iUV: 0x00007f5ff8ad0bc7
+ - compiled entry     0x00007f5ff8bc9c60
  - code size:         49
- - code start:        0x00007f1dc06781a8
- - code end (excl):   0x00007f1dc06781d9
- - method data:       0x00007f1dc078d7f0
+ - code start:        0x00007f5ff53721a8
+ - code end (excl):   0x00007f5ff53721d9
+ - method data:       0x00007f5ff54877f0
  - checked ex length: 1
- - checked ex start:  0x00007f1dc06781f4
- - linenumber start:  0x00007f1dc06781d9
+ - checked ex start:  0x00007f5ff53721f4
+ - linenumber start:  0x00007f5ff53721d9
  - localvar length:   1
- - localvar start:    0x00007f1dc06781e6
- - compiled code: nmethod    487    9  s    3       java.io.BufferedInputStream::read (49 bytes)
+ - localvar start:    0x00007f5ff53721e6
+ - compiled code: nmethod    365    9  s    3       java.io.BufferedInputStream::read (49 bytes)
 #
 #  int ( java/io/BufferedInputStream:NotNull * )
 #
@@ -322,7 +325,7 @@
 03e
 044   B2: #	B16 B3 <- B1  Freq: 0.999999
 044   	# TLS is in R15
-044   	movl    R11, narrowklass: precise klass java/io/BufferedInputStream: 0x00007f1d5c09ce58:Constant:exact *	# compressed klass ptr
+044   	movl    R11, narrowklass: precise klass java/io/BufferedInputStream: 0x00007f5fac09ca28:Constant:exact *	# compressed klass ptr
 04a   	decode_klass_not_null R10,R11
 058   	movq    R10, [R10 + #176 (32-bit)]	# long
 05f   	movq    R11, R10	# spill
@@ -513,8 +516,8 @@
 455   	jmp     B27
 455
 
-    504    9  s    3       java.io.BufferedInputStream::read (49 bytes)   made not entrant
-    505   39    b  3       java.io.DataInputStream::readInt (72 bytes)
+    369    9  s    3       java.io.BufferedInputStream::read (49 bytes)   made not entrant
+    370   39    b  3       java.io.DataInputStream::readInt (72 bytes)
                               @ 4   java.io.InputStream::read (0 bytes)   no static binding
                               @ 12   java.io.InputStream::read (0 bytes)   no static binding
                               @ 20   java.io.InputStream::read (0 bytes)   no static binding
@@ -523,21 +526,21 @@
 seed: 1700461846
 size: 10000000 bytes
 loop: 100 times
-    541   40     n 0       sun.misc.Unsafe::compareAndSwapLong (native)   
-    542   41    b  3       java.util.Random::nextInt (7 bytes)
+    384   40     n 0       sun.misc.Unsafe::compareAndSwapLong (native)   
+    385   41    b  3       java.util.Random::nextInt (7 bytes)
                               @ 3   java.util.Random::next (47 bytes)   callee is too large
-    543   42    b  3       java.util.concurrent.atomic.AtomicLong::get (5 bytes)
-    544   43    b  3       java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)
+    386   42    b  3       java.util.concurrent.atomic.AtomicLong::get (5 bytes)
+    387   43    b  3       java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)
                               @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   intrinsic
-    545   44    b  3       java.util.Random::next (47 bytes)
+    388   44    b  3       java.util.Random::next (47 bytes)
                               @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)
                               @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)
                                 @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   intrinsic
-    549   45    b  4       java.lang.Math::min (11 bytes)
+    391   45    b  4       java.lang.Math::min (11 bytes)
 {method}
- - this oop:          0x00007f1dc0604078
+ - this oop:          0x00007f5ff52fe078
  - method holder:     'java/lang/Math'
- - constants:         0x00007f1dc0600e80 constant pool [324] {0x00007f1dc0600e80} for 'java/lang/Math' cache=0x00007f1dc06058e0
+ - constants:         0x00007f5ff52fae80 constant pool [324] {0x00007f5ff52fae80} for 'java/lang/Math' cache=0x00007f5ff52ff8e0
  - access:            0x81000009  public static 
  - name:              'min'
  - signature:         '(II)I'
@@ -548,18 +551,18 @@ loop: 100 times
  - intrinsic id:      14 _min
  - highest level:     3
  - vtable index:      -2
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b9470: 0xaa000000 i2c: 0x00007f1dad127660 c2i: 0x00007f1dad12779c c2iUV: 0x00007f1dad12776f
- - compiled entry     0x00007f1dad1cd0a0
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b9470: 0xaa000000 i2c: 0x00007f5ff8af1660 c2i: 0x00007f5ff8af179c c2iUV: 0x00007f5ff8af176f
+ - compiled entry     0x00007f5ff8b95660
  - code size:         11
- - code start:        0x00007f1dc0604048
- - code end (excl):   0x00007f1dc0604053
- - method data:       0x00007f1dc0746610
+ - code start:        0x00007f5ff52fe048
+ - code end (excl):   0x00007f5ff52fe053
+ - method data:       0x00007f5ff5440610
  - checked ex length: 0
- - linenumber start:  0x00007f1dc0604053
+ - linenumber start:  0x00007f5ff52fe053
  - localvar length:   2
- - localvar start:    0x00007f1dc060405e
- - compiled code: nmethod    550    2       3       java.lang.Math::min (11 bytes)
+ - localvar start:    0x00007f5ff52fe05e
+ - compiled code: nmethod    393    2       3       java.lang.Math::min (11 bytes)
 #
 #  int ( int, int )
 #
@@ -599,8 +602,8 @@ abababab
 020   	jmp,s   B3
 020
 
-    551    2       3       java.lang.Math::min (11 bytes)   made not entrant
-    552   46    b  4       java.util.Random::next (47 bytes)
+    394    2       3       java.lang.Math::min (11 bytes)   made not entrant
+    395   46    b  4       java.util.Random::next (47 bytes)
                               @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
                               @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
                                 @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
@@ -608,9 +611,9 @@ abababab
                               @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
                                 @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc08581c0
+ - this oop:          0x00007f5ff55521c0
  - method holder:     'java/util/Random'
- - constants:         0x00007f1dc0856ef8 constant pool [383] {0x00007f1dc0856ef8} for 'java/util/Random' cache=0x00007f1dc0859b60
+ - constants:         0x00007f5ff5550ef8 constant pool [383] {0x00007f5ff5550ef8} for 'java/util/Random' cache=0x00007f5ff5553b60
  - access:            0xc1000004  protected 
  - name:              'next'
  - signature:         '(I)I'
@@ -620,18 +623,18 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      20
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
- - compiled entry     0x00007f1dad21ac40
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b80d8: 0xba000000 i2c: 0x00007f5ff8ad8860 c2i: 0x00007f5ff8ad8977 c2iUV: 0x00007f5ff8ad894a
+ - compiled entry     0x00007f5ff8be4c80
  - code size:         47
- - code start:        0x00007f1dc0858148
- - code end (excl):   0x00007f1dc0858177
- - method data:       0x00007f1dc085c118
+ - code start:        0x00007f5ff5552148
+ - code end (excl):   0x00007f5ff5552177
+ - method data:       0x00007f5ff5556118
  - checked ex length: 0
- - linenumber start:  0x00007f1dc0858177
+ - linenumber start:  0x00007f5ff5552177
  - localvar length:   5
- - localvar start:    0x00007f1dc0858182
- - compiled code: nmethod    556   44       3       java.util.Random::next (47 bytes)
+ - localvar start:    0x00007f5ff5552182
+ - compiled code: nmethod    399   44       3       java.util.Random::next (47 bytes)
 #
 #  int ( java/util/Random:NotNull *, int )
 #
@@ -725,8 +728,8 @@ abababab
 0b4   	int3	# ShouldNotReachHere
 0b4
 
-    559   44       3       java.util.Random::next (47 bytes)   made not entrant
-    559   47    b  4       java.util.Random::nextInt (7 bytes)
+    402   44       3       java.util.Random::next (47 bytes)   made not entrant
+    402   47    b  4       java.util.Random::nextInt (7 bytes)
                               @ 3   java.util.Random::next (47 bytes)   inline (hot)
                                 @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
                                 @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
@@ -735,9 +738,9 @@ abababab
                                 @ 32   java.util.concurrent.atomic.AtomicLong::compareAndSet (13 bytes)   inline (hot)
                                   @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc0858710
+ - this oop:          0x00007f5ff5552710
  - method holder:     'java/util/Random'
- - constants:         0x00007f1dc0856ef8 constant pool [383] {0x00007f1dc0856ef8} for 'java/util/Random' cache=0x00007f1dc0859b60
+ - constants:         0x00007f5ff5550ef8 constant pool [383] {0x00007f5ff5550ef8} for 'java/util/Random' cache=0x00007f5ff5553b60
  - access:            0x81000001  public 
  - name:              'nextInt'
  - signature:         '()I'
@@ -747,18 +750,18 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      25
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
- - compiled entry     0x00007f1dad21a4a0
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b7f20: 0xb0000000 i2c: 0x00007f5ff8ad0ae0 c2i: 0x00007f5ff8ad0bf4 c2iUV: 0x00007f5ff8ad0bc7
+ - compiled entry     0x00007f5ff8be44e0
  - code size:         7
- - code start:        0x00007f1dc08586f0
- - code end (excl):   0x00007f1dc08586f7
- - method data:       0x00007f1dc085c038
+ - code start:        0x00007f5ff55526f0
+ - code end (excl):   0x00007f5ff55526f7
+ - method data:       0x00007f5ff5556038
  - checked ex length: 0
- - linenumber start:  0x00007f1dc08586f7
+ - linenumber start:  0x00007f5ff55526f7
  - localvar length:   1
- - localvar start:    0x00007f1dc0858702
- - compiled code: nmethod    563   41       3       java.util.Random::nextInt (7 bytes)
+ - localvar start:    0x00007f5ff5552702
+ - compiled code: nmethod    407   41       3       java.util.Random::nextInt (7 bytes)
 #
 #  int ( java/util/Random:NotNull * )
 #
@@ -852,16 +855,16 @@ abababab
 0b8   	int3	# ShouldNotReachHere
 0b8
 
-    566   41       3       java.util.Random::nextInt (7 bytes)   made not entrant
-    568   48 %  b  3       java.util.Random::nextBytes @ 25 (56 bytes)
+    409   41       3       java.util.Random::nextInt (7 bytes)   made not entrant
+    411   48 %  b  3       java.util.Random::nextBytes @ 25 (56 bytes)
                               @ 11   java.util.Random::nextInt (7 bytes)
                                 @ 3   java.util.Random::next (47 bytes)   callee is too large
                               @ 20   java.lang.Math::min (11 bytes)
-    573   49    b  3       java.util.Random::nextBytes (56 bytes)
+    417   49    b  3       java.util.Random::nextBytes (56 bytes)
                               @ 11   java.util.Random::nextInt (7 bytes)
                                 @ 3   java.util.Random::next (47 bytes)   callee is too large
                               @ 20   java.lang.Math::min (11 bytes)
-    575   50 %  b  4       java.util.Random::nextBytes @ 25 (56 bytes)
+    421   50 %  b  4       java.util.Random::nextBytes @ 25 (56 bytes)
                               @ 11   java.util.Random::nextInt (7 bytes)   inline (hot)
                                 @ 3   java.util.Random::next (47 bytes)   inline (hot)
                                   @ 8   java.util.concurrent.atomic.AtomicLong::get (5 bytes)   inline (hot)
@@ -872,9 +875,9 @@ abababab
                                     @ 9   sun.misc.Unsafe::compareAndSwapLong (0 bytes)   (intrinsic)
                               @ 20   java.lang.Math::min (11 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc08582e0
+ - this oop:          0x00007f5ff55522e0
  - method holder:     'java/util/Random'
- - constants:         0x00007f1dc0856ef8 constant pool [383] {0x00007f1dc0856ef8} for 'java/util/Random' cache=0x00007f1dc0859b60
+ - constants:         0x00007f5ff5550ef8 constant pool [383] {0x00007f5ff5550ef8} for 'java/util/Random' cache=0x00007f5ff5553b60
  - access:            0xc1000001  public 
  - name:              'nextBytes'
  - signature:         '([B)V'
@@ -884,18 +887,18 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      19
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b7fd0: 0xbb000000 i2c: 0x00007f1dad106520 c2i: 0x00007f1dad106638 c2iUV: 0x00007f1dad10660b
- - compiled entry     0x00007f1dad21d720
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b7fd0: 0xbb000000 i2c: 0x00007f5ff8ad0520 c2i: 0x00007f5ff8ad0638 c2iUV: 0x00007f5ff8ad060b
+ - compiled entry     0x00007f5ff8be7760
  - code size:         56
- - code start:        0x00007f1dc0858250
- - code end (excl):   0x00007f1dc0858288
- - method data:       0x00007f1dc085c400
+ - code start:        0x00007f5ff5552250
+ - code end (excl):   0x00007f5ff5552288
+ - method data:       0x00007f5ff5556400
  - checked ex length: 0
- - linenumber start:  0x00007f1dc0858288
+ - linenumber start:  0x00007f5ff5552288
  - localvar length:   6
- - localvar start:    0x00007f1dc0858296
- - compiled code: nmethod    589   49       3       java.util.Random::nextBytes (56 bytes)
+ - localvar start:    0x00007f5ff5552296
+ - compiled code: nmethod    439   49       3       java.util.Random::nextBytes (56 bytes)
 #
 #  void ( rawptr:BotPTR )
 #
@@ -948,7 +951,7 @@ abababab
 04e
 054   B2: #	B38 B3 <- B1  Freq: 0.999
 054   	movl    R10, [RBP + #8 (8-bit)]	# compressed klass ptr
-058   	cmpl    R10, narrowklass: precise klass java/util/Random: 0x00007f1d5c037468:Constant:exact *	# compressed klass ptr
+058   	cmpl    R10, narrowklass: precise klass java/util/Random: 0x00007f5fac037038:Constant:exact *	# compressed klass ptr
 05f   	jne,u  B38  P=0.000001 C=-1.000000
 05f
 065   B3: #	B4 <- B2  Freq: 0.998999
@@ -962,7 +965,7 @@ abababab
 06f
 075   B5: #	B39 B6 <- B4  Freq: 0.998999
 075   	movl    R8, [R11 + #8 (8-bit)]	# compressed klass ptr
-079   	cmpl    R8, narrowklass: precise klass [B: 0x00007f1dbc12e218:Constant:exact *	# compressed klass ptr
+079   	cmpl    R8, narrowklass: precise klass [B: 0x00007f600812eff8:Constant:exact *	# compressed klass ptr
 080   	jne,u  B39  P=0.000001 C=-1.000000
 080
 086   B6: #	B7 <- B5  Freq: 0.998998
@@ -1240,48 +1243,48 @@ abababab
 300   	int3	# ShouldNotReachHere
 300
 
-    592   48 %     3       java.util.Random::nextBytes @ -2 (56 bytes)   made not entrant
-    630   51    b  3       java.util.concurrent.ConcurrentHashMap::spread (10 bytes)
-    654   52    b  3       java.nio.DirectByteBuffer::ix (10 bytes)
-    655   53    b  3       java.nio.Buffer::checkIndex (22 bytes)
+    442   48 %     3       java.util.Random::nextBytes @ -2 (56 bytes)   made not entrant
+    476   51    b  3       java.util.concurrent.ConcurrentHashMap::spread (10 bytes)
+    488   52    b  3       java.nio.DirectByteBuffer::ix (10 bytes)
+    489   53    b  3       java.nio.Buffer::checkIndex (22 bytes)
                               @ 16  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
-    656   54     n 0       sun.misc.Unsafe::getByte (native)   
-    656   55    b  3       java.nio.DirectByteBuffer::get (16 bytes)
+    491   54     n 0       sun.misc.Unsafe::getByte (native)   
+    491   55    b  3       java.nio.DirectByteBuffer::get (16 bytes)
                               @ 6   java.nio.Buffer::checkIndex (22 bytes)   intrinsic
                               @ 9   java.nio.DirectByteBuffer::ix (10 bytes)
                               @ 12   sun.misc.Unsafe::getByte (0 bytes)   intrinsic
-    657   56    b  3       java.nio.Buffer::checkIndex (24 bytes)
+    493   56    b  3       java.nio.Buffer::checkIndex (24 bytes)
                               @ 18  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
-    659   57    b  3       java.nio.DirectByteBuffer::getInt (15 bytes)
+    495   57    b  3       java.nio.DirectByteBuffer::getInt (15 bytes)
                               @ 5   java.nio.Buffer::checkIndex (24 bytes)
                                 @ 18  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 8   java.nio.DirectByteBuffer::ix (10 bytes)
                               @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   callee is too large
-    662   58     n 0       sun.misc.Unsafe::getInt (native)   
-    663   59    b  3       java.nio.Bits::swap (5 bytes)
+    498   58     n 0       sun.misc.Unsafe::getInt (native)   
+    498   59    b  3       java.nio.Bits::swap (5 bytes)
                               @ 1   java.lang.Integer::reverseBytes (26 bytes)
-    664   60     n 0       sun.misc.Unsafe::getLong (native)   
-    664   61    b  3       java.nio.DirectByteBuffer::getLong (16 bytes)
+    499   60     n 0       sun.misc.Unsafe::getLong (native)   
+    500   61    b  3       java.nio.DirectByteBuffer::getLong (16 bytes)
                               @ 6   java.nio.Buffer::checkIndex (24 bytes)
                                 @ 18  java/lang/IndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 9   java.nio.DirectByteBuffer::ix (10 bytes)
                               @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   callee is too large
-    667   62    b  3       java.nio.Bits::swap (5 bytes)
+    503   62    b  3       java.nio.Bits::swap (5 bytes)
                               @ 1   java.lang.Long::reverseBytes (46 bytes)   callee is too large
-    669   63    b  3       java.nio.DirectByteBuffer::getInt (39 bytes)
+    504   63    b  3       java.nio.DirectByteBuffer::getInt (39 bytes)
                               @ 10   sun.misc.Unsafe::getInt (0 bytes)   intrinsic
                               @ 26   java.nio.Bits::swap (5 bytes)
                                 @ 1   java.lang.Integer::reverseBytes (26 bytes)
-    671   64    b  3       java.nio.DirectByteBuffer::getLong (39 bytes)
+    506   64    b  3       java.nio.DirectByteBuffer::getLong (39 bytes)
                               @ 10   sun.misc.Unsafe::getLong (0 bytes)   intrinsic
                               @ 26   java.nio.Bits::swap (5 bytes)
                                 @ 1   java.lang.Long::reverseBytes (46 bytes)   callee is too large
-    673   65    b  3       java.lang.Long::reverseBytes (46 bytes)
-    675   66    b  4       java.lang.Long::reverseBytes (46 bytes)
+    508   65    b  3       java.lang.Long::reverseBytes (46 bytes)
+    510   66    b  4       java.lang.Long::reverseBytes (46 bytes)
 {method}
- - this oop:          0x00007f1dc05d3e70
+ - this oop:          0x00007f5ff52cde70
  - method holder:     'java/lang/Long'
- - constants:         0x00007f1dc05d0088 constant pool [414] {0x00007f1dc05d0088} for 'java/lang/Long' cache=0x00007f1dc06dc508
+ - constants:         0x00007f5ff52ca088 constant pool [414] {0x00007f5ff52ca088} for 'java/lang/Long' cache=0x00007f5ff53d6508
  - access:            0x81000009  public static 
  - name:              'reverseBytes'
  - signature:         '(J)J'
@@ -1292,18 +1295,18 @@ abababab
  - intrinsic id:      41 _reverseBytes_l
  - highest level:     3
  - vtable index:      -2
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b8d90: 0xbe000000 i2c: 0x00007f1dad11b1e0 c2i: 0x00007f1dad11b31a c2iUV: 0x00007f1dad11b2ed
- - compiled entry     0x00007f1dad21e2e0
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b8d90: 0xbe000000 i2c: 0x00007f5ff8ae51e0 c2i: 0x00007f5ff8ae531a c2iUV: 0x00007f5ff8ae52ed
+ - compiled entry     0x00007f5ff8be8320
  - code size:         46
- - code start:        0x00007f1dc05d3e28
- - code end (excl):   0x00007f1dc05d3e56
- - method data:       0x00007f1dc085e190
+ - code start:        0x00007f5ff52cde28
+ - code end (excl):   0x00007f5ff52cde56
+ - method data:       0x00007f5ff5558190
  - checked ex length: 0
- - linenumber start:  0x00007f1dc05d3e56
+ - linenumber start:  0x00007f5ff52cde56
  - localvar length:   1
- - localvar start:    0x00007f1dc05d3e62
- - compiled code: nmethod    675   65       3       java.lang.Long::reverseBytes (46 bytes)
+ - localvar start:    0x00007f5ff52cde62
+ - compiled code: nmethod    511   65       3       java.lang.Long::reverseBytes (46 bytes)
 #
 #  long/half ( long, half )
 #
@@ -1351,15 +1354,15 @@ abababab
 063   	ret
 063
 
-    676   65       3       java.lang.Long::reverseBytes (46 bytes)   made not entrant
-    677   67    b  4       java.nio.DirectByteBuffer::get (16 bytes)
+    512   65       3       java.lang.Long::reverseBytes (46 bytes)   made not entrant
+    513   67    b  4       java.nio.DirectByteBuffer::get (16 bytes)
                               @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
                               @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
                               @ 12   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc075db18
+ - this oop:          0x00007f5ff5457b18
  - method holder:     'java/nio/DirectByteBuffer'
- - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - constants:         0x00007f5ff5455b30 constant pool [545] {0x00007f5ff5455b30} for 'java/nio/DirectByteBuffer' cache=0x00007f5ff545bed8
  - access:            0x81000001  public 
  - name:              'get'
  - signature:         '(I)B'
@@ -1369,18 +1372,18 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      10
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
- - compiled entry     0x00007f1dad21fb40
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b80d8: 0xba000000 i2c: 0x00007f5ff8ad8860 c2i: 0x00007f5ff8ad8977 c2iUV: 0x00007f5ff8ad894a
+ - compiled entry     0x00007f5ff8be9b80
  - code size:         16
- - code start:        0x00007f1dc075dae8
- - code end (excl):   0x00007f1dc075daf8
- - method data:       0x00007f1dc085d840
+ - code start:        0x00007f5ff5457ae8
+ - code end (excl):   0x00007f5ff5457af8
+ - method data:       0x00007f5ff5557840
  - checked ex length: 0
- - linenumber start:  0x00007f1dc075daf8
+ - linenumber start:  0x00007f5ff5457af8
  - localvar length:   2
- - localvar start:    0x00007f1dc075dafe
- - compiled code: nmethod    679   55       3       java.nio.DirectByteBuffer::get (16 bytes)
+ - localvar start:    0x00007f5ff5457afe
+ - compiled code: nmethod    515   55       3       java.nio.DirectByteBuffer::get (16 bytes)
 #
 #  byte ( java/nio/DirectByteBuffer:NotNull *, int )
 #
@@ -1435,20 +1438,20 @@ abababab
       	nop 	# 2 bytes pad for loops and calls
 05b   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
         # java.nio.Buffer::checkIndex @ bci:12  L[0]=_ L[1]=_
-        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f1d700632b8 STK[1]=RBP
+        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f5fc0073748 STK[1]=RBP
         # OopMap{rbp=Oop off=96}
 060   	int3	# ShouldNotReachHere
 060
 
-    680   55       3       java.nio.DirectByteBuffer::get (16 bytes)   made not entrant
-    682   68    b  4       java.nio.DirectByteBuffer::getInt (39 bytes)
+    516   55       3       java.nio.DirectByteBuffer::get (16 bytes)   made not entrant
+    517   68    b  4       java.nio.DirectByteBuffer::getInt (39 bytes)
                               @ 10   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
                               @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
                                 @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc075f3c0
+ - this oop:          0x00007f5ff54593c0
  - method holder:     'java/nio/DirectByteBuffer'
- - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - constants:         0x00007f5ff5455b30 constant pool [545] {0x00007f5ff5455b30} for 'java/nio/DirectByteBuffer' cache=0x00007f5ff545bed8
  - access:            0x81000002  private 
  - name:              'getInt'
  - signature:         '(J)I'
@@ -1458,18 +1461,18 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      69
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b8028: 0xbbe00000 i2c: 0x00007f1dad10e260 c2i: 0x00007f1dad10e378 c2iUV: 0x00007f1dad10e34b
- - compiled entry     0x00007f1dad2224a0
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b8028: 0xbbe00000 i2c: 0x00007f5ff8ad8260 c2i: 0x00007f5ff8ad8378 c2iUV: 0x00007f5ff8ad834b
+ - compiled entry     0x00007f5ff8bec4e0
  - code size:         39
- - code start:        0x00007f1dc075f368
- - code end (excl):   0x00007f1dc075f38f
- - method data:       0x00007f1dc085db80
+ - code start:        0x00007f5ff5459368
+ - code end (excl):   0x00007f5ff545938f
+ - method data:       0x00007f5ff5557b80
  - checked ex length: 0
- - linenumber start:  0x00007f1dc075f38f
+ - linenumber start:  0x00007f5ff545938f
  - localvar length:   3
- - localvar start:    0x00007f1dc075f39a
- - compiled code: nmethod    684   63       3       java.nio.DirectByteBuffer::getInt (39 bytes)
+ - localvar start:    0x00007f5ff545939a
+ - compiled code: nmethod    519   63       3       java.nio.DirectByteBuffer::getInt (39 bytes)
 #
 #  int ( java/nio/DirectByteBuffer:NotNull *, long, half )
 #
@@ -1515,8 +1518,8 @@ abababab
 049   	ret
 049
 
-    684   63       3       java.nio.DirectByteBuffer::getInt (39 bytes)   made not entrant
-    685   69    b  4       java.nio.DirectByteBuffer::getInt (15 bytes)
+    520   63       3       java.nio.DirectByteBuffer::getInt (39 bytes)   made not entrant
+    521   69    b  4       java.nio.DirectByteBuffer::getInt (15 bytes)
                               @ 5   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
                               @ 8   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
                               @ 11   java.nio.DirectByteBuffer::getInt (39 bytes)   inline (hot)
@@ -1524,9 +1527,9 @@ abababab
                                 @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
                                   @ 1   java.lang.Integer::reverseBytes (26 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc075f538
+ - this oop:          0x00007f5ff5459538
  - method holder:     'java/nio/DirectByteBuffer'
- - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - constants:         0x00007f5ff5455b30 constant pool [545] {0x00007f5ff5455b30} for 'java/nio/DirectByteBuffer' cache=0x00007f5ff545bed8
  - access:            0x81000001  public 
  - name:              'getInt'
  - signature:         '(I)I'
@@ -1536,18 +1539,18 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      29
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
- - compiled entry     0x00007f1dad21ee80
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b80d8: 0xba000000 i2c: 0x00007f5ff8ad8860 c2i: 0x00007f5ff8ad8977 c2iUV: 0x00007f5ff8ad894a
+ - compiled entry     0x00007f5ff8be8ec0
  - code size:         15
- - code start:        0x00007f1dc075f508
- - code end (excl):   0x00007f1dc075f517
- - method data:       0x00007f1dc085da78
+ - code start:        0x00007f5ff5459508
+ - code end (excl):   0x00007f5ff5459517
+ - method data:       0x00007f5ff5557a78
  - checked ex length: 0
- - linenumber start:  0x00007f1dc075f517
+ - linenumber start:  0x00007f5ff5459517
  - localvar length:   2
- - localvar start:    0x00007f1dc075f51e
- - compiled code: nmethod    688   57       3       java.nio.DirectByteBuffer::getInt (15 bytes)
+ - localvar start:    0x00007f5ff545951e
+ - compiled code: nmethod    524   57       3       java.nio.DirectByteBuffer::getInt (15 bytes)
 #
 #  int ( java/nio/DirectByteBuffer:NotNull *, int )
 #
@@ -1620,15 +1623,15 @@ abababab
 070   	int3	# ShouldNotReachHere
 070
 
-    689   57       3       java.nio.DirectByteBuffer::getInt (15 bytes)   made not entrant
-    690   70    b  4       java.nio.DirectByteBuffer::getLong (39 bytes)
+    525   57       3       java.nio.DirectByteBuffer::getInt (15 bytes)   made not entrant
+    525   70    b  4       java.nio.DirectByteBuffer::getLong (39 bytes)
                               @ 10   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
                               @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
                                 @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc075fa30
+ - this oop:          0x00007f5ff5459a30
  - method holder:     'java/nio/DirectByteBuffer'
- - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - constants:         0x00007f5ff5455b30 constant pool [545] {0x00007f5ff5455b30} for 'java/nio/DirectByteBuffer' cache=0x00007f5ff545bed8
  - access:            0x81000002  private 
  - name:              'getLong'
  - signature:         '(J)J'
@@ -1638,18 +1641,18 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      71
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b8028: 0xbbe00000 i2c: 0x00007f1dad10e260 c2i: 0x00007f1dad10e378 c2iUV: 0x00007f1dad10e34b
- - compiled entry     0x00007f1dad222a20
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b8028: 0xbbe00000 i2c: 0x00007f5ff8ad8260 c2i: 0x00007f5ff8ad8378 c2iUV: 0x00007f5ff8ad834b
+ - compiled entry     0x00007f5ff8beca60
  - code size:         39
- - code start:        0x00007f1dc075f9d8
- - code end (excl):   0x00007f1dc075f9ff
- - method data:       0x00007f1dc085df60
+ - code start:        0x00007f5ff54599d8
+ - code end (excl):   0x00007f5ff54599ff
+ - method data:       0x00007f5ff5557f60
  - checked ex length: 0
- - linenumber start:  0x00007f1dc075f9ff
+ - linenumber start:  0x00007f5ff54599ff
  - localvar length:   3
- - localvar start:    0x00007f1dc075fa0a
- - compiled code: nmethod    691   64       3       java.nio.DirectByteBuffer::getLong (39 bytes)
+ - localvar start:    0x00007f5ff5459a0a
+ - compiled code: nmethod    527   64       3       java.nio.DirectByteBuffer::getLong (39 bytes)
 #
 #  long/half ( java/nio/DirectByteBuffer:NotNull *, long, half )
 #
@@ -1695,8 +1698,8 @@ abababab
 04a   	ret
 04a
 
-    692   64       3       java.nio.DirectByteBuffer::getLong (39 bytes)   made not entrant
-    692   71    b  4       java.nio.DirectByteBuffer::getLong (16 bytes)
+    528   64       3       java.nio.DirectByteBuffer::getLong (39 bytes)   made not entrant
+    528   71    b  4       java.nio.DirectByteBuffer::getLong (16 bytes)
                               @ 6   java.nio.Buffer::checkIndex (24 bytes)   inline (hot)
                               @ 9   java.nio.DirectByteBuffer::ix (10 bytes)   inline (hot)
                               @ 12   java.nio.DirectByteBuffer::getLong (39 bytes)   inline (hot)
@@ -1704,9 +1707,9 @@ abababab
                                 @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
                                   @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc075fba8
+ - this oop:          0x00007f5ff5459ba8
  - method holder:     'java/nio/DirectByteBuffer'
- - constants:         0x00007f1dc075bb30 constant pool [545] {0x00007f1dc075bb30} for 'java/nio/DirectByteBuffer' cache=0x00007f1dc0761ed8
+ - constants:         0x00007f5ff5455b30 constant pool [545] {0x00007f5ff5455b30} for 'java/nio/DirectByteBuffer' cache=0x00007f5ff545bed8
  - access:            0x81000001  public 
  - name:              'getLong'
  - signature:         '(I)J'
@@ -1716,18 +1719,18 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      32
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b80d8: 0xba000000 i2c: 0x00007f1dad10e860 c2i: 0x00007f1dad10e977 c2iUV: 0x00007f1dad10e94a
- - compiled entry     0x00007f1dad221980
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b80d8: 0xba000000 i2c: 0x00007f5ff8ad8860 c2i: 0x00007f5ff8ad8977 c2iUV: 0x00007f5ff8ad894a
+ - compiled entry     0x00007f5ff8beb9c0
  - code size:         16
- - code start:        0x00007f1dc075fb78
- - code end (excl):   0x00007f1dc075fb88
- - method data:       0x00007f1dc085de58
+ - code start:        0x00007f5ff5459b78
+ - code end (excl):   0x00007f5ff5459b88
+ - method data:       0x00007f5ff5557e58
  - checked ex length: 0
- - linenumber start:  0x00007f1dc075fb88
+ - linenumber start:  0x00007f5ff5459b88
  - localvar length:   2
- - localvar start:    0x00007f1dc075fb8e
- - compiled code: nmethod    695   61       3       java.nio.DirectByteBuffer::getLong (16 bytes)
+ - localvar start:    0x00007f5ff5459b8e
+ - compiled code: nmethod    531   61       3       java.nio.DirectByteBuffer::getLong (16 bytes)
 #
 #  long/half ( java/nio/DirectByteBuffer:NotNull *, int )
 #
@@ -1800,18 +1803,18 @@ abababab
 070   	int3	# ShouldNotReachHere
 070
 
-    697   61       3       java.nio.DirectByteBuffer::getLong (16 bytes)   made not entrant
-    705   72 %  b  3       DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
+    533   61       3       java.nio.DirectByteBuffer::getLong (16 bytes)   made not entrant
+    543   72 %  b  3       DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
                               @ 4   java.nio.Buffer::limit (5 bytes)
                               @ 23   java.nio.ByteBuffer::get (0 bytes)   no static binding
                               @ 40   java.nio.ByteBuffer::getInt (0 bytes)   no static binding
                               @ 58   java.nio.ByteBuffer::getLong (0 bytes)   no static binding
-    710   73    b  3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+    548   73    b  3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
                               @ 4   java.nio.Buffer::limit (5 bytes)
                               @ 23   java.nio.ByteBuffer::get (0 bytes)   no static binding
                               @ 40   java.nio.ByteBuffer::getInt (0 bytes)   no static binding
                               @ 58   java.nio.ByteBuffer::getLong (0 bytes)   no static binding
-    714   74 %  b  4       DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
+    553   74 %  b  4       DeserBenchmark$ByteBufferRunnable::run @ 13 (74 bytes)
                               @ 23   java.nio.DirectByteBuffer::get (16 bytes)   inline (hot)
                                \-> TypeProfile (40960/40960 counts) = java/nio/DirectByteBuffer
                                 @ 6   java.nio.Buffer::checkIndex (22 bytes)   inline (hot)
@@ -1834,9 +1837,9 @@ abababab
                                   @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
                                     @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc09283f8
+ - this oop:          0x00007f5ff56223b8
  - method holder:     'DeserBenchmark$ByteBufferRunnable'
- - constants:         0x00007f1dc0928070 constant pool [52] {0x00007f1dc0928070} for 'DeserBenchmark$ByteBufferRunnable' cache=0x00007f1dc0928488
+ - constants:         0x00007f5ff5622030 constant pool [52] {0x00007f5ff5622030} for 'DeserBenchmark$ByteBufferRunnable' cache=0x00007f5ff5622448
  - access:            0xc1000001  public 
  - name:              'run'
  - signature:         '()V'
@@ -1846,17 +1849,17 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      5
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
- - compiled entry     0x00007f1dad223dc0
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b7f20: 0xb0000000 i2c: 0x00007f5ff8ad0ae0 c2i: 0x00007f5ff8ad0bf4 c2iUV: 0x00007f5ff8ad0bc7
+ - compiled entry     0x00007f5ff8bede00
  - code size:         74
- - code start:        0x00007f1dc0928398
- - code end (excl):   0x00007f1dc09283e2
- - method data:       0x00007f1dc09285f8
+ - code start:        0x00007f5ff5622358
+ - code end (excl):   0x00007f5ff56223a2
+ - method data:       0x00007f5ff56225b8
  - checked ex length: 0
- - linenumber start:  0x00007f1dc09283e2
+ - linenumber start:  0x00007f5ff56223a2
  - localvar length:   0
- - compiled code: nmethod    731   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+ - compiled code: nmethod    571   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
 #
 #  void ( rawptr:BotPTR )
 #
@@ -1900,7 +1903,7 @@ abababab
 03a
 040   B2: #	B60 B3 <- B1  Freq: 0.999
 040   	movl    R10, [R14 + #8 (8-bit)]	# compressed klass ptr
-044   	cmpl    R10, narrowklass: precise klass DeserBenchmark$ByteBufferRunnable: 0x00007f1d5c04f4c8:Constant:exact *	# compressed klass ptr
+044   	cmpl    R10, narrowklass: precise klass DeserBenchmark$ByteBufferRunnable: 0x00007f5fac04f098:Constant:exact *	# compressed klass ptr
 04b   	jne,u  B60  P=0.000001 C=-1.000000
 04b
 051   B3: #	B4 <- B2  Freq: 0.998999
@@ -1919,7 +1922,7 @@ abababab
 062   	NullCheck RBP
 062
 062   B7: #	B58 B8 <- B6  Freq: 0.999996
-062   	cmpl    R11, narrowklass: precise klass java/nio/DirectByteBuffer: 0x00007f1d5c04f8b8:Constant:exact *	# compressed klass ptr
+062   	cmpl    R11, narrowklass: precise klass java/nio/DirectByteBuffer: 0x00007f5fac04f488:Constant:exact *	# compressed klass ptr
 069   	jne,u  B58  P=0.000001 C=-1.000000
 069
 06f   B8: #	B53 B9 <- B7  Freq: 0.999995
@@ -2151,7 +2154,7 @@ abababab
       	nop 	# 3 bytes pad for loops and calls
 243   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
         # java.nio.Buffer::checkIndex @ bci:12  L[0]=_ L[1]=_
-        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f1d68002e58 STK[1]=RBP
+        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f5fb4002e58 STK[1]=RBP
         # DeserBenchmark$ByteBufferRunnable::run @ bci:23  L[0]=rsp + #0 L[1]=rsp + #8 L[2]=rsp + #12 L[3]=_
         # OopMap{rbp=Oop [0]=Oop off=584}
 248   	int3	# ShouldNotReachHere
@@ -2236,8 +2239,8 @@ abababab
 300   	int3	# ShouldNotReachHere
 300
 
-    735   72 %     3       DeserBenchmark$ByteBufferRunnable::run @ -2 (74 bytes)   made not entrant
-    744   75    b  4       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+    575   72 %     3       DeserBenchmark$ByteBufferRunnable::run @ -2 (74 bytes)   made not entrant
+    585   75    b  4       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
                               @ 4   java.nio.Buffer::limit (5 bytes)   accessor
                               @ 23   java.nio.DirectByteBuffer::get (16 bytes)   inline (hot)
                                \-> TypeProfile (49151/49151 counts) = java/nio/DirectByteBuffer
@@ -2261,9 +2264,9 @@ abababab
                                   @ 26   java.nio.Bits::swap (5 bytes)   inline (hot)
                                     @ 1   java.lang.Long::reverseBytes (46 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc09283f8
+ - this oop:          0x00007f5ff56223b8
  - method holder:     'DeserBenchmark$ByteBufferRunnable'
- - constants:         0x00007f1dc0928070 constant pool [52] {0x00007f1dc0928070} for 'DeserBenchmark$ByteBufferRunnable' cache=0x00007f1dc0928488
+ - constants:         0x00007f5ff5622030 constant pool [52] {0x00007f5ff5622030} for 'DeserBenchmark$ByteBufferRunnable' cache=0x00007f5ff5622448
  - access:            0xc1000001  public 
  - name:              'run'
  - signature:         '()V'
@@ -2273,17 +2276,17 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      5
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
- - compiled entry     0x00007f1dad223dc0
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b7f20: 0xb0000000 i2c: 0x00007f5ff8ad0ae0 c2i: 0x00007f5ff8ad0bf4 c2iUV: 0x00007f5ff8ad0bc7
+ - compiled entry     0x00007f5ff8bede00
  - code size:         74
- - code start:        0x00007f1dc0928398
- - code end (excl):   0x00007f1dc09283e2
- - method data:       0x00007f1dc09285f8
+ - code start:        0x00007f5ff5622358
+ - code end (excl):   0x00007f5ff56223a2
+ - method data:       0x00007f5ff56225b8
  - checked ex length: 0
- - linenumber start:  0x00007f1dc09283e2
+ - linenumber start:  0x00007f5ff56223a2
  - localvar length:   0
- - compiled code: nmethod    754   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
+ - compiled code: nmethod    594   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)
 #
 #  void ( DeserBenchmark$ByteBufferRunnable:NotNull * )
 #
@@ -2332,7 +2335,7 @@ abababab
 042   	jle     B21  P=0.000000 C=49151.000000
 042
 048   B3: #	B24 B4 <- B2  Freq: 0.999999
-048   	cmpl    R8, narrowklass: precise klass java/nio/DirectByteBuffer: 0x00007f1d700aa318:Constant:exact *	# compressed klass ptr
+048   	cmpl    R8, narrowklass: precise klass java/nio/DirectByteBuffer: 0x00007f5fc00ba7a8:Constant:exact *	# compressed klass ptr
 04f   	jne,u  B24  P=0.000001 C=-1.000000
 04f
 055   B4: #	B8 <- B3  Freq: 0.999997
@@ -2427,7 +2430,7 @@ abababab
       	nop 	# 3 bytes pad for loops and calls
 10b   	call,static  wrapper for: uncommon_trap(reason='unloaded' action='reinterpret' index='26')
         # java.nio.Buffer::checkIndex @ bci:12  L[0]=_ L[1]=_
-        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f1d70048428 STK[1]=RBP
+        # java.nio.DirectByteBuffer::get @ bci:6  L[0]=_ L[1]=_ STK[0]=#Ptr0x00007f5fc001aaf8 STK[1]=RBP
         # DeserBenchmark$ByteBufferRunnable::run @ bci:23  L[0]=rsp + #0 L[1]=rsp + #8 L[2]=rsp + #12 L[3]=_
         # OopMap{rbp=Oop [0]=Oop off=272}
 110   	int3	# ShouldNotReachHere
@@ -2484,48 +2487,48 @@ abababab
 184   	int3	# ShouldNotReachHere
 184
 
-    756   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)   made not entrant
+    597   73       3       DeserBenchmark$ByteBufferRunnable::run (74 bytes)   made not entrant
 -- ByteBuffer direct
-     2099   76    b  3       sun.misc.FDBigInteger::mult (64 bytes)
-   2102   77    b  3       sun.misc.FDBigInteger::<init> (30 bytes)
+     1957   76    b  3       sun.misc.FDBigInteger::mult (64 bytes)
+   1960   77    b  3       sun.misc.FDBigInteger::<init> (30 bytes)
                               @ 1   java.lang.Object::<init> (1 bytes)
                               @ 26   sun.misc.FDBigInteger::trimLeadingZeros (57 bytes)   not inlineable
-   2103   78    b  3       sun.misc.FDBigInteger::trimLeadingZeros (57 bytes)
-   2106   79    b  3       sun.misc.FDBigInteger::makeImmutable (6 bytes)
-   2107   80    b  3       sun.misc.FDBigInteger::mult (44 bytes)
+   1962   78    b  3       sun.misc.FDBigInteger::trimLeadingZeros (57 bytes)
+   1964   79    b  3       sun.misc.FDBigInteger::makeImmutable (6 bytes)
+   1965   80    b  3       sun.misc.FDBigInteger::mult (44 bytes)
                               @ 28   sun.misc.FDBigInteger::mult (64 bytes)   not inlineable
                               @ 40   sun.misc.FDBigInteger::<init> (30 bytes)   not inlineable
-6.55 msec/loop
-     2110   81    b  1       java.util.Formatter$Flags::valueOf (5 bytes)
-1455.99 MB/s
-   2111   82    b  3       java.lang.String::getChars (62 bytes)
+6.75 msec/loop
+     1968   81    b  1       java.util.Formatter$Flags::valueOf (5 bytes)
+1412.85 MB/s
+   1969   82    b  3       java.lang.String::getChars (62 bytes)
                               @ 9  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 27  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 43  java/lang/StringIndexOutOfBoundsException::<init> (not loaded)   not inlineable
                               @ 58   java.lang.System::arraycopy (0 bytes)   intrinsic
-   2115   83    b  3       java.util.concurrent.ConcurrentHashMap::setTabAt (19 bytes)
+   1973   83    b  3       java.util.concurrent.ConcurrentHashMap::setTabAt (19 bytes)
                               @ 15   sun.misc.Unsafe::putObjectVolatile (0 bytes)   intrinsic
-   2116   84     n 0       sun.misc.Unsafe::putObjectVolatile (native)   
-   2116   85     n 0       sun.misc.Unsafe::compareAndSwapObject (native)   
-   2129   86     n 0       sun.misc.Unsafe::getByte (native)   
-   2129   87     n 0       sun.misc.Unsafe::getInt (native)   
-   2129   88     n 0       sun.misc.Unsafe::getLong (native)   
-   2147   89 %  b  3       DeserBenchmark$UnsafeRunnable::run @ 10 (98 bytes)
+   1975   84     n 0       sun.misc.Unsafe::putObjectVolatile (native)   
+   1975   85     n 0       sun.misc.Unsafe::compareAndSwapObject (native)   
+   1979   86     n 0       sun.misc.Unsafe::getByte (native)   
+   1979   87     n 0       sun.misc.Unsafe::getInt (native)   
+   1979   88     n 0       sun.misc.Unsafe::getLong (native)   
+   2007   89 %  b  3       DeserBenchmark$UnsafeRunnable::run @ 10 (98 bytes)
                               @ 29   sun.misc.Unsafe::getByte (0 bytes)   intrinsic
                               @ 55   sun.misc.Unsafe::getInt (0 bytes)   intrinsic
                               @ 82   sun.misc.Unsafe::getLong (0 bytes)   intrinsic
-   2150   90    b  3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
+   2011   90    b  3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
                               @ 29   sun.misc.Unsafe::getByte (0 bytes)   intrinsic
                               @ 55   sun.misc.Unsafe::getInt (0 bytes)   intrinsic
                               @ 82   sun.misc.Unsafe::getLong (0 bytes)   intrinsic
-   2153   91 %  b  4       DeserBenchmark$UnsafeRunnable::run @ 10 (98 bytes)
+   2013   91 %  b  4       DeserBenchmark$UnsafeRunnable::run @ 10 (98 bytes)
                               @ 29   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
                               @ 55   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
                               @ 82   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc0928f48
+ - this oop:          0x00007f5ff5622f08
  - method holder:     'DeserBenchmark$UnsafeRunnable'
- - constants:         0x00007f1dc0928a70 constant pool [85] {0x00007f1dc0928a70} for 'DeserBenchmark$UnsafeRunnable' cache=0x00007f1dc0929130
+ - constants:         0x00007f5ff5622a30 constant pool [85] {0x00007f5ff5622a30} for 'DeserBenchmark$UnsafeRunnable' cache=0x00007f5ff56230c0
  - access:            0xc1000001  public 
  - name:              'run'
  - signature:         '()V'
@@ -2535,17 +2538,17 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      5
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
- - compiled entry     0x00007f1dad22df00
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b7f20: 0xb0000000 i2c: 0x00007f5ff8ad0ae0 c2i: 0x00007f5ff8ad0bf4 c2iUV: 0x00007f5ff8ad0bc7
+ - compiled entry     0x00007f5ff8bf7f40
  - code size:         98
- - code start:        0x00007f1dc0928ed0
- - code end (excl):   0x00007f1dc0928f32
- - method data:       0x00007f1dc09293e8
+ - code start:        0x00007f5ff5622e90
+ - code end (excl):   0x00007f5ff5622ef2
+ - method data:       0x00007f5ff5623378
  - checked ex length: 0
- - linenumber start:  0x00007f1dc0928f32
+ - linenumber start:  0x00007f5ff5622ef2
  - localvar length:   0
- - compiled code: nmethod   2160   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
+ - compiled code: nmethod   2021   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
 #
 #  void ( rawptr:BotPTR )
 #
@@ -2587,7 +2590,7 @@ abababab
 040   	movl    R10, [RBP + #8 (8-bit)]	# compressed klass ptr
 044   	decode_klass_not_null R10,R10
 048   	movq    R10, [R10 + #56 (8-bit)]	# class
-04c   	movq    R11, precise klass DeserBenchmark$UnsafeRunnable: 0x00007f1d5c0aed98:Constant:exact *	# ptr
+04c   	movq    R11, precise klass DeserBenchmark$UnsafeRunnable: 0x00007f5fac0ae968:Constant:exact *	# ptr
 056   	cmpq    R10, R11	# ptr
 059   	jne,u  B17  P=0.000001 C=-1.000000
 059
@@ -2708,15 +2711,15 @@ abababab
 254   	int3	# ShouldNotReachHere
 254
 
-   2164   89 %     3       DeserBenchmark$UnsafeRunnable::run @ -2 (98 bytes)   made not entrant
-   2175   92    b  4       DeserBenchmark$UnsafeRunnable::run (98 bytes)
+   2022   89 %     3       DeserBenchmark$UnsafeRunnable::run @ -2 (98 bytes)   made not entrant
+   2035   92    b  4       DeserBenchmark$UnsafeRunnable::run (98 bytes)
                               @ 29   sun.misc.Unsafe::getByte (0 bytes)   (intrinsic)
                               @ 55   sun.misc.Unsafe::getInt (0 bytes)   (intrinsic)
                               @ 82   sun.misc.Unsafe::getLong (0 bytes)   (intrinsic)
 {method}
- - this oop:          0x00007f1dc0928f48
+ - this oop:          0x00007f5ff5622f08
  - method holder:     'DeserBenchmark$UnsafeRunnable'
- - constants:         0x00007f1dc0928a70 constant pool [85] {0x00007f1dc0928a70} for 'DeserBenchmark$UnsafeRunnable' cache=0x00007f1dc0929130
+ - constants:         0x00007f5ff5622a30 constant pool [85] {0x00007f5ff5622a30} for 'DeserBenchmark$UnsafeRunnable' cache=0x00007f5ff56230c0
  - access:            0xc1000001  public 
  - name:              'run'
  - signature:         '()V'
@@ -2726,17 +2729,17 @@ abababab
  - method size:       12
  - highest level:     3
  - vtable index:      5
- - i2i entry:         0x00007f1dad01e2e0
- - adapters:          AHE@0x00007f1dbc0b7f20: 0xb0000000 i2c: 0x00007f1dad106ae0 c2i: 0x00007f1dad106bf4 c2iUV: 0x00007f1dad106bc7
- - compiled entry     0x00007f1dad22df00
+ - i2i entry:         0x00007f5ff89e82e0
+ - adapters:          AHE@0x00007f60080b7f20: 0xb0000000 i2c: 0x00007f5ff8ad0ae0 c2i: 0x00007f5ff8ad0bf4 c2iUV: 0x00007f5ff8ad0bc7
+ - compiled entry     0x00007f5ff8bf7f40
  - code size:         98
- - code start:        0x00007f1dc0928ed0
- - code end (excl):   0x00007f1dc0928f32
- - method data:       0x00007f1dc09293e8
+ - code start:        0x00007f5ff5622e90
+ - code end (excl):   0x00007f5ff5622ef2
+ - method data:       0x00007f5ff5623378
  - checked ex length: 0
- - linenumber start:  0x00007f1dc0928f32
+ - linenumber start:  0x00007f5ff5622ef2
  - localvar length:   0
- - compiled code: nmethod   2180   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
+ - compiled code: nmethod   2040   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)
 #
 #  void ( DeserBenchmark$UnsafeRunnable:NotNull * )
 #
@@ -2820,30 +2823,14 @@ abababab
 130   	ret
 130
 
-   2181   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)   made not entrant
+   2042   90       3       DeserBenchmark$UnsafeRunnable::run (98 bytes)   made not entrant
 -- Unsafe heap
-  6.75 msec/loop
-     3532   93    b  1       java.nio.Buffer::position (5 bytes)
-1412.85 MB/s
-   3533   94    b  3       java.util.concurrent.ConcurrentHashMap$Node::<init> (26 bytes)
+  6.86 msec/loop
+     3412   93    b  1       java.nio.Buffer::position (5 bytes)
+1390.20 MB/s
+writing data to random.data file
+   3413   94    b  3       java.util.concurrent.ConcurrentHashMap$Node::<init> (26 bytes)
                               @ 1   java.lang.Object::<init> (1 bytes)
-#
-# A fatal error has been detected by the Java Runtime Environment:
-#
-#  SIGSEGV (0xb) at pc=0x00007f1dad231a64, pid=15546, tid=139765839955712
-#
-# JRE version: OpenJDK Runtime Environment (8.0) (build 1.8.0-internal-fastdebug-elise_2014_04_09_00_03-b00)
-# Java VM: OpenJDK 64-Bit Server VM (25.0-b70-fastdebug mixed mode linux-amd64 compressed oops)
-# Problematic frame:
-# J 92 C2 DeserBenchmark$UnsafeRunnable.run()V (98 bytes) @ 0x00007f1dad231a64 [0x00007f1dad231a20+0x44]
-#
-# Failed to write core dump. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
-#
-# An error report file with more information is saved as:
-# /home/elise/project/VM/OpenJDK/bench/hs_err_pid15546.log
-#
-# If you would like to submit a bug report, please visit:
-#   http://bugreport.sun.com/bugreport/crash.jsp
-#
-Current thread is 139765839955712
-Dumping core ...
+openjdk version "1.8.0-internal-fastdebug"
+OpenJDK Runtime Environment (build 1.8.0-internal-fastdebug-elise_2014_04_09_00_03-b00)
+OpenJDK 64-Bit Server VM (build 25.0-b70-fastdebug, mixed mode)
