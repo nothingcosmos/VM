@@ -45,7 +45,7 @@ proc bootstrap ::
   // The new G calls runtime·main.
 
 
-
+runtime
 ===============================================================================
 
 starttheworld

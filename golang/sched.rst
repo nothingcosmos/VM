@@ -1,6 +1,15 @@
 scheduler
 ###############################################################################
 
+参考
+===============================================================================
+
+https://gist.github.com/methane/5377227
+
+https://docs.google.com/document/d/1TTj4T2JO42uD5ID9e89oa0sLKhJYD0Y_kqxDv3I3XMw/mobilebasic
+
+
+
 重要な構造体 ::
 
   typedef struct Sched Sched;
@@ -346,7 +355,45 @@ allgaddでつなげる。
 allglenでサイズを調整している。基本的にはcap = 2 * allgcap;で伸長していく。
 
 
+
+
+goroutine context switch
 ===============================================================================
+
+1.2 release note
+
+Pre-emption in the scheduler
+In prior releases,
+a goroutine that was looping forever could starve out other goroutines on the same thread,
+a serious problem when GOMAXPROCS provided only one user thread.
+
+In Go 1.2, this is partially addressed:
+The scheduler is invoked occasionally upon entry to a function.
+This means that any loop that includes a (non-inlined) function call can be pre-empted,
+allowing other goroutines to run on the same thread.
+
+http://qiita.com/umisama/items/93333ffe4d9fc7e4ba1f
+===============================================================================
+
+主に、以下の契機でスケジューラに制御がわたり、スイッチが起こされる
+アンバッファなチャネルへの読み書き
+システムコール呼び出し
+メモリアロケーション
+time.Sleep()が呼ばれる
+runtime.Gosched()が呼ばれる
+
+go build -gcflags -m test1.go
+
+https://code.google.com/p/go/source/detail?r=575afd15c877
+
+runtime: preempt goroutines for GC
+The last patch for preemptive scheduler,
+with this change stoptheworld issues preemption
+requests every 100us.
+Update issue 543.
+
+
+go1.3
 ===============================================================================
 ===============================================================================
 

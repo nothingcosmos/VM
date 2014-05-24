@@ -1,5 +1,8 @@
-cmd/gc
+channelの実装がどうなっているのか調べる。
 ###############################################################################
+
+コンパイラから<-みたいな特徴的なシンボルを手がかりに探す。
+src/cmd/gc
 
 make channel
 *******************************************************************************
@@ -95,6 +98,16 @@ runtime.go ::
   func selectdefault(sel *byte) (selected bool)
   func selectgo(sel *byte)
 
+src/cmd/gc/walk.c ::
+
+ case OMAKECHAN:
+    n = mkcall1(chanfn("makechan", 1, n->type), n->type, init,
+                typename(n->type),
+                conv(n->left, types[TINT64]));
+
+  たぶん省略されたら1だと思う。
+
+
 go/src/pkg/runtime
 ===============================================================================
 
@@ -114,6 +127,41 @@ chan.c ::
       c->elemsize = elem->size;
       c->elemalg = elem->alg;
       c->dataqsiz = hint;
+
+
+chan.goc ::
+
+  static Hchan*
+  makechan(ChanType *t, int64 hint)
+
+    hintのrangeチェックしている。
+
+    c->elemsize = elem->size
+    c->elemtype = elem;
+    c->dataqsiz = hint; <-- これ
+
+
+  chansend()
+  chanrecv() //両方同じ制御
+    if (c->dataqsiz > 0) goto asynch;
+
+  asynch:
+    if (c->qcount >= c->dataqsiz)
+      mysg.g = g
+      enqueue(&c->sendq, &mysg);
+      runtime..parkunlock(c, "chan send")
+      runtime..lock(c);
+      goto asynch;
+
+  selectgo()
+    switch(cas->kind)
+    case CaseRecv:
+      if c->dataqsize > 0
+        if c->qcount > 0 goto asyncrecv;
+        else sg = dequeue(&c->sendq); if sg != nil goto syncrecv;
+
+
+  mysg.releasetime = -1
 
 chansend/chanrecv
 ===============================================================================
@@ -151,6 +199,9 @@ chansend/chanrecv
 dequeue(WaitQ * q)
 sgp = q->first;
 q->first = sgp->link;
+
+enqueueは
+SudoG sgpをlinked listにつなぐ。fifo
 
 selgenをcasする。
 
@@ -206,21 +257,60 @@ proc.c ::
     m->waitlock = lock;
     m->waitunlockf = unlockf;
     g->waitreason = reason;
-    runtime·mcall(park0);
-      execute(gp)
-        gogo(&gp->sched)
-        //gotoはasm
-          gobuf_sp()で退避
-          gobuf_pc(BX)
-          JMP BX
-          //jumpするのか
+    runtime·mcall(park0);  //mcallはアセンブラ
+      park0(G *gp)
+        execute(gp)
+          gogo(&gp->sched)
+          //gotoはasm
+            gobuf_sp()で退避
+            gobuf_pc(BX)
+            JMP BX
+            //jumpするのか
   }
 
+  runtime..parkunlock(c, "chan send")
+    第1引数がlock, 第2引数はreason
+    parkunlockの中で上記のparkを呼び出す。
+
+    ただし、park(callback, lock, reason)
+    parkunlockでは、parkunlockをcallbackする。
+
+  static bool
+  parkunlock(G *gp, void *lock)
+    USED(gp)
+    runtime..unlock(lock)
 
 
+  #define FLUSH(x) USED(x) //なぞだ
+
+
+  // void mcall(void (*fn)(G*))
+  // Switch to m->g0's stack, call fn(g).
+  // Fn must never return.  It should gogo(&g->sched)
+  // to keep running g.
+
+  callerのPC, SPをg_sched+gobuf_spなどに退避する。
+  ...
+  //switch to m->g0
+  ...
+  CALL DI //DIはmcallの引数。MOVQ fn+0(FP),-> DI
 
 
 ===============================================================================
+
+
+
+
+
+channelの生成
+===============================================================================
+
+バッファのありなしで比較してみたい。
+
+
+
+
+
 ===============================================================================
 ===============================================================================
 

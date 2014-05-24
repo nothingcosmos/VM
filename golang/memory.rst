@@ -46,6 +46,15 @@ WARN: 2014/04/24 08:19:11 main.go:189: Sys=24854 kb,TotalAlloc=18377 kb,HSys=194
 WARN: 2014/04/24 08:19:11 main.go:189: Sys=54510 kb,TotalAlloc=46252 kb,HSys=47104 kb, HAlloc=46232 kb
 
 
+go1.3でgoroutineのstackが4kbになった。
+
+
+参照箇所は
+segment stackは4kbになっていた。src/pkg/runtime/stack.hのStackMin = 4096
+
+
+
+
 
 ###############################################################################
 
