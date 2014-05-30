@@ -337,4 +337,6 @@ zslice_linux_amd64.c:debug = 0
 zsymtab_linux_amd64.c:debug = 0 
 ztime_linux_amd64.c:debug = 0 , 
 
+chan.hのdebug = 1を有効にしてrebuildすればchanのデバッグ出力が有効になった。
+
 ===============================================================================
