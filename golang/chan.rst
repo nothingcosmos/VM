@@ -391,15 +391,20 @@ chansend ::
     return true;
 
 chansendにおいて
+
 (1) chanのbufferが0だったら、
+
 (1-1) chanのrecv先にblockするGがいた場合、そのcontextをdequeueして、
 そのcontextのelemにsend対象のelemをcopyし、そいつをready()、自分はそのままreturn
+
 (1-2) chanのrecv先にblockするGがいない場合、
 自分のcontextをWaitQを作成し、chanのsendq側WaitQにenqueueして寝る。parkunlock()でContextSwitchする。
 
 (2) chanのbufferが0より大きければ、
+
 (2-1) bufferが一杯か確認し、bufferが一杯なら、自分のcontextをWaitQを作成し、
 chanのsendq側WaitQにenqueueして寝るparkunlock()
+
 (2-2) bufferが一杯でなければ、bufferにsend対象のelemをcopyして、
 もしrecv先にblockするGがいる場合、そいつをready()して起こす。
 自分はreturn
@@ -419,16 +424,21 @@ WaitQのlistの参照先(sendq/recvq)だけが異なる。
 あとは、bufferからCopyしたあと、空のnullを書き込む。
 
 chanrecvにおいて
+
 (1) chanのbufferが0だったら、
+
 (1-1) chanのsendq先にblockするGがいた場合、そのcontextをdequeueして、
 そのcontextのelemからrecv対象のelemにcopyし、そいつをready()、
 自分は受信したelemを保持してreturnする。
+
 (1-2) chanのrecv先にblockするGがいない場合、
 自分のcontextをWaitQを作成し、chanのrecvq側WaitQにenqueueして寝る。parkunlock()でContextSwitchする。
 
 (2) chanのbufferが0より大きければ、
+
 (2-1) bufferが空か確認し、bufferが空なら、自分のcontextをWaitQを作成し、
 chanのsendq側WaitQにenqueueして寝るparkunlock()
+
 (2-2) bufferが空でなければ、自分のelemにbufferから溜まっている分をcopyして、
 もしsendq先にblockするGがいる場合、そいつをready()して起こす。
 自分はelemを持ってreturn
@@ -609,6 +619,7 @@ runqの制御は、schedulerが独立してがんばっているのだと思う�
 chanのsend/recvは、context switchの機会にはなるが、必ずしもswitchするわけではない。
 
 sendでblockするのは、
+
 (1) bufferが0の場合、recv側でblockするGがいないとき。
 なぜならblockするGに書き込んで、即復帰できないため。
 
@@ -617,6 +628,7 @@ blockするGより、chanのbufferへ優先して書き込む。
 そのためbufferが満杯でない場合は、そのままスルーするか、可能ならblockするGへ書き込んでready
 
 recvでblockするのは、
+
 (3) bufferが0の場合、send側でblockするGがいないとき。
 なぜならblockするGから受信データをもらえないため。
 
