@@ -49,9 +49,9 @@ go.y ::
       $$->etype = Crecv;         //exprの型がCrecv なのかな
   }
 
-.yって拡張子は、yacc bisonの拡張子、字句解析のルールになる。
+.yって拡張子は、yacc bisonの拡張子、構文解析のルールになる。
 
-字句解析でnodeを生成して、treeを構築することが多いので、etype Csend/Crecvや、ORECV/OSENDが怪しい。
+構文解析でnodeを生成して、treeを構築することが多いので、etype Csend/Crecvや、ORECV/OSENDが怪しい。
 
 
 go.h ::
