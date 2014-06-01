@@ -1,8 +1,12 @@
+gephi
+###############################################################################
 
-node_header = "nodedef>name VARCHAR, label VARCHAR, width DOUBLE, color VARCHAR\r\n"
-edge_header = "edgedef>node1 VARCHAR, node2 VARCHAR, label VARCHAR, weight DOUBLE, color VARCHAR\r\n"
+ex) ::
 
-sample ::
+  node_header = "nodedef>name VARCHAR, label VARCHAR, width DOUBLE, color VARCHAR\r\n"
+  edge_header = "edgedef>node1 VARCHAR, node2 VARCHAR, label VARCHAR, weight DOUBLE, color VARCHAR\r\n"
+
+pritty print sample ::
 
   if(debug) {
     runtime·printf("chansend: chan=%p; elem=", c);
@@ -11,13 +15,20 @@ sample ::
   }
 
 
-schedgephi
-
-if(runtime
+schedgephiオプションを追加してみる。
 
 runtime·debug.scheddetail)
-.
-.
-·
 
-·.
+###############################################################################
+
+*******************************************************************************
+*******************************************************************************
+
+===============================================================================
+===============================================================================
+
+template ::
+  ###############################################################################
+  *******************************************************************************
+  ===============================================================================
+

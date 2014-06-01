@@ -1,4 +1,4 @@
-GoCom
+GoCompiler and Channel
 ###############################################################################
 
 goのchannelがどうなっているのか気になる。。
@@ -207,6 +207,8 @@ fibo.go ::
   src/pkg/runtime/runtime.h
   G*      runtime·newproc1(FuncVal*, byte*, int32, int32, void*);
 
+独特の呼び出し規約にみえるが、Plan9由来だろうか。。
+
 go runtime
 *******************************************************************************
 
@@ -231,6 +233,10 @@ gocって拡張子はなんだろ。 Cのソースだと思うけど。
 
 makechan, chanrecv1, chansend1が定義されている。
 
+gocファイルには、なぜかgoのソースとCのソースが混在している。
+
+このファイルをPlan9のCコンパイラはコンパイルできるのだろうか。。
+それともgocはコンパイルできるように改造されている？
 
 chan.goc ::
 
@@ -255,6 +261,16 @@ ChanType chanの型っぽい
 Hchan chanの実体っぽい
 
 byte  chanで送信するデータっぽい
+
+middle dot
+===============================================================================
+
+所々 ピリオドでない、 · というシンボルが埋まっている。
+
+これはmiddle dotと呼ぶらしく、Plan9のCコンパイラはmiddle dotでnamespaceを分けることができるらしい。
+
+middle dotは毎回コピーして使っているのだが、よい入力方法はないだろうか。。
+
 
 chansend
 ===============================================================================
@@ -355,7 +371,7 @@ chansend ::
         goto asynch;               //再度asynchにloop
     }
 
-    // copy  chanbuf <- ep  elemをbufferにcopyする。
+    // copy  chanbuf <- ep  elemをbufferにcopyする。ここはepからsize分コピーする
     c->elemtype->alg->copy(c->elemsize, chanbuf(c, c->sendx), ep);
     if(++c->sendx == c->dataqsiz)
         c->sendx = 0;
@@ -385,9 +401,40 @@ chansendにおいて
 (2-1) bufferが一杯か確認し、bufferが一杯なら、自分のcontextをWaitQを作成し、
 chanのsendq側WaitQにenqueueして寝るparkunlock()
 (2-2) bufferが一杯でなければ、bufferにsend対象のelemをcopyして、
-もしrecv先にblockするGがいる場合、そいつをready()して起こす。自分はreturn
-もしrecv先にblockするGがいない場合、処理を継続する。 return
+もしrecv先にblockするGがいる場合、そいつをready()して起こす。
+自分はreturn
 
+
+chanのsend/recvでは、elemをCopyしている。
+そのため、可能であればでかい配列を直接送受信するよりも、
+ポインタを送受信したほうがよいのかもしれない。
+
+chanrecv
+===============================================================================
+
+基本的にはchansendと鏡のように同じ構造になっている。
+
+WaitQのlistの参照先(sendq/recvq)だけが異なる。
+
+あとは、bufferからCopyしたあと、空のnullを書き込む。
+
+chanrecvにおいて
+(1) chanのbufferが0だったら、
+(1-1) chanのsendq先にblockするGがいた場合、そのcontextをdequeueして、
+そのcontextのelemからrecv対象のelemにcopyし、そいつをready()、
+自分は受信したelemを保持してreturnする。
+(1-2) chanのrecv先にblockするGがいない場合、
+自分のcontextをWaitQを作成し、chanのrecvq側WaitQにenqueueして寝る。parkunlock()でContextSwitchする。
+
+(2) chanのbufferが0より大きければ、
+(2-1) bufferが空か確認し、bufferが空なら、自分のcontextをWaitQを作成し、
+chanのsendq側WaitQにenqueueして寝るparkunlock()
+(2-2) bufferが空でなければ、自分のelemにbufferから溜まっている分をcopyして、
+もしsendq先にblockするGがいる場合、そいつをready()して起こす。
+自分はelemを持ってreturn
+
+
+chanrecvは、bufferに溜まっているelemを即事回収してreturnするのが特徴かな。
 
 chanの構造体
 ===============================================================================
@@ -411,7 +458,15 @@ chanの構造体
     Lock;
   };
 
-//SudoG mysg ::
+chan自体は、genericなメッセージを送受信できるように設計されており、
+
+chanが送受信する型はコンパイル時にチェックするようだ。
+
+送受信する型のサイズを、elemsizeに格納するのだと思う
+
+送受信する実体は、以下のSudoGのbyte * elemが対応する。
+
+SudoG mysg ::
 
   struct  SudoG
   {
@@ -422,6 +477,12 @@ chanの構造体
     byte*   elem;           // data element
   };
 
+SudoGは、誰(G)に何(byte*)を送受信するのかを管理している。
+
+byte*だけでは、何が入っているのか分からないような気がするが、
+byte*の実体のデータサイズは、Hchanのelemsizeが対応している。
+
+chanは、複数の送信者と複数の受信者を想定するため、SudoGで対応付けている。
 
 SudoGはdequeue/enqueueできるようになっている。
 
@@ -429,13 +490,16 @@ linked listになっていて、基本的にはfifo構造。
 
 dequeue時にselectdoneをフラグとし、casするタイプのqueue
 
-
 ready or parkunlock
 ===============================================================================
 
 context switchの仕組み
 
 parkunlockを寝る、readyを遷移すると表現したけど、実際はどうなのか。。
+
+readyは、対象のGをrunnableに設定し、実行はscheduler任せにする。
+
+parkunlockは、自分のGをwaitingに設定し、寝る。
 
 
 proc.c ::
@@ -524,28 +588,37 @@ proc.c ::
   runqput(P *p, G *gp)
     atomicにqueueに追加しようとする。だめなら何度かretry
 
-readyの中は、runqputするだけなんだけど、どこで起きるんだろう
+readyの中は、runqputするだけ、どこで起きるんだろう
 
 runqget
 ===============================================================================
 
-名前的に対応してるのはこいつか。
+名前的に対応してるのはこいつ。
 
 findrunnable()およびschedule()から呼ばれる。
 
 findrunnable()はschedule()からしか呼ばれない。
 
+schedule()がfindrunnable()でrunnableなGをrunqから取得する。
+
+runqの制御は、schedulerが独立してがんばっているのだと思う。
+
 まとめ
 ===============================================================================
-runqの制御は、schedulerが独立してがんばる。
 
 chanのsend/recvは、context switchの機会にはなるが、必ずしもswitchするわけではない。
 
-sendでblock(即switch)するのは、
+sendでblockするのは、
 (1) bufferが0の場合、recv側でblockするGがいないとき。
 なぜならblockするGに書き込んで、即復帰できないため。
+
 (2) bufferが0より大きい場合、bufferが満杯だったとき。
 blockするGより、chanのbufferへ優先して書き込む。
 そのためbufferが満杯でない場合は、そのままスルーするか、可能ならblockするGへ書き込んでready
 
+recvでblockするのは、
+(3) bufferが0の場合、send側でblockするGがいないとき。
+なぜならblockするGから受信データをもらえないため。
 
+(4) bufferが0より大きい場合、bufferが空だったとき。
+bufferに1つでもelemが入っていれば、そのデータを受信して即returnできる。

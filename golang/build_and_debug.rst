@@ -1,4 +1,4 @@
-golang debug
+golang build and debug
 ###############################################################################
 
 goのmake方法
@@ -165,9 +165,12 @@ callchain ::
     runtime.schedinit  //これはbreak可能
     runtime・schedinit //gdbからはbreakできなかった。
 
+よくよく見ると、middle dotを.に置換した、デバッグ用のシンボルを定義しているっぽい。
 
 runtime debugging
 ===============================================================================
+
+環境変数であるGODEBUGを設定すると、runtimeが起動時に環境変数を読み込んでモードを切り替えできる。
 
 runtime/proc.c ::
 
@@ -195,7 +198,6 @@ runtime/proc.c ::
       // write to goroutine-local buffer if diverting output,
       // or else standard error.
 
-環境変数であるGODEBUGを設定すると、runtimeが起動時に環境変数を読み込んでモードを切り替えできる。
 
 設定例 ::
 
@@ -292,13 +294,15 @@ status=idle,runnable,running,syscall,waiting,waitreason
 
 pritty printer
 ===============================================================================
+
 runtime-gdb.py:This  script is loaded by GDB when it finds a .debug_gdb_scripts
 
-手でtrueにして実行すればいいか。
-
+python scriptingでpritty printするためのscriptらしい
 
 runtime/runtime.c  DebugVars runtime..debug;
 ===============================================================================
+
+手でtrueにして実行すればいいか。
 
 GOTRACEBACK
 ===============================================================================
